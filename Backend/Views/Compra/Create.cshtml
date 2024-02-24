@@ -1,0 +1,45 @@
+@model Backend.Models.Compra
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Compra</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="IdP" class="control-label"></label>
+                <select asp-for="IdP" class ="form-control" asp-items="ViewBag.IdP"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="IdS" class="control-label"></label>
+                <select asp-for="IdS" class ="form-control" asp-items="ViewBag.IdS"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Fecha" class="control-label"></label>
+                <select asp-for="Fecha" class ="form-control" asp-items="ViewBag.Fecha"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Ci" class="control-label"></label>
+                <select asp-for="Ci" class ="form-control" asp-items="ViewBag.Ci"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="IdPg" class="control-label"></label>
+                <select asp-for="IdPg" class ="form-control" asp-items="ViewBag.IdPg"></select>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
