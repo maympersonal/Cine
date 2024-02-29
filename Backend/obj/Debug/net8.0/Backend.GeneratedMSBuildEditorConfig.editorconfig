@@ -1,0 +1,375 @@
+is_global = true
+build_property.TargetFramework = net8.0
+build_property.TargetFramework = net8.0
+build_property.TargetPlatformMinVersion = 
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = true
+build_property.UsingMicrosoftNETSdkWeb = true
+build_property.ProjectTypeGuids = 
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = 
+build_property.InvariantGlobalization = 
+build_property.PlatformNeutralAssembly = 
+build_property.PlatformNeutralAssembly = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property.RootNamespace = Backend
+build_property.RootNamespace = Backend
+build_property.ProjectDir = c:\Users\Miguel Alejandro\Documents\3er Año\IS\Cine\Backend\
+build_property.EnableComHosting = 
+build_property.EnableGeneratedComInterfaceComImportInterop = 
+build_property.RazorLangVersion = 8.0
+build_property.SupportLocalizedComponentNames = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+build_property.MSBuildProjectDirectory = c:\Users\Miguel Alejandro\Documents\3er Año\IS\Cine\Backend
+build_property._RazorSourceGeneratorDebug = 
+
+[c:/Users/Miguel Alejandro/Documents/3er Año/IS/Cine/Backend/Views/Actor/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWN0b3JcQ3JlYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[c:/Users/Miguel Alejandro/Documents/3er Año/IS/Cine/Backend/Views/Actor/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWN0b3JcRGVsZXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[c:/Users/Miguel Alejandro/Documents/3er Año/IS/Cine/Backend/Views/Actor/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWN0b3JcRGV0YWlscy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[c:/Users/Miguel Alejandro/Documents/3er Año/IS/Cine/Backend/Views/Actor/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWN0b3JcRWRpdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[c:/Users/Miguel Alejandro/Documents/3er Año/IS/Cine/Backend/Views/Actor/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWN0b3JcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[c:/Users/Miguel Alejandro/Documents/3er Año/IS/Cine/Backend/Views/Butaca/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQnV0YWNhXENyZWF0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[c:/Users/Miguel Alejandro/Documents/3er Año/IS/Cine/Backend/Views/Butaca/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQnV0YWNhXERlbGV0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[c:/Users/Miguel Alejandro/Documents/3er Año/IS/Cine/Backend/Views/Butaca/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQnV0YWNhXERldGFpbHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[c:/Users/Miguel Alejandro/Documents/3er Año/IS/Cine/Backend/Views/Butaca/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQnV0YWNhXEVkaXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[c:/Users/Miguel Alejandro/Documents/3er Año/IS/Cine/Backend/Views/Butaca/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQnV0YWNhXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[c:/Users/Miguel Alejandro/Documents/3er Año/IS/Cine/Backend/Views/Cliente/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2xpZW50ZVxDcmVhdGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[c:/Users/Miguel Alejandro/Documents/3er Año/IS/Cine/Backend/Views/Cliente/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2xpZW50ZVxEZWxldGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[c:/Users/Miguel Alejandro/Documents/3er Año/IS/Cine/Backend/Views/Cliente/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2xpZW50ZVxEZXRhaWxzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[c:/Users/Miguel Alejandro/Documents/3er Año/IS/Cine/Backend/Views/Cliente/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2xpZW50ZVxFZGl0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[c:/Users/Miguel Alejandro/Documents/3er Año/IS/Cine/Backend/Views/Cliente/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2xpZW50ZVxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[c:/Users/Miguel Alejandro/Documents/3er Año/IS/Cine/Backend/Views/Compra/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29tcHJhXENyZWF0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[c:/Users/Miguel Alejandro/Documents/3er Año/IS/Cine/Backend/Views/Compra/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29tcHJhXERlbGV0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[c:/Users/Miguel Alejandro/Documents/3er Año/IS/Cine/Backend/Views/Compra/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29tcHJhXERldGFpbHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[c:/Users/Miguel Alejandro/Documents/3er Año/IS/Cine/Backend/Views/Compra/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29tcHJhXEVkaXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[c:/Users/Miguel Alejandro/Documents/3er Año/IS/Cine/Backend/Views/Compra/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29tcHJhXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[c:/Users/Miguel Alejandro/Documents/3er Año/IS/Cine/Backend/Views/Descuento/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRGVzY3VlbnRvXENyZWF0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[c:/Users/Miguel Alejandro/Documents/3er Año/IS/Cine/Backend/Views/Descuento/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRGVzY3VlbnRvXERlbGV0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[c:/Users/Miguel Alejandro/Documents/3er Año/IS/Cine/Backend/Views/Descuento/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRGVzY3VlbnRvXERldGFpbHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[c:/Users/Miguel Alejandro/Documents/3er Año/IS/Cine/Backend/Views/Descuento/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRGVzY3VlbnRvXEVkaXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[c:/Users/Miguel Alejandro/Documents/3er Año/IS/Cine/Backend/Views/Descuento/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRGVzY3VlbnRvXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[c:/Users/Miguel Alejandro/Documents/3er Año/IS/Cine/Backend/Views/Efectivo/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRWZlY3Rpdm9cQ3JlYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[c:/Users/Miguel Alejandro/Documents/3er Año/IS/Cine/Backend/Views/Efectivo/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRWZlY3Rpdm9cRGVsZXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[c:/Users/Miguel Alejandro/Documents/3er Año/IS/Cine/Backend/Views/Efectivo/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRWZlY3Rpdm9cRGV0YWlscy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[c:/Users/Miguel Alejandro/Documents/3er Año/IS/Cine/Backend/Views/Efectivo/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRWZlY3Rpdm9cRWRpdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[c:/Users/Miguel Alejandro/Documents/3er Año/IS/Cine/Backend/Views/Efectivo/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRWZlY3Rpdm9cSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[c:/Users/Miguel Alejandro/Documents/3er Año/IS/Cine/Backend/Views/Empleado/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRW1wbGVhZG9cQ3JlYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[c:/Users/Miguel Alejandro/Documents/3er Año/IS/Cine/Backend/Views/Empleado/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRW1wbGVhZG9cRGVsZXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[c:/Users/Miguel Alejandro/Documents/3er Año/IS/Cine/Backend/Views/Empleado/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRW1wbGVhZG9cRGV0YWlscy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[c:/Users/Miguel Alejandro/Documents/3er Año/IS/Cine/Backend/Views/Empleado/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRW1wbGVhZG9cRWRpdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[c:/Users/Miguel Alejandro/Documents/3er Año/IS/Cine/Backend/Views/Empleado/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRW1wbGVhZG9cSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[c:/Users/Miguel Alejandro/Documents/3er Año/IS/Cine/Backend/Views/Genero/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcR2VuZXJvXENyZWF0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[c:/Users/Miguel Alejandro/Documents/3er Año/IS/Cine/Backend/Views/Genero/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcR2VuZXJvXERlbGV0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[c:/Users/Miguel Alejandro/Documents/3er Año/IS/Cine/Backend/Views/Genero/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcR2VuZXJvXERldGFpbHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[c:/Users/Miguel Alejandro/Documents/3er Año/IS/Cine/Backend/Views/Genero/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcR2VuZXJvXEVkaXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[c:/Users/Miguel Alejandro/Documents/3er Año/IS/Cine/Backend/Views/Genero/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcR2VuZXJvXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[c:/Users/Miguel Alejandro/Documents/3er Año/IS/Cine/Backend/Views/Home/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[c:/Users/Miguel Alejandro/Documents/3er Año/IS/Cine/Backend/Views/Home/Privacy.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[c:/Users/Miguel Alejandro/Documents/3er Año/IS/Cine/Backend/Views/Pago/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGFnb1xDcmVhdGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[c:/Users/Miguel Alejandro/Documents/3er Año/IS/Cine/Backend/Views/Pago/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGFnb1xEZWxldGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[c:/Users/Miguel Alejandro/Documents/3er Año/IS/Cine/Backend/Views/Pago/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGFnb1xEZXRhaWxzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[c:/Users/Miguel Alejandro/Documents/3er Año/IS/Cine/Backend/Views/Pago/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGFnb1xFZGl0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[c:/Users/Miguel Alejandro/Documents/3er Año/IS/Cine/Backend/Views/Pago/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGFnb1xJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[c:/Users/Miguel Alejandro/Documents/3er Año/IS/Cine/Backend/Views/Pelicula/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGVsaWN1bGFcQ3JlYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[c:/Users/Miguel Alejandro/Documents/3er Año/IS/Cine/Backend/Views/Pelicula/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGVsaWN1bGFcRGVsZXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[c:/Users/Miguel Alejandro/Documents/3er Año/IS/Cine/Backend/Views/Pelicula/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGVsaWN1bGFcRGV0YWlscy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[c:/Users/Miguel Alejandro/Documents/3er Año/IS/Cine/Backend/Views/Pelicula/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGVsaWN1bGFcRWRpdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[c:/Users/Miguel Alejandro/Documents/3er Año/IS/Cine/Backend/Views/Pelicula/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGVsaWN1bGFcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[c:/Users/Miguel Alejandro/Documents/3er Año/IS/Cine/Backend/Views/Punto/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHVudG9cQ3JlYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[c:/Users/Miguel Alejandro/Documents/3er Año/IS/Cine/Backend/Views/Punto/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHVudG9cRGVsZXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[c:/Users/Miguel Alejandro/Documents/3er Año/IS/Cine/Backend/Views/Punto/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHVudG9cRGV0YWlscy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[c:/Users/Miguel Alejandro/Documents/3er Año/IS/Cine/Backend/Views/Punto/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHVudG9cRWRpdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[c:/Users/Miguel Alejandro/Documents/3er Año/IS/Cine/Backend/Views/Punto/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHVudG9cSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[c:/Users/Miguel Alejandro/Documents/3er Año/IS/Cine/Backend/Views/Sala/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2FsYVxDcmVhdGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[c:/Users/Miguel Alejandro/Documents/3er Año/IS/Cine/Backend/Views/Sala/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2FsYVxEZWxldGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[c:/Users/Miguel Alejandro/Documents/3er Año/IS/Cine/Backend/Views/Sala/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2FsYVxEZXRhaWxzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[c:/Users/Miguel Alejandro/Documents/3er Año/IS/Cine/Backend/Views/Sala/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2FsYVxFZGl0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[c:/Users/Miguel Alejandro/Documents/3er Año/IS/Cine/Backend/Views/Sala/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2FsYVxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[c:/Users/Miguel Alejandro/Documents/3er Año/IS/Cine/Backend/Views/Sesion/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2VzaW9uXENyZWF0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[c:/Users/Miguel Alejandro/Documents/3er Año/IS/Cine/Backend/Views/Sesion/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2VzaW9uXERlbGV0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[c:/Users/Miguel Alejandro/Documents/3er Año/IS/Cine/Backend/Views/Sesion/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2VzaW9uXERldGFpbHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[c:/Users/Miguel Alejandro/Documents/3er Año/IS/Cine/Backend/Views/Sesion/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2VzaW9uXEVkaXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[c:/Users/Miguel Alejandro/Documents/3er Año/IS/Cine/Backend/Views/Sesion/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2VzaW9uXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[c:/Users/Miguel Alejandro/Documents/3er Año/IS/Cine/Backend/Views/Shared/Error.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[c:/Users/Miguel Alejandro/Documents/3er Año/IS/Cine/Backend/Views/Shared/_ValidationScriptsPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[c:/Users/Miguel Alejandro/Documents/3er Año/IS/Cine/Backend/Views/Socio/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU29jaW9cQ3JlYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[c:/Users/Miguel Alejandro/Documents/3er Año/IS/Cine/Backend/Views/Socio/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU29jaW9cRGVsZXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[c:/Users/Miguel Alejandro/Documents/3er Año/IS/Cine/Backend/Views/Socio/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU29jaW9cRGV0YWlscy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[c:/Users/Miguel Alejandro/Documents/3er Año/IS/Cine/Backend/Views/Socio/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU29jaW9cRWRpdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[c:/Users/Miguel Alejandro/Documents/3er Año/IS/Cine/Backend/Views/Socio/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU29jaW9cSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[c:/Users/Miguel Alejandro/Documents/3er Año/IS/Cine/Backend/Views/Tarjetum/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGFyamV0dW1cQ3JlYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[c:/Users/Miguel Alejandro/Documents/3er Año/IS/Cine/Backend/Views/Tarjetum/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGFyamV0dW1cRGVsZXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[c:/Users/Miguel Alejandro/Documents/3er Año/IS/Cine/Backend/Views/Tarjetum/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGFyamV0dW1cRGV0YWlscy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[c:/Users/Miguel Alejandro/Documents/3er Año/IS/Cine/Backend/Views/Tarjetum/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGFyamV0dW1cRWRpdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[c:/Users/Miguel Alejandro/Documents/3er Año/IS/Cine/Backend/Views/Tarjetum/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGFyamV0dW1cSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[c:/Users/Miguel Alejandro/Documents/3er Año/IS/Cine/Backend/Views/Web/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcV2ViXENyZWF0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[c:/Users/Miguel Alejandro/Documents/3er Año/IS/Cine/Backend/Views/Web/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcV2ViXERlbGV0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[c:/Users/Miguel Alejandro/Documents/3er Año/IS/Cine/Backend/Views/Web/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcV2ViXERldGFpbHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[c:/Users/Miguel Alejandro/Documents/3er Año/IS/Cine/Backend/Views/Web/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcV2ViXEVkaXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[c:/Users/Miguel Alejandro/Documents/3er Año/IS/Cine/Backend/Views/Web/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcV2ViXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[c:/Users/Miguel Alejandro/Documents/3er Año/IS/Cine/Backend/Views/_ViewImports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[c:/Users/Miguel Alejandro/Documents/3er Año/IS/Cine/Backend/Views/_ViewStart.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[c:/Users/Miguel Alejandro/Documents/3er Año/IS/Cine/Backend/Views/Shared/_Layout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = b-d59tb7l7w9
