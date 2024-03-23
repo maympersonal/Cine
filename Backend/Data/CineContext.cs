@@ -28,8 +28,6 @@ public partial class CineContext : DbContext
 
     public virtual DbSet<Efectivo> Efectivos { get; set; }
 
-    public virtual DbSet<Empleado> Empleados { get; set; }
-
     public virtual DbSet<Genero> Generos { get; set; }
 
     public virtual DbSet<Pago> Pagos { get; set; }
@@ -42,9 +40,9 @@ public partial class CineContext : DbContext
 
     public virtual DbSet<Sesion> Sesions { get; set; }
 
-    public virtual DbSet<Socio> Socios { get; set; }
-
     public virtual DbSet<Tarjetum> Tarjeta { get; set; }
+
+    public virtual DbSet<Usuario> Usuarios { get; set; }
 
     public virtual DbSet<Web> Webs { get; set; }
 
@@ -86,8 +84,8 @@ public partial class CineContext : DbContext
                 .HasMaxLength(11)
                 .IsUnicode(false)
                 .IsFixedLength();
-            entity.Property(e => e.Telefono)
-                .HasMaxLength(16)
+            entity.Property(e => e.Correo)
+                .HasMaxLength(256)
                 .IsUnicode(false);
         });
 
@@ -106,7 +104,14 @@ public partial class CineContext : DbContext
                 .HasMaxLength(11)
                 .IsUnicode(false)
                 .IsFixedLength();
+            entity.Property(e => e.FechaDeCompra).HasColumnType("datetime");
             entity.Property(e => e.IdPg).HasColumnName("idPg");
+            entity.Property(e => e.MedioAd)
+                .HasMaxLength(50)
+                .IsUnicode(false);
+            entity.Property(e => e.Tipo)
+                .HasMaxLength(50)
+                .IsUnicode(false);
 
             entity.HasOne(d => d.CiNavigation).WithMany(p => p.Compras)
                 .HasForeignKey(d => d.Ci)
@@ -205,18 +210,6 @@ public partial class CineContext : DbContext
                 .HasForeignKey<Efectivo>(d => d.IdPg)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__Efectivo__idPg__7F2BE32F");
-        });
-
-        modelBuilder.Entity<Empleado>(entity =>
-        {
-            entity.HasKey(e => e.IdE);
-
-            entity.ToTable("Empleado");
-
-            entity.Property(e => e.IdE).HasColumnName("idE");
-            entity.Property(e => e.ContrasenaE)
-                .HasMaxLength(256)
-                .IsFixedLength();
         });
 
         modelBuilder.Entity<Genero>(entity =>
@@ -339,11 +332,30 @@ public partial class CineContext : DbContext
                 .HasConstraintName("FK__Sesion__idS__09A971A2");
         });
 
-        modelBuilder.Entity<Socio>(entity =>
+        modelBuilder.Entity<Tarjetum>(entity =>
+        {
+            entity.HasKey(e => e.CodigoT).HasName("PK__Tarjeta__BC7B7B928CA058B7");
+
+            entity.Property(e => e.CodigoT)
+                .HasMaxLength(18)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasColumnName("codigoT");
+            entity.Property(e => e.Ci)
+                .HasMaxLength(11)
+                .IsUnicode(false)
+                .IsFixedLength();
+
+            entity.HasOne(d => d.CiNavigation).WithMany(p => p.Tarjeta)
+                .HasForeignKey(d => d.Ci)
+                .HasConstraintName("FK__Tarjeta__Ci__6B24EA82");
+        });
+
+        modelBuilder.Entity<Usuario>(entity =>
         {
             entity.HasKey(e => e.Ci).HasName("PK__Socio__32149A5BACE7E998");
 
-            entity.ToTable("Socio");
+            entity.ToTable("Usuario");
 
             entity.Property(e => e.Ci)
                 .HasMaxLength(11)
@@ -362,30 +374,14 @@ public partial class CineContext : DbContext
             entity.Property(e => e.NombreS)
                 .HasMaxLength(50)
                 .IsUnicode(false);
+            entity.Property(e => e.Rol)
+                .HasMaxLength(10)
+                .IsUnicode(false);
 
-            entity.HasOne(d => d.CiNavigation).WithOne(p => p.Socio)
-                .HasForeignKey<Socio>(d => d.Ci)
+            entity.HasOne(d => d.CiNavigation).WithOne(p => p.Usuario)
+                .HasForeignKey<Usuario>(d => d.Ci)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__Socio__Ci__656C112C");
-        });
-
-        modelBuilder.Entity<Tarjetum>(entity =>
-        {
-            entity.HasKey(e => e.CodigoT).HasName("PK__Tarjeta__BC7B7B928CA058B7");
-
-            entity.Property(e => e.CodigoT)
-                .HasMaxLength(18)
-                .IsUnicode(false)
-                .IsFixedLength()
-                .HasColumnName("codigoT");
-            entity.Property(e => e.Ci)
-                .HasMaxLength(11)
-                .IsUnicode(false)
-                .IsFixedLength();
-
-            entity.HasOne(d => d.CiNavigation).WithMany(p => p.Tarjeta)
-                .HasForeignKey(d => d.Ci)
-                .HasConstraintName("FK__Tarjeta__Ci__6B24EA82");
         });
 
         modelBuilder.Entity<Web>(entity =>
