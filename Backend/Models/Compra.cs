@@ -15,6 +15,12 @@ public partial class Compra
 
     public int IdPg { get; set; }
 
+    public string? Tipo { get; set; }
+
+    public DateTime FechaDeCompra { get; set; }
+
+    public string? MedioAd { get; set; }
+
     public virtual Cliente CiNavigation { get; set; } = null!;
 
     public virtual Pago IdPgNavigation { get; set; } = null!;
