@@ -11,7 +11,6 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-//BdLoad
 builder.Services.AddSqlServer<CineContext>(builder.Configuration.GetConnectionString("ApplicationDbContext"));
 
 var app = builder.Build();

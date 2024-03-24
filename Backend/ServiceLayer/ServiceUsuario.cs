@@ -12,47 +12,47 @@ namespace Backend.ServiceLayer
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ServiceSocio : ControllerBase
+    public class ServiceUsuario : ControllerBase
     {
         private readonly CineContext _context;
 
-        public ServiceSocio(CineContext context)
+        public ServiceUsuario(CineContext context)
         {
             _context = context;
         }
 
-        // GET: api/ServiceSocio
+        // GET: api/ServiceUsuario
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Socio>>> GetSocios()
+        public async Task<ActionResult<IEnumerable<Usuario>>> GetUsuarios()
         {
-            return await _context.Socios.ToListAsync();
+            return await _context.Usuarios.ToListAsync();
         }
 
-        // GET: api/ServiceSocio/5
+        // GET: api/ServiceUsuario/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Socio>> GetSocio(string id)
+        public async Task<ActionResult<Usuario>> GetUsuario(string id)
         {
-            var socio = await _context.Socios.FindAsync(id);
+            var usuario = await _context.Usuarios.FindAsync(id);
 
-            if (socio == null)
+            if (usuario == null)
             {
                 return NotFound();
             }
 
-            return socio;
+            return usuario;
         }
 
-        // PUT: api/ServiceSocio/5
+        // PUT: api/ServiceUsuario/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutSocio(string id, Socio socio)
+        public async Task<IActionResult> PutUsuario(string id, Usuario usuario)
         {
-            if (id != socio.Ci)
+            if (id != usuario.Ci)
             {
                 return BadRequest();
             }
 
-            _context.Entry(socio).State = EntityState.Modified;
+            _context.Entry(usuario).State = EntityState.Modified;
 
             try
             {
@@ -60,7 +60,7 @@ namespace Backend.ServiceLayer
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!SocioExists(id))
+                if (!UsuarioExists(id))
                 {
                     return NotFound();
                 }
@@ -73,19 +73,19 @@ namespace Backend.ServiceLayer
             return NoContent();
         }
 
-        // POST: api/ServiceSocio
+        // POST: api/ServiceUsuario
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Socio>> PostSocio(Socio socio)
+        public async Task<ActionResult<Usuario>> PostUsuario(Usuario usuario)
         {
-            _context.Socios.Add(socio);
+            _context.Usuarios.Add(usuario);
             try
             {
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateException)
             {
-                if (SocioExists(socio.Ci))
+                if (UsuarioExists(usuario.Ci))
                 {
                     return Conflict();
                 }
@@ -95,28 +95,28 @@ namespace Backend.ServiceLayer
                 }
             }
 
-            return CreatedAtAction("GetSocio", new { id = socio.Ci }, socio);
+            return CreatedAtAction("GetUsuario", new { id = usuario.Ci }, usuario);
         }
 
-        // DELETE: api/ServiceSocio/5
+        // DELETE: api/ServiceUsuario/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteSocio(string id)
+        public async Task<IActionResult> DeleteUsuario(string id)
         {
-            var socio = await _context.Socios.FindAsync(id);
-            if (socio == null)
+            var usuario = await _context.Usuarios.FindAsync(id);
+            if (usuario == null)
             {
                 return NotFound();
             }
 
-            _context.Socios.Remove(socio);
+            _context.Usuarios.Remove(usuario);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool SocioExists(string id)
+        private bool UsuarioExists(string id)
         {
-            return _context.Socios.Any(e => e.Ci == id);
+            return _context.Usuarios.Any(e => e.Ci == id);
         }
     }
 }
