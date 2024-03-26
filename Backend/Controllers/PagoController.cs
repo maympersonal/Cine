@@ -12,27 +12,25 @@ namespace Backend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ServicePago : ControllerBase
+    public class PagoController : ControllerBase
     {
-        private readonly CineContext _context;
+        private readonly ServicePago _service;
 
-        public ServicePago(CineContext context)
+        public PagoController (ServicePago service)
         {
-            _context = context;
+            _service = service;
         }
 
-        // GET: api/ServicePago
-        [HttpGet]
+        [HttpGet("GetAll")]
         public async Task<ActionResult<IEnumerable<Pago>>> GetPagos()
         {
-            return await _context.Pagos.ToListAsync();
+            return Ok(await _service.GetPagos());
         }
 
-        // GET: api/ServicePago/5
-        [HttpGet("{id}")]
+        [HttpGet("GetById/{id}")]
         public async Task<ActionResult<Pago>> GetPago(int id)
         {
-            var pago = await _context.Pagos.FindAsync(id);
+            var pago = await _service.GetPago(id);
 
             if (pago == null)
             {
@@ -42,9 +40,7 @@ namespace Backend.Controllers
             return pago;
         }
 
-        // PUT: api/ServicePago/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
+        [HttpPut("Update/{id}")]
         public async Task<IActionResult> PutPago(int id, Pago pago)
         {
             if (id != pago.IdPg)
@@ -52,11 +48,9 @@ namespace Backend.Controllers
                 return BadRequest();
             }
 
-            _context.Entry(pago).State = EntityState.Modified;
-
             try
             {
-                await _context.SaveChangesAsync();
+                await _service.PutPago(pago);
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -73,36 +67,30 @@ namespace Backend.Controllers
             return NoContent();
         }
 
-        // POST: api/ServicePago
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
+        [HttpPost("Create")]
         public async Task<ActionResult<Pago>> PostPago(Pago pago)
         {
-            _context.Pagos.Add(pago);
-            await _context.SaveChangesAsync();
+            await _service.PostPago(pago);
 
             return CreatedAtAction("GetPago", new { id = pago.IdPg }, pago);
         }
 
-        // DELETE: api/ServicePago/5
-        [HttpDelete("{id}")]
+        [HttpDelete("Delete/{id}")]
         public async Task<IActionResult> DeletePago(int id)
         {
-            var pago = await _context.Pagos.FindAsync(id);
+            var pago = await _service.GetPago(id);
             if (pago == null)
             {
                 return NotFound();
             }
 
-            _context.Pagos.Remove(pago);
-            await _context.SaveChangesAsync();
-
+            await _service.DeletePago(id);
             return NoContent();
         }
 
         private bool PagoExists(int id)
         {
-            return _context.Pagos.Any(e => e.IdPg == id);
+            return _service.GetPago(id)!=null;
         }
     }    
 }
