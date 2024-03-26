@@ -80,7 +80,7 @@ namespace Backend.Controllers
         [HttpDelete("Delete/{id}")]
         public async Task<IActionResult> DeleteButaca(int id)
         {
-            var actor = GetButaca(id);
+            var actor = await _service.GetButaca(id);
             if (actor == null)
             {
                 return NotFound();
