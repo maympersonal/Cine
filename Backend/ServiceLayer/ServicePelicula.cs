@@ -10,9 +10,7 @@ using Backend.Models;
 
 namespace Backend.ServiceLayer
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class ServicePelicula : ControllerBase
+    public class ServicePelicula 
     {
         private readonly CineContext _context;
 
@@ -21,88 +19,42 @@ namespace Backend.ServiceLayer
             _context = context;
         }
 
-        // GET: api/ServicePelicula
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Pelicula>>> GetPeliculas()
+
+        public async Task<IEnumerable<Pelicula>> GetPeliculas()
         {
             return await _context.Peliculas.ToListAsync();
         }
 
-        // GET: api/ServicePelicula/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Pelicula>> GetPelicula(int id)
+
+        public async Task<Pelicula?> GetPelicula(int id)
         {
-            var pelicula = await _context.Peliculas.FindAsync(id);
-
-            if (pelicula == null)
-            {
-                return NotFound();
-            }
-
-            return pelicula;
+            return await _context.Peliculas.FindAsync(id);
         }
 
-        // PUT: api/ServicePelicula/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutPelicula(int id, Pelicula pelicula)
-        {
-            if (id != pelicula.IdP)
-            {
-                return BadRequest();
-            }
 
+        public async Task PutPelicula( Pelicula pelicula)
+        {
             _context.Entry(pelicula).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!PeliculaExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
+            await _context.SaveChangesAsync();
         }
 
-        // POST: api/ServicePelicula
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<Pelicula>> PostPelicula(Pelicula pelicula)
+        public async Task<Pelicula> PostPelicula(Pelicula pelicula)
         {
             _context.Peliculas.Add(pelicula);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetPelicula", new { id = pelicula.IdP }, pelicula);
+            return pelicula;
         }
 
-        // DELETE: api/ServicePelicula/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeletePelicula(int id)
+
+        public async Task DeletePelicula(int id)
         {
             var pelicula = await _context.Peliculas.FindAsync(id);
-            if (pelicula == null)
+            if (pelicula is not null)
             {
-                return NotFound();
+                _context.Peliculas.Remove(pelicula);
+                await _context.SaveChangesAsync();
             }
-
-            _context.Peliculas.Remove(pelicula);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
-        }
-
-        private bool PeliculaExists(int id)
-        {
-            return _context.Peliculas.Any(e => e.IdP == id);
         }
     }
 }
