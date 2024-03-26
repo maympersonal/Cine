@@ -93,7 +93,7 @@ namespace Backend.Controllers
 
         private bool ActorExists(int id)
         {
-            return _service.GetActor(id) != null;
+            return  _service.GetActor(id)!=null;
         }
     }
 }
