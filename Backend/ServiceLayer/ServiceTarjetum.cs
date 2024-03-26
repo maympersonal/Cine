@@ -10,9 +10,7 @@ using Backend.Models;
 
 namespace Backend.ServiceLayer
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class ServiceTarjetum : ControllerBase
+    public class ServiceTarjetum 
     {
         private readonly CineContext _context;
 
@@ -21,102 +19,41 @@ namespace Backend.ServiceLayer
             _context = context;
         }
 
-        // GET: api/ServiceTarjetum
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Tarjetum>>> GetTarjeta()
+
+        public async Task<IEnumerable<Tarjetum>> GetTarjeta()
         {
             return await _context.Tarjeta.ToListAsync();
         }
 
-        // GET: api/ServiceTarjetum/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Tarjetum>> GetTarjetum(string id)
+
+        public async Task<Tarjetum?> GetTarjetum(string id)
         {
-            var tarjetum = await _context.Tarjeta.FindAsync(id);
+            return await _context.Tarjeta.FindAsync(id);
+        }
 
-            if (tarjetum == null)
-            {
-                return NotFound();
-            }
+        public async Task PutTarjetum( Tarjetum tarjetum)
+        {
+            _context.Entry(tarjetum).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+        }
 
+        public async Task<Tarjetum> PostTarjetum(Tarjetum tarjetum)
+        {
+            _context.Tarjeta.Add(tarjetum);
+            await _context.SaveChangesAsync();
+           
             return tarjetum;
         }
 
-        // PUT: api/ServiceTarjetum/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutTarjetum(string id, Tarjetum tarjetum)
-        {
-            if (id != tarjetum.CodigoT)
-            {
-                return BadRequest();
-            }
 
-            _context.Entry(tarjetum).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!TarjetumExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
-
-        // POST: api/ServiceTarjetum
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<Tarjetum>> PostTarjetum(Tarjetum tarjetum)
-        {
-            _context.Tarjeta.Add(tarjetum);
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateException)
-            {
-                if (TarjetumExists(tarjetum.CodigoT))
-                {
-                    return Conflict();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return CreatedAtAction("GetTarjetum", new { id = tarjetum.CodigoT }, tarjetum);
-        }
-
-        // DELETE: api/ServiceTarjetum/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteTarjetum(string id)
+        public async Task DeleteTarjetum(string id)
         {
             var tarjetum = await _context.Tarjeta.FindAsync(id);
-            if (tarjetum == null)
+            if (tarjetum is not null)
             {
-                return NotFound();
+                _context.Tarjeta.Remove(tarjetum);
+                await _context.SaveChangesAsync();
             }
-
-            _context.Tarjeta.Remove(tarjetum);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
-        }
-
-        private bool TarjetumExists(string id)
-        {
-            return _context.Tarjeta.Any(e => e.CodigoT == id);
         }
     }
 }

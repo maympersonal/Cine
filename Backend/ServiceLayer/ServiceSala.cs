@@ -10,9 +10,7 @@ using Backend.Models;
 
 namespace Backend.ServiceLayer
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class ServiceSala : ControllerBase
+    public class ServiceSala 
     {
         private readonly CineContext _context;
 
@@ -21,88 +19,42 @@ namespace Backend.ServiceLayer
             _context = context;
         }
 
-        // GET: api/ServiceSala
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Sala>>> GetSalas()
+
+        public async Task<IEnumerable<Sala>> GetSalas()
         {
             return await _context.Salas.ToListAsync();
         }
 
-        // GET: api/ServiceSala/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Sala>> GetSala(int id)
+        public async Task<Sala?> GetSala(int id)
         {
-            var sala = await _context.Salas.FindAsync(id);
-
-            if (sala == null)
-            {
-                return NotFound();
-            }
-
-            return sala;
+            return await _context.Salas.FindAsync(id);
         }
 
-        // PUT: api/ServiceSala/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutSala(int id, Sala sala)
-        {
-            if (id != sala.IdS)
-            {
-                return BadRequest();
-            }
 
+        public async Task PutSala( Sala sala)
+        {
             _context.Entry(sala).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!SalaExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
+            await _context.SaveChangesAsync();
         }
 
-        // POST: api/ServiceSala
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<Sala>> PostSala(Sala sala)
+
+        public async Task<Sala> PostSala(Sala sala)
         {
             _context.Salas.Add(sala);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetSala", new { id = sala.IdS }, sala);
+            return  sala;
         }
 
-        // DELETE: api/ServiceSala/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteSala(int id)
+
+        public async Task DeleteSala(int id)
         {
             var sala = await _context.Salas.FindAsync(id);
-            if (sala == null)
+            if (sala is not null)
             {
-                return NotFound();
+                _context.Salas.Remove(sala);
+                await _context.SaveChangesAsync();
             }
-
-            _context.Salas.Remove(sala);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
-        }
-
-        private bool SalaExists(int id)
-        {
-            return _context.Salas.Any(e => e.IdS == id);
         }
     }
 }

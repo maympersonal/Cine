@@ -10,9 +10,7 @@ using Backend.Models;
 
 namespace Backend.ServiceLayer
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class ServiceWeb : ControllerBase
+    public class ServiceWeb 
     {
         private readonly CineContext _context;
 
@@ -21,102 +19,41 @@ namespace Backend.ServiceLayer
             _context = context;
         }
 
-        // GET: api/ServiceWeb
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Web>>> GetWebs()
+
+        public async Task<IEnumerable<Web>> GetWebs()
         {
             return await _context.Webs.ToListAsync();
         }
 
-        // GET: api/ServiceWeb/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Web>> GetWeb(int id)
+
+        public async Task<Web?> GetWeb(int id)
         {
-            var web = await _context.Webs.FindAsync(id);
-
-            if (web == null)
-            {
-                return NotFound();
-            }
-
-            return web;
+            return await _context.Webs.FindAsync(id);
         }
 
-        // PUT: api/ServiceWeb/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutWeb(int id, Web web)
+        public async Task PutWeb( Web web)
         {
-            if (id != web.IdPg)
-            {
-                return BadRequest();
-            }
-
             _context.Entry(web).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!WebExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
+            await _context.SaveChangesAsync();
         }
 
-        // POST: api/ServiceWeb
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<Web>> PostWeb(Web web)
+        public async Task<Web> PostWeb(Web web)
         {
             _context.Webs.Add(web);
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateException)
-            {
-                if (WebExists(web.IdPg))
-                {
-                    return Conflict();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return CreatedAtAction("GetWeb", new { id = web.IdPg }, web);
+            await _context.SaveChangesAsync();
+            
+            return  web;
         }
 
-        // DELETE: api/ServiceWeb/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteWeb(int id)
+
+        public async Task DeleteWeb(int id)
         {
             var web = await _context.Webs.FindAsync(id);
-            if (web == null)
+            if (web is not null)
             {
-                return NotFound();
+                _context.Webs.Remove(web);
+                await _context.SaveChangesAsync();
             }
-
-            _context.Webs.Remove(web);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
-        }
-
-        private bool WebExists(int id)
-        {
-            return _context.Webs.Any(e => e.IdPg == id);
         }
     }
 }
