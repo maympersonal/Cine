@@ -17,6 +17,20 @@ builder.Services.AddSqlServer<CineContext>(builder.Configuration.GetConnectionSt
 
 //Service Layer
 builder.Services.AddScoped<ServiceActor>();
+builder.Services.AddScoped<ServiceButaca>();
+builder.Services.AddScoped<ServiceCliente>();
+builder.Services.AddScoped<ServiceCompra>();
+builder.Services.AddScoped<ServiceDescuento>();
+builder.Services.AddScoped<ServiceEfectivo>();
+builder.Services.AddScoped<ServiceGenero>();
+builder.Services.AddScoped<ServicePago>();
+builder.Services.AddScoped<ServicePelicula>();
+builder.Services.AddScoped<ServicePunto>();
+builder.Services.AddScoped<ServiceSala>();
+builder.Services.AddScoped<ServiceSesion>();
+builder.Services.AddScoped<ServiceTarjetum>();
+builder.Services.AddScoped<ServiceUsuario>();
+builder.Services.AddScoped<ServiceWeb>();
 
 var app = builder.Build();
 
