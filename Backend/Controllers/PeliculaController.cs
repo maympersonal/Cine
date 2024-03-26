@@ -12,27 +12,25 @@ namespace Backend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ServicePelicula : ControllerBase
+    public class PeliculaController : ControllerBase
     {
-        private readonly CineContext _context;
+        private readonly ServicePelicula _service;
 
-        public ServicePelicula(CineContext context)
+        public PeliculaController(ServicePelicula service)
         {
-            _context = context;
+            _service = service;
         }
 
-        // GET: api/ServicePelicula
-        [HttpGet]
+        [HttpGet("GetAll")]
         public async Task<ActionResult<IEnumerable<Pelicula>>> GetPeliculas()
         {
-            return await _context.Peliculas.ToListAsync();
+            return Ok(await _service.GetPeliculas());
         }
 
-        // GET: api/ServicePelicula/5
-        [HttpGet("{id}")]
+        [HttpGet("GetById/{id}")]
         public async Task<ActionResult<Pelicula>> GetPelicula(int id)
         {
-            var pelicula = await _context.Peliculas.FindAsync(id);
+            var pelicula = await _service.GetPelicula(id);
 
             if (pelicula == null)
             {
@@ -42,9 +40,7 @@ namespace Backend.Controllers
             return pelicula;
         }
 
-        // PUT: api/ServicePelicula/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
+        [HttpPut("Update/{id}")]
         public async Task<IActionResult> PutPelicula(int id, Pelicula pelicula)
         {
             if (id != pelicula.IdP)
@@ -52,11 +48,9 @@ namespace Backend.Controllers
                 return BadRequest();
             }
 
-            _context.Entry(pelicula).State = EntityState.Modified;
-
             try
             {
-                await _context.SaveChangesAsync();
+                await _service.PutPelicula(pelicula);
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -73,36 +67,30 @@ namespace Backend.Controllers
             return NoContent();
         }
 
-        // POST: api/ServicePelicula
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
+        [HttpPost("Create")]
         public async Task<ActionResult<Pelicula>> PostPelicula(Pelicula pelicula)
         {
-            _context.Peliculas.Add(pelicula);
-            await _context.SaveChangesAsync();
+            await _service.PostPelicula(pelicula);
 
             return CreatedAtAction("GetPelicula", new { id = pelicula.IdP }, pelicula);
         }
 
-        // DELETE: api/ServicePelicula/5
-        [HttpDelete("{id}")]
+        [HttpDelete("Delete/{id}")]
         public async Task<IActionResult> DeletePelicula(int id)
         {
-            var pelicula = await _context.Peliculas.FindAsync(id);
+            var pelicula = await _service.GetPelicula(id);
             if (pelicula == null)
             {
                 return NotFound();
             }
 
-            _context.Peliculas.Remove(pelicula);
-            await _context.SaveChangesAsync();
-
+            await _service.DeletePelicula(id);
             return NoContent();
         }
 
         private bool PeliculaExists(int id)
         {
-            return _context.Peliculas.Any(e => e.IdP == id);
+            return _service.GetPelicula(id)!=null;
         }
     }   
 }
