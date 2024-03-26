@@ -12,27 +12,25 @@ namespace Backend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ServiceWeb : ControllerBase
+    public class WebController : ControllerBase
     {
-        private readonly CineContext _context;
+        private readonly ServiceWeb _service;
 
-        public ServiceWeb(CineContext context)
+        public WebController (ServiceWeb service)
         {
-            _context = context;
+            _service = service;
         }
 
-        // GET: api/ServiceWeb
-        [HttpGet]
+        [HttpGet("GetAll")]
         public async Task<ActionResult<IEnumerable<Web>>> GetWebs()
         {
-            return await _context.Webs.ToListAsync();
+            return Ok(await _service.GetWebs());
         }
 
-        // GET: api/ServiceWeb/5
-        [HttpGet("{id}")]
+        [HttpGet("GetById/{id}")]
         public async Task<ActionResult<Web>> GetWeb(int id)
         {
-            var web = await _context.Webs.FindAsync(id);
+            var web = await _service.GetWeb(id);
 
             if (web == null)
             {
@@ -42,9 +40,7 @@ namespace Backend.Controllers
             return web;
         }
 
-        // PUT: api/ServiceWeb/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
+        [HttpPut("Update/{id}")]
         public async Task<IActionResult> PutWeb(int id, Web web)
         {
             if (id != web.IdPg)
@@ -52,11 +48,9 @@ namespace Backend.Controllers
                 return BadRequest();
             }
 
-            _context.Entry(web).State = EntityState.Modified;
-
             try
             {
-                await _context.SaveChangesAsync();
+                await _service.PutWeb(web);
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -73,15 +67,12 @@ namespace Backend.Controllers
             return NoContent();
         }
 
-        // POST: api/ServiceWeb
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
+        [HttpPost("Create")]
         public async Task<ActionResult<Web>> PostWeb(Web web)
         {
-            _context.Webs.Add(web);
             try
             {
-                await _context.SaveChangesAsync();
+                await _service.PostWeb(web);
             }
             catch (DbUpdateException)
             {
@@ -98,25 +89,22 @@ namespace Backend.Controllers
             return CreatedAtAction("GetWeb", new { id = web.IdPg }, web);
         }
 
-        // DELETE: api/ServiceWeb/5
-        [HttpDelete("{id}")]
+        [HttpDelete("Delete/{id}")]
         public async Task<IActionResult> DeleteWeb(int id)
         {
-            var web = await _context.Webs.FindAsync(id);
+            var web = await _service.GetWeb(id);
             if (web == null)
             {
                 return NotFound();
             }
 
-            _context.Webs.Remove(web);
-            await _context.SaveChangesAsync();
-
+            await _service.DeleteWeb(id);
             return NoContent();
         }
 
         private bool WebExists(int id)
         {
-            return _context.Webs.Any(e => e.IdPg == id);
+            return _service.GetWeb(id)!=null;
         }
     }  
 }
