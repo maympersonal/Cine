@@ -12,27 +12,25 @@ namespace Backend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ServiceEfectivo : ControllerBase
+    public class EfectivoController : ControllerBase
     {
-        private readonly CineContext _context;
+        private readonly ServiceEfectivo _service;
 
-        public ServiceEfectivo(CineContext context)
+        public EfectivoController(ServiceEfectivo service)
         {
-            _context = context;
+            _service = service;
         }
 
-        // GET: api/ServiceEfectivo
-        [HttpGet]
+        [HttpGet("GetAll")]
         public async Task<ActionResult<IEnumerable<Efectivo>>> GetEfectivos()
         {
-            return await _context.Efectivos.ToListAsync();
+            return Ok(await _service.GetEfectivos());
         }
 
-        // GET: api/ServiceEfectivo/5
-        [HttpGet("{id}")]
+        [HttpGet("GetById/{id}")]
         public async Task<ActionResult<Efectivo>> GetEfectivo(int id)
         {
-            var efectivo = await _context.Efectivos.FindAsync(id);
+            var efectivo = await _service.GetEfectivo(id);
 
             if (efectivo == null)
             {
@@ -42,9 +40,7 @@ namespace Backend.Controllers
             return efectivo;
         }
 
-        // PUT: api/ServiceEfectivo/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
+        [HttpPut("Update/{id}")]
         public async Task<IActionResult> PutEfectivo(int id, Efectivo efectivo)
         {
             if (id != efectivo.IdPg)
@@ -52,11 +48,9 @@ namespace Backend.Controllers
                 return BadRequest();
             }
 
-            _context.Entry(efectivo).State = EntityState.Modified;
-
             try
             {
-                await _context.SaveChangesAsync();
+                await _service.PutEfectivo(efectivo);
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -73,15 +67,12 @@ namespace Backend.Controllers
             return NoContent();
         }
 
-        // POST: api/ServiceEfectivo
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
+        [HttpPost("Create")]
         public async Task<ActionResult<Efectivo>> PostEfectivo(Efectivo efectivo)
         {
-            _context.Efectivos.Add(efectivo);
             try
             {
-                await _context.SaveChangesAsync();
+                await _service.PostEfectivo(efectivo);
             }
             catch (DbUpdateException)
             {
@@ -98,25 +89,22 @@ namespace Backend.Controllers
             return CreatedAtAction("GetEfectivo", new { id = efectivo.IdPg }, efectivo);
         }
 
-        // DELETE: api/ServiceEfectivo/5
-        [HttpDelete("{id}")]
+        [HttpDelete("Delete/{id}")]
         public async Task<IActionResult> DeleteEfectivo(int id)
         {
-            var efectivo = await _context.Efectivos.FindAsync(id);
+            var efectivo = await _service.GetEfectivo(id);
             if (efectivo == null)
             {
                 return NotFound();
             }
 
-            _context.Efectivos.Remove(efectivo);
-            await _context.SaveChangesAsync();
-
+            await _service.DeleteEfectivo(id);
             return NoContent();
         }
 
         private bool EfectivoExists(int id)
         {
-            return _context.Efectivos.Any(e => e.IdPg == id);
+            return _service.GetEfectivo(id)!=null;
         }
     }   
 }
