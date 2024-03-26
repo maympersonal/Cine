@@ -10,9 +10,8 @@ using Backend.Models;
 
 namespace Backend.ServiceLayer
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class ServiceActor : ControllerBase
+
+    public class ServiceActor 
     {
         private readonly CineContext _context;
 
@@ -21,88 +20,47 @@ namespace Backend.ServiceLayer
             _context = context;
         }
 
-        // GET: api/ServiceActor
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Actor>>> GetActors()
+
+        public async Task<IEnumerable<Actor>> GetActors()
         {
             return await _context.Actors.ToListAsync();
         }
 
-        // GET: api/ServiceActor/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Actor>> GetActor(int id)
+
+        public async Task<Actor?> GetActor(int id)
         {
-            var actor = await _context.Actors.FindAsync(id);
-
-            if (actor == null)
-            {
-                return NotFound();
-            }
-
-            return actor;
+            return await _context.Actors.FindAsync(id);
         }
 
-        // PUT: api/ServiceActor/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutActor(int id, Actor actor)
+
+        public async Task PutActor(int id,Actor actor)
         {
-            if (id != actor.IdA)
-            {
-                return BadRequest();
-            }
+            var _actor = GetActor(id);
 
-            _context.Entry(actor).State = EntityState.Modified;
-
-            try
+            if(_actor is not null)
             {
+                _context.Entry(actor).State = EntityState.Modified;
                 await _context.SaveChangesAsync();
             }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ActorExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
         }
 
-        // POST: api/ServiceActor
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<Actor>> PostActor(Actor actor)
+
+        public async Task<Actor> PostActor(Actor actor)
         {
             _context.Actors.Add(actor);
             await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetActor", new { id = actor.IdA }, actor);
+            return actor;
         }
 
-        // DELETE: api/ServiceActor/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteActor(int id)
+
+        public async Task DeleteActor(int id)
         {
             var actor = await _context.Actors.FindAsync(id);
-            if (actor == null)
+            if (actor is not null)
             {
-                return NotFound();
+                _context.Actors.Remove(actor);
+                await _context.SaveChangesAsync();
             }
-
-            _context.Actors.Remove(actor);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
-        }
-
-        private bool ActorExists(int id)
-        {
-            return _context.Actors.Any(e => e.IdA == id);
         }
     }
 }
