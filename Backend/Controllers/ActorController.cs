@@ -78,11 +78,11 @@ namespace Backend.Controllers
             return CreatedAtAction("GetActor", new { id = actor.IdA }, actor);
         }
 
-
+        //falla
         [HttpDelete("Delete/{id}")]
         public async Task<IActionResult> DeleteActor(int id)
         {
-            var actor = GetActor(id);
+            var actor = await _service.GetActor(id);
             if (actor == null)
             {
                 return NotFound();
