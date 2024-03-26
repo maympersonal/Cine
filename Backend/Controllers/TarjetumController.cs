@@ -12,27 +12,25 @@ namespace Backend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ServiceTarjetum : ControllerBase
+    public class TarjetumController : ControllerBase
     {
-        private readonly CineContext _context;
+        private readonly ServiceTarjetum _service;
 
-        public ServiceTarjetum(CineContext context)
+        public TarjetumController (ServiceTarjetum service)
         {
-            _context = context;
+            _service = service;
         }
 
-        // GET: api/ServiceTarjetum
-        [HttpGet]
+        [HttpGet("GetAll")]
         public async Task<ActionResult<IEnumerable<Tarjetum>>> GetTarjeta()
         {
-            return await _context.Tarjeta.ToListAsync();
+            return Ok(await _service.GetTarjeta());
         }
 
-        // GET: api/ServiceTarjetum/5
-        [HttpGet("{id}")]
+        [HttpGet("GetById/{id}")]
         public async Task<ActionResult<Tarjetum>> GetTarjetum(string id)
         {
-            var tarjetum = await _context.Tarjeta.FindAsync(id);
+            var tarjetum = await _service.GetTarjetum(id);
 
             if (tarjetum == null)
             {
@@ -42,9 +40,7 @@ namespace Backend.Controllers
             return tarjetum;
         }
 
-        // PUT: api/ServiceTarjetum/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
+        [HttpPut("Update/{id}")]
         public async Task<IActionResult> PutTarjetum(string id, Tarjetum tarjetum)
         {
             if (id != tarjetum.CodigoT)
@@ -52,11 +48,9 @@ namespace Backend.Controllers
                 return BadRequest();
             }
 
-            _context.Entry(tarjetum).State = EntityState.Modified;
-
             try
             {
-                await _context.SaveChangesAsync();
+                await _service.PutTarjetum(tarjetum);
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -73,15 +67,12 @@ namespace Backend.Controllers
             return NoContent();
         }
 
-        // POST: api/ServiceTarjetum
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
+        [HttpPost("Create")]
         public async Task<ActionResult<Tarjetum>> PostTarjetum(Tarjetum tarjetum)
         {
-            _context.Tarjeta.Add(tarjetum);
             try
             {
-                await _context.SaveChangesAsync();
+                await _service.PostTarjetum(tarjetum);
             }
             catch (DbUpdateException)
             {
@@ -98,25 +89,22 @@ namespace Backend.Controllers
             return CreatedAtAction("GetTarjetum", new { id = tarjetum.CodigoT }, tarjetum);
         }
 
-        // DELETE: api/ServiceTarjetum/5
-        [HttpDelete("{id}")]
+        [HttpDelete("Delete/{id}")]
         public async Task<IActionResult> DeleteTarjetum(string id)
         {
-            var tarjetum = await _context.Tarjeta.FindAsync(id);
+            var tarjetum = await _service.GetTarjetum(id);
             if (tarjetum == null)
             {
                 return NotFound();
             }
 
-            _context.Tarjeta.Remove(tarjetum);
-            await _context.SaveChangesAsync();
-
+            await _service.DeleteTarjetum(id);
             return NoContent();
         }
 
         private bool TarjetumExists(string id)
         {
-            return _context.Tarjeta.Any(e => e.CodigoT == id);
+            return _service.GetTarjetum(id)!=null;
         }
     }   
 }
