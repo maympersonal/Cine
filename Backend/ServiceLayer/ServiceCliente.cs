@@ -10,7 +10,7 @@ using Backend.Models;
 
 namespace Backend.ServiceLayer
 {
-    public class ServiceCliente : ControllerBase
+    public class ServiceCliente 
     {
         private readonly CineContext _context;
 

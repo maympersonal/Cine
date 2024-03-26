@@ -11,7 +11,7 @@ using Backend.Models;
 namespace Backend.ServiceLayer
 {
 
-    public class ServiceButaca : ControllerBase
+    public class ServiceButaca 
     {
         private readonly CineContext _context;
 
