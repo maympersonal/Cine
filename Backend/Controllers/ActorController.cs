@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Backend.ServiceLayer;
 using Backend.Models;
 
-namespace Backend.ServiceLayer
+namespace Backend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
