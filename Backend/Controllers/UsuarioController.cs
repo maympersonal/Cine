@@ -12,27 +12,25 @@ namespace Backend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ServiceUsuario : ControllerBase
+    public class UsuarioController : ControllerBase
     {
-        private readonly CineContext _context;
+        private readonly ServiceUsuario _service;
 
-        public ServiceUsuario(CineContext context)
+        public UsuarioController (ServiceUsuario service)
         {
-            _context = context;
+            _service = service;
         }
 
-        // GET: api/ServiceUsuario
-        [HttpGet]
+        [HttpGet("GetAll")]
         public async Task<ActionResult<IEnumerable<Usuario>>> GetUsuarios()
         {
-            return await _context.Usuarios.ToListAsync();
+            return Ok(await _service.GetUsuarios());
         }
 
-        // GET: api/ServiceUsuario/5
-        [HttpGet("{id}")]
+        [HttpGet("GetById/{id}")]
         public async Task<ActionResult<Usuario>> GetUsuario(string id)
         {
-            var usuario = await _context.Usuarios.FindAsync(id);
+            var usuario = await _service.GetUsuario(id);
 
             if (usuario == null)
             {
@@ -42,9 +40,7 @@ namespace Backend.Controllers
             return usuario;
         }
 
-        // PUT: api/ServiceUsuario/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
+        [HttpPut("Update/{id}")]
         public async Task<IActionResult> PutUsuario(string id, Usuario usuario)
         {
             if (id != usuario.Ci)
@@ -52,11 +48,9 @@ namespace Backend.Controllers
                 return BadRequest();
             }
 
-            _context.Entry(usuario).State = EntityState.Modified;
-
             try
             {
-                await _context.SaveChangesAsync();
+                await _service.PutUsuario(usuario);
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -73,15 +67,12 @@ namespace Backend.Controllers
             return NoContent();
         }
 
-        // POST: api/ServiceUsuario
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
+        [HttpPost("Create")]
         public async Task<ActionResult<Usuario>> PostUsuario(Usuario usuario)
         {
-            _context.Usuarios.Add(usuario);
             try
             {
-                await _context.SaveChangesAsync();
+                await _service.PostUsuario(usuario);
             }
             catch (DbUpdateException)
             {
@@ -98,25 +89,22 @@ namespace Backend.Controllers
             return CreatedAtAction("GetUsuario", new { id = usuario.Ci }, usuario);
         }
 
-        // DELETE: api/ServiceUsuario/5
-        [HttpDelete("{id}")]
+        [HttpDelete("Delete/{id}")]
         public async Task<IActionResult> DeleteUsuario(string id)
         {
-            var usuario = await _context.Usuarios.FindAsync(id);
+            var usuario = await _service.GetUsuario(id);
             if (usuario == null)
             {
                 return NotFound();
             }
 
-            _context.Usuarios.Remove(usuario);
-            await _context.SaveChangesAsync();
-
+            await _service.DeleteUsuario(id);
             return NoContent();
         }
 
         private bool UsuarioExists(string id)
         {
-            return _context.Usuarios.Any(e => e.Ci == id);
+            return _service.GetUsuario(id)!=null;
         }
     }  
 }
