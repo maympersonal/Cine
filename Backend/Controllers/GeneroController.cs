@@ -12,27 +12,25 @@ namespace Backend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ServiceGenero : ControllerBase
+    public class GeneroController : ControllerBase
     {
-        private readonly CineContext _context;
+        private readonly ServiceGenero _service;
 
-        public ServiceGenero(CineContext context)
+        public GeneroController (ServiceGenero service)
         {
-            _context = context;
+            _service = service;
         }
 
-        // GET: api/ServiceGenero
-        [HttpGet]
+        [HttpGet("GetAll")]
         public async Task<ActionResult<IEnumerable<Genero>>> GetGeneros()
         {
-            return await _context.Generos.ToListAsync();
+            return Ok(await _service.GetGeneros());
         }
 
-        // GET: api/ServiceGenero/5
-        [HttpGet("{id}")]
+        [HttpGet("GetById/{id}")]
         public async Task<ActionResult<Genero>> GetGenero(int id)
         {
-            var genero = await _context.Generos.FindAsync(id);
+            var genero = await _service.GetGenero(id);
 
             if (genero == null)
             {
@@ -42,9 +40,7 @@ namespace Backend.Controllers
             return genero;
         }
 
-        // PUT: api/ServiceGenero/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
+        [HttpPut("Update/{id}")]
         public async Task<IActionResult> PutGenero(int id, Genero genero)
         {
             if (id != genero.IdG)
@@ -52,11 +48,9 @@ namespace Backend.Controllers
                 return BadRequest();
             }
 
-            _context.Entry(genero).State = EntityState.Modified;
-
             try
             {
-                await _context.SaveChangesAsync();
+                await _service.PutGenero(genero);
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -73,36 +67,30 @@ namespace Backend.Controllers
             return NoContent();
         }
 
-        // POST: api/ServiceGenero
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
+        [HttpPost("Create")]
         public async Task<ActionResult<Genero>> PostGenero(Genero genero)
         {
-            _context.Generos.Add(genero);
-            await _context.SaveChangesAsync();
+            await _service.PostGenero(genero);
 
             return CreatedAtAction("GetGenero", new { id = genero.IdG }, genero);
         }
 
-        // DELETE: api/ServiceGenero/5
-        [HttpDelete("{id}")]
+        [HttpDelete("Delete/{id}")]
         public async Task<IActionResult> DeleteGenero(int id)
         {
-            var genero = await _context.Generos.FindAsync(id);
+            var genero = await _service.GetGenero(id);
             if (genero == null)
             {
                 return NotFound();
             }
 
-            _context.Generos.Remove(genero);
-            await _context.SaveChangesAsync();
-
+            await _service.DeleteGenero(id);
             return NoContent();
         }
 
         private bool GeneroExists(int id)
         {
-            return _context.Generos.Any(e => e.IdG == id);
+            return _service.GetGenero(id)!=null;
         }
     }    
 }
