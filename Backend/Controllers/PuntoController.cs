@@ -12,27 +12,25 @@ namespace Backend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ServicePunto : ControllerBase
+    public class PuntoController : ControllerBase
     {
-        private readonly CineContext _context;
+        private readonly ServicePunto _service;
 
-        public ServicePunto(CineContext context)
+        public PuntoController (ServicePunto service)
         {
-            _context = context;
+            _service = service;
         }
 
-        // GET: api/ServicePunto
-        [HttpGet]
+        [HttpGet("GetAll")]
         public async Task<ActionResult<IEnumerable<Punto>>> GetPuntos()
         {
-            return await _context.Puntos.ToListAsync();
+            return Ok(await _service.GetPuntos());
         }
 
-        // GET: api/ServicePunto/5
-        [HttpGet("{id}")]
+        [HttpGet("GetById/{id}")]
         public async Task<ActionResult<Punto>> GetPunto(int id)
         {
-            var punto = await _context.Puntos.FindAsync(id);
+            var punto = await _service.GetPunto(id);
 
             if (punto == null)
             {
@@ -42,9 +40,7 @@ namespace Backend.Controllers
             return punto;
         }
 
-        // PUT: api/ServicePunto/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
+        [HttpPut("Update/{id}")]
         public async Task<IActionResult> PutPunto(int id, Punto punto)
         {
             if (id != punto.IdPg)
@@ -52,11 +48,9 @@ namespace Backend.Controllers
                 return BadRequest();
             }
 
-            _context.Entry(punto).State = EntityState.Modified;
-
             try
             {
-                await _context.SaveChangesAsync();
+                await _service.PutPunto(punto);
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -73,15 +67,12 @@ namespace Backend.Controllers
             return NoContent();
         }
 
-        // POST: api/ServicePunto
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
+        [HttpPost("Create")]
         public async Task<ActionResult<Punto>> PostPunto(Punto punto)
         {
-            _context.Puntos.Add(punto);
             try
             {
-                await _context.SaveChangesAsync();
+                await _service.PostPunto(punto);
             }
             catch (DbUpdateException)
             {
@@ -98,25 +89,22 @@ namespace Backend.Controllers
             return CreatedAtAction("GetPunto", new { id = punto.IdPg }, punto);
         }
 
-        // DELETE: api/ServicePunto/5
-        [HttpDelete("{id}")]
+        [HttpDelete("Delete/{id}")]
         public async Task<IActionResult> DeletePunto(int id)
         {
-            var punto = await _context.Puntos.FindAsync(id);
+            var punto = await _service.GetPunto(id);
             if (punto == null)
             {
                 return NotFound();
             }
 
-            _context.Puntos.Remove(punto);
-            await _context.SaveChangesAsync();
-
+            await _service.DeletePunto(id);
             return NoContent();
         }
 
         private bool PuntoExists(int id)
         {
-            return _context.Puntos.Any(e => e.IdPg == id);
+            return _service.GetPunto(id)!=null;
         }
     }   
 }
