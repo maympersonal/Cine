@@ -12,27 +12,25 @@ namespace Backend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ServiceSesion : ControllerBase
+    public class SesionController : ControllerBase
     {
-        private readonly CineContext _context;
+        private readonly ServiceSesion _service;
 
-        public ServiceSesion(CineContext context)
+        public SesionController (ServiceSesion service)
         {
-            _context = context;
+            _service = service;
         }
 
-        // GET: api/ServiceSesion
-        [HttpGet]
+        [HttpGet("GetAll")]
         public async Task<ActionResult<IEnumerable<Sesion>>> GetSesions()
         {
-            return await _context.Sesions.ToListAsync();
+            return Ok(await _service.GetSesions());
         }
 
-        // GET: api/ServiceSesion/5
-        [HttpGet("{id}")]
+        [HttpGet("GetById/{id}")]
         public async Task<ActionResult<Sesion>> GetSesion(int id)
         {
-            var sesion = await _context.Sesions.FindAsync(id);
+            var sesion = await _service.GetSesion(id);
 
             if (sesion == null)
             {
@@ -42,9 +40,7 @@ namespace Backend.Controllers
             return sesion;
         }
 
-        // PUT: api/ServiceSesion/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
+        [HttpPut("Update/{id}")]
         public async Task<IActionResult> PutSesion(int id, Sesion sesion)
         {
             if (id != sesion.IdP)
@@ -52,11 +48,9 @@ namespace Backend.Controllers
                 return BadRequest();
             }
 
-            _context.Entry(sesion).State = EntityState.Modified;
-
             try
             {
-                await _context.SaveChangesAsync();
+                await _service.PutSesion(sesion);
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -73,15 +67,12 @@ namespace Backend.Controllers
             return NoContent();
         }
 
-        // POST: api/ServiceSesion
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
+        [HttpPost("Create")]
         public async Task<ActionResult<Sesion>> PostSesion(Sesion sesion)
         {
-            _context.Sesions.Add(sesion);
             try
             {
-                await _context.SaveChangesAsync();
+                await _service.PostSesion(sesion);
             }
             catch (DbUpdateException)
             {
@@ -98,25 +89,22 @@ namespace Backend.Controllers
             return CreatedAtAction("GetSesion", new { id = sesion.IdP }, sesion);
         }
 
-        // DELETE: api/ServiceSesion/5
-        [HttpDelete("{id}")]
+        [HttpDelete("Delete/{id}")]
         public async Task<IActionResult> DeleteSesion(int id)
         {
-            var sesion = await _context.Sesions.FindAsync(id);
+            var sesion = await _service.GetSesion(id);
             if (sesion == null)
             {
                 return NotFound();
             }
 
-            _context.Sesions.Remove(sesion);
-            await _context.SaveChangesAsync();
-
+            await _service.DeleteSesion(id);
             return NoContent();
         }
 
         private bool SesionExists(int id)
         {
-            return _context.Sesions.Any(e => e.IdP == id);
+            return _service.GetSesion(id)!=null;
         }
     }   
 }
