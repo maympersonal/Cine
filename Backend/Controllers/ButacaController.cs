@@ -12,52 +12,50 @@ namespace Backend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ActorController : ControllerBase
+    public class ButacaController : ControllerBase
     {
-        private readonly ServiceActor _service;
+        private readonly ServiceButaca _service;
 
-        public ActorController (ServiceActor service)
+        public ButacaController (ServiceButaca service)
         {
             _service = service;
         }
 
-
         [HttpGet("GetAll")]
-        public async Task<ActionResult<IEnumerable<Actor>>> GetActors()
+        public async Task<ActionResult<IEnumerable<Butaca>>> GetButacas()
         {
-            return Ok(await _service.GetActors());
+            return Ok(await _service.GetButacas());
         }
 
-
         [HttpGet("GetById/{id}")]
-        public async Task<ActionResult<Actor>> GetActor(int id)
+        public async Task<ActionResult<Butaca>> GetButaca(int id)
         {
-            var actor = await _service.GetActor(id);
+            var butaca = await _service.GetButaca(id);
 
-            if (actor == null)
+            if (butaca == null)
             {
                 return NotFound();
             }
 
-            return actor;
+            return butaca;
         }
 
 
         [HttpPut("Update/{id}")]
-        public async Task<IActionResult> PutActor(int id, Actor actor)
+        public async Task<IActionResult> PutButaca(int id, Butaca butaca)
         {
-            if (id != actor.IdA)
+            if (id != butaca.IdB)
             {
                 return BadRequest();
             }
 
             try
             {
-                await _service.PutActor(actor);
+                await _service.PutButaca(butaca);
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!ActorExists(id))
+                if (!ButacaExists(id))
                 {
                     return NotFound();
                 }
@@ -72,28 +70,28 @@ namespace Backend.Controllers
 
 
         [HttpPost("Create")]
-        public async Task<ActionResult<Actor>> PostActor(Actor actor)
+        public async Task<ActionResult<Butaca>> PostButaca(Butaca butaca)
         {
-            await _service.PostActor(actor);
-            return CreatedAtAction("GetActor", new { id = actor.IdA }, actor);
+            await _service.PostButaca(butaca);
+            return CreatedAtAction("GetButaca", new { id = butaca.IdB }, butaca);
         }
 
 
         [HttpDelete("Delete/{id}")]
-        public async Task<IActionResult> DeleteActor(int id)
+        public async Task<IActionResult> DeleteButaca(int id)
         {
-            var actor = GetActor(id);
+            var actor = GetButaca(id);
             if (actor == null)
             {
                 return NotFound();
             }
-            await _service.DeleteActor(id);
+            await _service.DeleteButaca(id);
             return NoContent();
         }
 
-        private bool ActorExists(int id)
+        private bool ButacaExists(int id)
         {
-            return _service.GetActor(id) != null;
+            return _service.GetButaca(id) != null;
         }
     }
 }

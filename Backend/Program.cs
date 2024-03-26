@@ -1,6 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Backend.Models;
 using Backend.Data;
+using Backend.Controllers;
+using Backend.ServiceLayer;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +14,9 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddSqlServer<CineContext>(builder.Configuration.GetConnectionString("ApplicationDbContext"));
+
+//Service Layer
+builder.Services.AddScoped<ServiceActor>();
 
 var app = builder.Build();
 

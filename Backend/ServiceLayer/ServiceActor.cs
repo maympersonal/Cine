@@ -33,15 +33,10 @@ namespace Backend.ServiceLayer
         }
 
 
-        public async Task PutActor(int id,Actor actor)
+        public async Task PutActor(Actor actor)
         {
-            var _actor = GetActor(id);
-
-            if(_actor is not null)
-            {
-                _context.Entry(actor).State = EntityState.Modified;
-                await _context.SaveChangesAsync();
-            }
+            _context.Entry(actor).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
         }
 
 
