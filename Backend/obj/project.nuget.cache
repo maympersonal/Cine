@@ -1,7 +1,7 @@
 {
   "version": 2,
-  "dgSpecHash": "17Uu1eeKk7sNYoyy/Xz+5PQq/MFtpjag8PI6C2r5VPIJ+dgIz1wGXLKqkM5of82dSI6kupNbaRT1Z81XxFLxDQ==",
-  "success": false,
+  "dgSpecHash": "iox9m8sPw6yFGy4Wc3BsUL8VagOLh/LaEkZdjBBvGda0+uBrQekSQqn1SLZpnuVP1dD7ygJgQKzOkUBab/EYHQ==",
+  "success": true,
   "projectFilePath": "/home/dario/Study/Cine/Backend/Backend.csproj",
   "expectedPackageFiles": [
     "/home/dario/.nuget/packages/azure.core/1.35.0/azure.core.1.35.0.nupkg.sha512",
@@ -170,18 +170,7 @@
     "/home/dario/.nuget/packages/system.threading.tasks.dataflow/7.0.0/system.threading.tasks.dataflow.7.0.0.nupkg.sha512",
     "/home/dario/.nuget/packages/system.threading.tasks.extensions/4.5.4/system.threading.tasks.extensions.4.5.4.nupkg.sha512",
     "/home/dario/.nuget/packages/system.windows.extensions/7.0.0/system.windows.extensions.7.0.0.nupkg.sha512",
-    "/home/dario/.nuget/packages/microsoft.netcore.app.ref/8.0.3/microsoft.netcore.app.ref.8.0.3.nupkg.sha512",
     "/home/dario/.nuget/packages/microsoft.aspnetcore.app.ref/8.0.3/microsoft.aspnetcore.app.ref.8.0.3.nupkg.sha512"
   ],
-  "logs": [
-    {
-      "code": "NU1101",
-      "level": "Error",
-      "message": "Unable to find package Microsoft.NETCore.App.Host.arch-x64. No packages exist with this id in source(s): nuget.org",
-      "libraryId": "Microsoft.NETCore.App.Host.arch-x64",
-      "targetGraphs": [
-        "net8.0"
-      ]
-    }
-  ]
+  "logs": []
 }
