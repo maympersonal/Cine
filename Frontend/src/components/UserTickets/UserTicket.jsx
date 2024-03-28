@@ -58,6 +58,9 @@ const UserTicket = ({ movie, funcion, precio, paymentId, codigoParaRetirar, id, 
                     />
                 </div>
                 <span className='font-bowlby text-[#E85D04] mt-2 userTicket_right-text'>{codigoParaRetirar}</span>
+                <button onClick={() => onDelete(id)} className="userTicket_delete-btn">
+                    Eliminar Ticket
+                </button>
             </div>
 
             {<div className="userTicket_bottom">
@@ -86,6 +89,8 @@ const UserTicket = ({ movie, funcion, precio, paymentId, codigoParaRetirar, id, 
                     />
                 </div>
             </div>}
+
+
 
 
         </div>

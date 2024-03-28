@@ -10,55 +10,72 @@ const UserTickets = () => {
     const [loading, setLoading] = useState(true);
     const [userTickets, setUserTickets] = useState([]);
 
-    useEffect(() => {
-        if (user.id) {
-            scrollTo('main');
-            setLoading(true);
-
-            // Simulamos una llamada a la API con datos falsos
-            setTimeout(() => {
-                const mockTickets = [
-                    {
-                        id: '1',
-                        movie: 'Pelicula Falsa 1',
-                        screening: 'Sala 1 - 20:00',
-                        date: '2023-01-01',
-                        quantity: 2,
-                        price: 20,
-                    },
-                    {
-                        id: '2',
-                        movie: 'Pelicula Falsa 2',
-                        screening: 'Sala 2 - 22:00',
-                        date: '2023-01-02',
-                        quantity: 3,
-                        price: 30,
-                    },
-                    // Agrega más tickets falsos según sea necesario
-                ];
-
-                setUserTickets(mockTickets);
-                setLoading(false);
-            }, 1000); // Retraso simulado
-        }
-    }, [user]);
-
     // useEffect(() => {
     //     if (user.id) {
     //         scrollTo('main');
     //         setLoading(true);
 
-    //         axios.get(`/orders/user/${user.id}`)
-    //             .then(response => {
-    //                 setUserTickets(response.data);
-    //                 setLoading(false);
-    //             })
-    //             .catch(error => {
-    //                 console.error('Error al obtener los tickets del usuario:', error);
-    //                 setLoading(false);
-    //             });
+    //         // Simulamos una llamada a la API con datos falsos
+    //         setTimeout(() => {
+    //             const mockTickets = [
+    //                 {
+    //                     id: '1',
+    //                     movie: 'Pelicula Falsa 1',
+    //                     screening: 'Sala 1 - 20:00',
+    //                     date: '2023-01-01',
+    //                     quantity: 2,
+    //                     price: 20,
+    //                 },
+    //                 {
+    //                     id: '2',
+    //                     movie: 'Pelicula Falsa 2',
+    //                     screening: 'Sala 2 - 22:00',
+    //                     date: '2023-01-02',
+    //                     quantity: 3,
+    //                     price: 30,
+    //                 },
+    //                 // Agrega más tickets falsos según sea necesario
+    //             ];
+
+    //             setUserTickets(mockTickets);
+    //             setLoading(false);
+    //         }, 1000); // Retraso simulado
     //     }
     // }, [user]);
+
+    useEffect(() => {
+        if (user.id) {
+            scrollTo('main');
+            setLoading(true);
+
+            axios.get(`/orders/user/${user.id}`)
+                .then(response => {
+                    setUserTickets(response.data);
+                    setLoading(false);
+                })
+                .catch(error => {
+                    console.error('Error al obtener los tickets del usuario:', error);
+                    setLoading(false);
+                });
+        }
+    }, [user]);
+
+    // Función para eliminar tickets
+    const handleDeleteTicket = (ticketId) => {
+        // Aquí llamarías a tu API para eliminar el ticket
+        axios.delete(`/api/tickets/${ticketId}`)
+            .then(() => {
+                // Actualiza el estado para reflejar la eliminación
+                const updatedTickets = userTickets.filter(ticket => ticket.id !== ticketId);
+                setUserTickets(updatedTickets);
+                // Mostrar alguna notificación al usuario
+            })
+            .catch(error => {
+                console.error('Error al eliminar el ticket:', error);
+                // Mostrar algún mensaje de error al usuario
+            });
+    };
+
 
     return (
         <div>
@@ -70,7 +87,7 @@ const UserTickets = () => {
                             <ul className='userTickets'>
                                 {userTickets.map(ticket => (
                                     <li key={ticket.id}>
-                                        <UserTicket {...ticket} />
+                                        <UserTicket {...ticket} onDelete={handleDeleteTicket} />
                                     </li>
                                 ))}
                             </ul>
