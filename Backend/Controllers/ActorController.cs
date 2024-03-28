@@ -48,11 +48,7 @@ namespace Backend.Controllers
         public async Task<IActionResult> PutActor(int id, ActorDtoIn actor)
         {
             var NewActor = await _service.GetActor(id);
-            if (id != actor.IdA)
-            {
-                return BadRequest();
-            }
-            else if( NewActor is not null)
+            if( NewActor is not null)
             {
                 NewActor.NombreA=actor.NombreA;
             }
@@ -86,7 +82,7 @@ namespace Backend.Controllers
                 NombreA = actor.NombreA
             };
             await _service.PostActor(NewActor);
-            return CreatedAtAction("GetActor", new { id = actor.IdA }, actor);
+            return CreatedAtAction("GetActor", new { id = NewActor.IdA }, actor);
         }
 
         //falla
