@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Backend.ServiceLayer;
 using Backend.Models;
+using Backend.Data.DTOs;
 
 namespace Backend.Controllers
 {
@@ -42,16 +43,23 @@ namespace Backend.Controllers
 
 
         [HttpPut("Update/{id}")]
-        public async Task<IActionResult> PutCliente(string id, Cliente cliente)
+        public async Task<IActionResult> PutCliente(string id, ClienteDtoIn cliente)
         {
+            var Newcliente= await _service.GetCliente(id);
             if (id != cliente.Ci)
             {
                 return BadRequest();
             }
+            else if(Newcliente is not null)
+            {
+                Newcliente.Correo=cliente.Correo;
+                Newcliente.Confiabilidad=cliente.Confiabilidad;
+            }
+            else return BadRequest();
 
             try
             {
-                await _service.PutCliente(cliente);
+                await _service.PutCliente(Newcliente);
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -70,11 +78,17 @@ namespace Backend.Controllers
 
 
         [HttpPost("Create")]
-        public async Task<ActionResult<Cliente>> PostCliente(Cliente cliente)
+        public async Task<ActionResult<Cliente>> PostCliente(ClienteDtoIn cliente)
         {
+            var Newcliente = new Cliente
+            {
+                Ci = cliente.Ci,
+                Correo = cliente.Correo,
+                Confiabilidad=true
+            };
             try
             {
-                await _service.PostCliente(cliente);
+                await _service.PostCliente(Newcliente);
             }
             catch (DbUpdateException)
             {
