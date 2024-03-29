@@ -3,6 +3,9 @@ using Backend.Models;
 using Backend.Data;
 using Backend.Controllers;
 using Backend.ServiceLayer;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -32,6 +35,17 @@ builder.Services.AddScoped<ServiceTarjetum>();
 builder.Services.AddScoped<ServiceUsuario>();
 builder.Services.AddScoped<ServiceWeb>();
 
+//UserAutorization
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer
+(options => options.TokenValidationParameters = new TokenValidationParameters 
+                        {ValidateIssuerSigningKey=true,
+                         IssuerSigningKey= new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Key"])),
+                         ValidateIssuer=false,
+                         ValidateAudience= false});
+
+builder.Services.AddAuthorization(option=>{option.AddPolicy("SuperAdmin",policy=>policy.RequireClaim("AdminType","Admin"));
+                                    });
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -42,6 +56,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 
