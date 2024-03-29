@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Backend.ServiceLayer;
 using Backend.Models;
 using Backend.Data.DTOs;
+using Backend.Settings;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -17,23 +18,25 @@ namespace Backend.Controllers
     [ApiController]
     public class UsuarioController : ControllerBase
     {
-        private readonly ServiceUsuario _service;
+        private readonly ServiceUsuario _serviceusuario;
+        private readonly ServiceCliente _servicecliente;
 
-        public UsuarioController (ServiceUsuario service)
+        public UsuarioController (ServiceUsuario serviceusuario,ServiceCliente servicecliente)
         {
-            _service = service;
+            _serviceusuario = serviceusuario;
+            _servicecliente =servicecliente;
         }
 
         [HttpGet("GetAll")]
         public async Task<ActionResult<IEnumerable<Usuario>>> GetUsuarios()
         {
-            return Ok(await _service.GetUsuarios());
+            return Ok(await _serviceusuario.GetUsuarios());
         }
 
         [HttpGet("GetById/{id}")]
         public async Task<ActionResult<Usuario>> GetUsuario(string id)
         {
-            var usuario = await _service.GetUsuario(id);
+            var usuario = await _serviceusuario.GetUsuario(id);
 
             if (usuario == null)
             {
@@ -44,16 +47,39 @@ namespace Backend.Controllers
         }
 
         [HttpPut("Update/{id}")]
-        public async Task<IActionResult> PutUsuario(string id, Usuario usuario)
+        public async Task<IActionResult> PutUsuario(string id, UsuarioDtoIn usuario)
         {
             if (id != usuario.Ci)
             {
                 return BadRequest();
             }
-
+            var Oldcliente = await _servicecliente.GetCliente(id);
+            var Oldusuario = await _serviceusuario.GetUsuario(id);
+            if(Oldcliente is null || Oldusuario is null) return BadRequest();
+            var Newcliente=new Cliente
+            {
+                Ci=Oldcliente.Ci,
+                Correo=usuario.Correo,
+                Confiabilidad=Oldcliente.Confiabilidad,
+                Tarjeta=Oldcliente.Tarjeta,
+                Compras=Oldcliente.Compras
+            };
+            var NewUsuario = new Usuario
+            {
+                Ci=Oldusuario.Ci,
+                NombreS=usuario.NombreS,
+                Apellidos=usuario.Apellidos,
+                Puntos=Oldusuario.Puntos,
+                Codigo=Oldusuario.Codigo,
+                Contrasena=GenerarHashSHA256(usuario.Contrasena),
+                Rol=Oldusuario.Rol,
+                CiNavigation=Newcliente
+            };
+            NewUsuario.CiNavigation.Usuario=NewUsuario;
             try
             {
-                await _service.PutUsuario(usuario);
+                await _serviceusuario.PutUsuario(NewUsuario);
+                await _servicecliente.PutCliente(Newcliente);
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -71,19 +97,40 @@ namespace Backend.Controllers
         }
 
         [HttpPost("Create")]
-        public async Task<ActionResult<Usuario>> PostUsuario(UsuarioDto usuario)
+        public async Task<ActionResult<Usuario>> PostUsuario(UsuarioDtoIn usuario)
         {
+            var newcliente= await _servicecliente.GetCliente(usuario.Ci);
+            string codigo = Settings.Settings.GenerarCodigo();
+
+            while(await _serviceusuario.ExistUserCode(codigo))
+            {
+                codigo=Settings.Settings.GenerarCodigo();
+            }
+
+            if(newcliente is null)
+            {
+                newcliente = new Cliente
+                {
+                    Ci=usuario.Ci,
+                    Correo=usuario.Correo,
+                    Confiabilidad=true
+                };
+            }
             try
             {
-                Usuario usuario1=new Usuario();
-                usuario1.Ci=usuario.Ci;
-                usuario1.Apellidos=usuario.Apellidos;
-                usuario1.Codigo=usuario.Codigo;
-                usuario1.NombreS=usuario.NombreS;
-                usuario1.Rol=usuario.Rol;
-                usuario1.Puntos=0;
-                usuario1.Contrasena= GenerarHashSHA256(usuario.Contrasena);
-                await _service.PostUsuario(usuario1);
+
+                Usuario usuario1=new Usuario
+                {
+                    Ci=usuario.Ci,
+                    Apellidos=usuario.Apellidos,
+                    NombreS=usuario.NombreS,
+                    Puntos=0,
+                    Rol="Cliente",
+                    CiNavigation=newcliente,
+                    Codigo=codigo,
+                    Contrasena= GenerarHashSHA256(usuario.Contrasena)
+                };
+                await _serviceusuario.PostUsuario(usuario1);
             }
             catch (DbUpdateException)
             {
@@ -103,19 +150,19 @@ namespace Backend.Controllers
         [HttpDelete("Delete/{id}")]
         public async Task<IActionResult> DeleteUsuario(string id)
         {
-            var usuario = await _service.GetUsuario(id);
+            var usuario = await _serviceusuario.GetUsuario(id);
             if (usuario == null)
             {
                 return NotFound();
             }
 
-            await _service.DeleteUsuario(id);
+            await _serviceusuario.DeleteUsuario(id);
             return NoContent();
         }
 
         private bool UsuarioExists(string id)
         {
-            return _service.GetUsuario(id)!=null;
+            return _serviceusuario.GetUsuario(id)!=null;
         }
 
         static byte[] GenerarHashSHA256(string contraseña)
