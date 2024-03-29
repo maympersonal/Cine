@@ -7,6 +7,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Backend.ServiceLayer;
 using Backend.Models;
+using Backend.Data.DTOs;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace Backend.Controllers
 {
@@ -68,11 +71,19 @@ namespace Backend.Controllers
         }
 
         [HttpPost("Create")]
-        public async Task<ActionResult<Usuario>> PostUsuario(Usuario usuario)
+        public async Task<ActionResult<Usuario>> PostUsuario(UsuarioDto usuario)
         {
             try
             {
-                await _service.PostUsuario(usuario);
+                Usuario usuario1=new Usuario();
+                usuario1.Ci=usuario.Ci;
+                usuario1.Apellidos=usuario.Apellidos;
+                usuario1.Codigo=usuario.Codigo;
+                usuario1.NombreS=usuario.NombreS;
+                usuario1.Rol=usuario.Rol;
+                usuario1.Puntos=0;
+                usuario1.Contrasena= GenerarHashSHA256(usuario.Contrasena);
+                await _service.PostUsuario(usuario1);
             }
             catch (DbUpdateException)
             {
@@ -106,5 +117,23 @@ namespace Backend.Controllers
         {
             return _service.GetUsuario(id)!=null;
         }
+
+        static byte[] GenerarHashSHA256(string contraseña)
+        {
+            // Crear una instancia de SHA-256
+            using (SHA256 sha256 = SHA256.Create())
+            {
+                // Convertir la contraseña en una matriz de bytes utilizando UTF-8
+                byte[] bytesContraseña = Encoding.UTF8.GetBytes(contraseña);
+                
+                // Calcular el hash de la contraseña
+                byte[] hashBytes = sha256.ComputeHash(bytesContraseña);
+                
+                // Devolver el hash 
+                return hashBytes;
+            }
+        }
+
     }  
 }
+
