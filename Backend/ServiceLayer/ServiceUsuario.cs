@@ -30,6 +30,12 @@ namespace Backend.ServiceLayer
             return await _context.Usuarios.FindAsync(id);
         }
 
+        public async Task<bool> ExistUserCode(string code)
+        {
+            var user = await _context.Usuarios.FirstOrDefaultAsync(a => a.Codigo == code);
+            return user != null;
+        }
+
 
         public async Task PutUsuario( Usuario usuario)
         {
