@@ -53,33 +53,24 @@ namespace Backend.Controllers
             {
                 return BadRequest();
             }
-            var Oldcliente = await _servicecliente.GetCliente(id);
-            var Oldusuario = await _serviceusuario.GetUsuario(id);
-            if(Oldcliente is null || Oldusuario is null) return BadRequest();
-            var Newcliente=new Cliente
+
+            var existingCliente = await _servicecliente.GetCliente(id);
+            var existingUsuario = await _serviceusuario.GetUsuario(id);
+
+            if (existingCliente is null || existingUsuario is null)
             {
-                Ci=Oldcliente.Ci,
-                Correo=usuario.Correo,
-                Confiabilidad=Oldcliente.Confiabilidad,
-                Tarjeta=Oldcliente.Tarjeta,
-                Compras=Oldcliente.Compras
-            };
-            var NewUsuario = new Usuario
-            {
-                Ci=Oldusuario.Ci,
-                NombreS=usuario.NombreS,
-                Apellidos=usuario.Apellidos,
-                Puntos=Oldusuario.Puntos,
-                Codigo=Oldusuario.Codigo,
-                Contrasena=GenerarHashSHA256(usuario.Contrasena),
-                Rol=Oldusuario.Rol,
-                CiNavigation=Newcliente
-            };
-            NewUsuario.CiNavigation.Usuario=NewUsuario;
+                return BadRequest();
+            }
+
+            existingCliente.Correo = usuario.Correo;
+            existingUsuario.NombreS = usuario.NombreS;
+            existingUsuario.Apellidos = usuario.Apellidos;
+            existingUsuario.Contrasena = GenerarHashSHA256(usuario.Contrasena);
+
             try
             {
-                await _serviceusuario.PutUsuario(NewUsuario);
-                await _servicecliente.PutCliente(Newcliente);
+                await _servicecliente.PutCliente(existingCliente);
+                await _serviceusuario.PutUsuario(existingUsuario);
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -130,9 +121,6 @@ namespace Backend.Controllers
                     Codigo=codigo,
                     Contrasena= GenerarHashSHA256(usuario.Contrasena)
                 };
-                usuario1.CiNavigation.Usuario=usuario1;
-                newcliente.Usuario=usuario1;
-                await _servicecliente.PostCliente(newcliente);
                 await _serviceusuario.PostUsuario(usuario1);
             }
             catch (DbUpdateException)
