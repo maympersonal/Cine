@@ -130,6 +130,9 @@ namespace Backend.Controllers
                     Codigo=codigo,
                     Contrasena= GenerarHashSHA256(usuario.Contrasena)
                 };
+                usuario1.CiNavigation.Usuario=usuario1;
+                newcliente.Usuario=usuario1;
+                await _servicecliente.PostCliente(newcliente);
                 await _serviceusuario.PostUsuario(usuario1);
             }
             catch (DbUpdateException)
