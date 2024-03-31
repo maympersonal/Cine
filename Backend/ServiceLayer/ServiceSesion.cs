@@ -56,5 +56,15 @@ namespace Backend.ServiceLayer
                 await _context.SaveChangesAsync();
             }
         }
+
+        public async Task<bool> ExistSesion(DateTime time,int duration,int IdS)
+        {
+                        // Calcular la hora final sumando la duración a la hora de inicio
+            DateTime horaFinal = time.AddMinutes(duration);
+
+            // Consultar la base de datos para ver si hay alguna sesión que coincida con los criterios
+            return await _context.Sesions
+                .FirstOrDefaultAsync(s => s.Fecha >= time && s.Fecha <= horaFinal && s.IdS == IdS) != null;
+        }
     }
 }
