@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace Backend.Models;
 
@@ -21,9 +22,10 @@ public partial class Pelicula
 
     public string? Trailer { get; set; }
 
+    [JsonIgnore]
     public virtual ICollection<Sesion> Sesions { get; set; } = new List<Sesion>();
-
+    [JsonIgnore]
     public virtual ICollection<Actor> IdAs { get; set; } = new List<Actor>();
-
+    [JsonIgnore]
     public virtual ICollection<Genero> IdGs { get; set; } = new List<Genero>();
 }
