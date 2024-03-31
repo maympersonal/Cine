@@ -9,6 +9,7 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
+
 // Add services to the container.
 
 builder.Services.AddControllers();
@@ -16,7 +17,32 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+// Configura tu DbContext
+            var serviceProvider = new ServiceCollection()
+                .AddDbContext<CineContext>(options =>
+                    options.UseSqlServer(builder.Configuration.GetConnectionString("ApplicationDbContext")))
+                .BuildServiceProvider();
+            
+            // Comprueba si la base de datos existe
+            using (var scope = serviceProvider.CreateScope())
+            {
+                var dbContext = scope.ServiceProvider.GetRequiredService<CineContext>();
+                if (dbContext.Database.CanConnect())
+                {
+                    Console.WriteLine("La base de datos ya existe.");
+                }
+                else
+                {
+                    Console.WriteLine("La base de datos no existe.");
+
+                    // Aplica las migraciones si la base de datos no existe
+                    dbContext.Database.Migrate();
+                    Console.WriteLine("Migraciones aplicadas exitosamente.");
+                }
+            }
+
 builder.Services.AddSqlServer<CineContext>(builder.Configuration.GetConnectionString("ApplicationDbContext"));
+
 
 //Service Layer
 builder.Services.AddScoped<ServiceActor>();
@@ -64,3 +90,4 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+

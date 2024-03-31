@@ -53,24 +53,33 @@ namespace Backend.Controllers
             {
                 return BadRequest();
             }
-
-            var existingCliente = await _servicecliente.GetCliente(id);
-            var existingUsuario = await _serviceusuario.GetUsuario(id);
-
-            if (existingCliente is null || existingUsuario is null)
+            var Oldcliente = await _servicecliente.GetCliente(id);
+            var Oldusuario = await _serviceusuario.GetUsuario(id);
+            if(Oldcliente is null || Oldusuario is null) return BadRequest();
+            var Newcliente=new Cliente
             {
-                return BadRequest();
-            }
-
-            existingCliente.Correo = usuario.Correo;
-            existingUsuario.NombreS = usuario.NombreS;
-            existingUsuario.Apellidos = usuario.Apellidos;
-            existingUsuario.Contrasena = GenerarHashSHA256(usuario.Contrasena);
-
+                Ci=Oldcliente.Ci,
+                Correo=usuario.Correo,
+                Confiabilidad=Oldcliente.Confiabilidad,
+                Tarjeta=Oldcliente.Tarjeta,
+                Compras=Oldcliente.Compras
+            };
+            var NewUsuario = new Usuario
+            {
+                Ci=Oldusuario.Ci,
+                NombreS=usuario.NombreS,
+                Apellidos=usuario.Apellidos,
+                Puntos=Oldusuario.Puntos,
+                Codigo=Oldusuario.Codigo,
+                Contrasena=GenerarHashSHA256(usuario.Contrasena),
+                Rol=Oldusuario.Rol,
+                CiNavigation=Newcliente
+            };
+            NewUsuario.CiNavigation.Usuario=NewUsuario;
             try
             {
-                await _servicecliente.PutCliente(existingCliente);
-                await _serviceusuario.PutUsuario(existingUsuario);
+                await _serviceusuario.PutUsuario(NewUsuario);
+                await _servicecliente.PutCliente(Newcliente);
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -87,7 +96,7 @@ namespace Backend.Controllers
             return NoContent();
         }
 
-        [HttpPost("Create")]
+       [HttpPost("Create")]
         public async Task<ActionResult<Usuario>> PostUsuario(UsuarioDtoIn usuario)
         {
             var newcliente= await _servicecliente.GetCliente(usuario.Ci);
@@ -137,7 +146,6 @@ namespace Backend.Controllers
 
             return CreatedAtAction("GetUsuario", new { id = usuario.Ci }, usuario);
         }
-
         [HttpDelete("Delete/{id}")]
         public async Task<IActionResult> DeleteUsuario(string id)
         {
@@ -174,4 +182,3 @@ namespace Backend.Controllers
 
     }  
 }
-

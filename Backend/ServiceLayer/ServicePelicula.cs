@@ -34,29 +34,8 @@ namespace Backend.ServiceLayer
 
         public async Task PutPelicula( Pelicula pelicula)
         {
-            // Actualizar la entidad principal (Pelicula)
             _context.Entry(pelicula).State = EntityState.Modified;
-
-            // Actualizar las relaciones de la película con los actores y géneros
-            _context.Entry(pelicula).Collection(p => p.IdAs).IsModified = true;
-            _context.Entry(pelicula).Collection(p => p.IdGs).IsModified = true;
-
-            try
-            {
-                // Guardar los cambios en la base de datos
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                // Manejar la excepción de concurrencia
-                throw;
-            }
-            catch (DbUpdateException ex)
-            {
-                // Manejar la excepción de violación de restricción de clave primaria
-                // Aquí puedes analizar el mensaje de error o realizar acciones específicas según tus necesidades
-                throw new Exception("Error al actualizar la película. " + ex.Message);
-            }
+            await _context.SaveChangesAsync();
         }
 
         public async Task<Pelicula> PostPelicula(Pelicula pelicula)

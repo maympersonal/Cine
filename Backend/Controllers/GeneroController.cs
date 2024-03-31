@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Backend.ServiceLayer;
 using Backend.Models;
-using Backend.Data.DTOs;
 
 namespace Backend.Controllers
 {
@@ -42,17 +41,16 @@ namespace Backend.Controllers
         }
 
         [HttpPut("Update/{id}")]
-        public async Task<IActionResult> PutGenero(int id, GeneroDtoIn genero)
+        public async Task<IActionResult> PutGenero(int id, Genero genero)
         {
-            var Oldgenero= await _service.GetGenero(id);
-            if (Oldgenero is null)
+            if (id != genero.IdG)
             {
                 return BadRequest();
             }
-            Oldgenero.NombreG=genero.NombreG;
+
             try
             {
-                await _service.PutGenero(Oldgenero);
+                await _service.PutGenero(genero);
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -70,15 +68,11 @@ namespace Backend.Controllers
         }
 
         [HttpPost("Create")]
-        public async Task<ActionResult<Genero>> PostGenero(GeneroDtoIn genero)
+        public async Task<ActionResult<Genero>> PostGenero(Genero genero)
         {
-            var Newgenero= new Genero
-            {
-                NombreG=genero.NombreG
-            };
-            await _service.PostGenero(Newgenero);
+            await _service.PostGenero(genero);
 
-            return CreatedAtAction("GetGenero", new { id = Newgenero.IdG }, Newgenero);
+            return CreatedAtAction("GetGenero", new { id = genero.IdG }, genero);
         }
 
         [HttpDelete("Delete/{id}")]

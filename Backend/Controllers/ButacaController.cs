@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Backend.ServiceLayer;
 using Backend.Models;
-using Backend.Data.DTOs;
 
 namespace Backend.Controllers
 {
@@ -43,17 +42,16 @@ namespace Backend.Controllers
 
 
         [HttpPut("Update/{id}")]
-        public async Task<IActionResult> PutButaca(int id, ButacaDtoIn butaca)
+        public async Task<IActionResult> PutButaca(int id, Butaca butaca)
         {
-            var Oldbutaca= await _service.GetButaca(id);
-            if (id != butaca.IdB || Oldbutaca is null)
+            if (id != butaca.IdB)
             {
                 return BadRequest();
             }
-            Oldbutaca.IdS=butaca.IdS;
+
             try
             {
-                await _service.PutButaca(Oldbutaca);
+                await _service.PutButaca(butaca);
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -72,14 +70,9 @@ namespace Backend.Controllers
 
 
         [HttpPost("Create")]
-        public async Task<ActionResult<Butaca>> PostButaca(ButacaDtoIn butaca)
+        public async Task<ActionResult<Butaca>> PostButaca(Butaca butaca)
         {
-            var Newbutaca=new Butaca
-            {
-                IdB=butaca.IdB,
-                IdS=butaca.IdS
-            };
-            await _service.PostButaca(Newbutaca);
+            await _service.PostButaca(butaca);
             return CreatedAtAction("GetButaca", new { id = butaca.IdB }, butaca);
         }
 

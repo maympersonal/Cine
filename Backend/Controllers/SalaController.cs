@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Backend.ServiceLayer;
 using Backend.Models;
-using Backend.Data.DTOs;
 
 namespace Backend.Controllers
 {
@@ -42,17 +41,16 @@ namespace Backend.Controllers
         }
 
         [HttpPut("Update/{id}")]
-        public async Task<IActionResult> PutSala(int id, SalaDtoIn sala)
+        public async Task<IActionResult> PutSala(int id, Sala sala)
         {
-            var Oldsalsa = await _service.GetSala(id);
-            if (Oldsalsa is null)
+            if (id != sala.IdS)
             {
                 return BadRequest();
             }
-            Oldsalsa.Capacidad=sala.Capacidad;
+
             try
             {
-                await _service.PutSala(Oldsalsa);
+                await _service.PutSala(sala);
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -70,12 +68,11 @@ namespace Backend.Controllers
         }
 
         [HttpPost("Create")]
-        public async Task<ActionResult<Sala>> PostSala(SalaDtoIn sala)
+        public async Task<ActionResult<Sala>> PostSala(Sala sala)
         {
-            var Newsala= new Sala{Capacidad=sala.Capacidad};
-            await _service.PostSala(Newsala);
+            await _service.PostSala(sala);
 
-            return CreatedAtAction("GetSala", new { id = Newsala.IdS }, Newsala);
+            return CreatedAtAction("GetSala", new { id = sala.IdS }, sala);
         }
 
         [HttpDelete("Delete/{id}")]

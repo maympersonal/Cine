@@ -26,7 +26,7 @@ namespace Backend.Settings
                 sb.Append(caracteresPermitidos[indiceAleatorio]);
             }
 
-            return sb.ToString();
+            return sb.ToString();;
         }
     }
 }
