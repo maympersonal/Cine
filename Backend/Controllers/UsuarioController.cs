@@ -144,7 +144,7 @@ namespace Backend.Controllers
                 }
             }
 
-            return CreatedAtAction("GetRol", "Cliente");
+            return "Cliente";
         }
 
         [HttpDelete("Delete/{id}")]

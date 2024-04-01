@@ -70,7 +70,21 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
 builder.Services.AddAuthorization(option=>{option.AddPolicy("SuperAdmin",policy=>policy.RequireClaim("AdminType","Admin"));
                                     });
 
+
+// Agrega esto al método ConfigureServices en Startup.cs
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(builder =>
+    {
+        builder.WithOrigins("http://localhost:5174")
+               .AllowAnyMethod()
+               .AllowAnyHeader();
+    });
+});
+
 var app = builder.Build();
+// Agrega esto al método Configure en Startup.cs
+app.UseCors();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
