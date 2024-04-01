@@ -64,7 +64,7 @@ const UserProvider = ({ children }) => {
                     title: `Gracias por registrarte ${newUser.firstName}!`
                 });
             })
-            .catch(error => console.log(error+" candelaaaaaa"));
+            .catch(error => console.log(error + " candelaaaaaa"));
     }
 
   const login = (inUser, callback) => {
