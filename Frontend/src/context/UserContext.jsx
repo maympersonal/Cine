@@ -58,7 +58,7 @@ const UserProvider = ({ children }) => {
                 setUser(userWithRol);
                 updateLocalStorage(userWithRol);
                 callback();
-                console.log('registrau' + response.data.rol)
+                console.log('registrau'  + response.data.rol)
                 Toast.fire({
                     icon: 'success',
                     title: `Gracias por registrarte ${newUser.NombreS}!`
