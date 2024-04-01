@@ -47,11 +47,11 @@ namespace Backend.Controllers
         }
 
         [HttpPost("LogUser")]
-        public async Task<ActionResult<Usuario>> LogUsuario(LogDtoIn UserLog)
+        public async Task<ActionResult<string>> LogUsuario(LogDtoIn UserLog)
         {
             var usuario = await _serviceusuario.GetUsuario(UserLog.Ci);
             if(usuario is null) return NotFound();
-            if(usuario.Contrasena.SequenceEqual(GenerarHashSHA256(UserLog.Contrasena))) return Ok(usuario);
+            if(CompareByteArrays(usuario.Contrasena,GenerarHashSHA256(UserLog.Contrasena))) return Ok(usuario);
             return BadRequest();
         }
 
@@ -165,7 +165,7 @@ namespace Backend.Controllers
             return _serviceusuario.GetUsuario(id)!=null;
         }
 
-        static byte[] GenerarHashSHA256(string contraseña)
+        private byte[] GenerarHashSHA256(string contraseña)
         {
             // Crear una instancia de SHA-256
             using (SHA256 sha256 = SHA256.Create())
@@ -180,7 +180,19 @@ namespace Backend.Controllers
                 return hashBytes;
             }
         }
+       private bool CompareByteArrays(byte[] arr1, byte[] arr2) {
+            if (arr1.Length != arr2.Length) {
+                return false;
+                }
+
+            for (int i = 0; i < arr1.Length; i++) {
+                if (arr1[i] != arr2[i]) {
+                    return false;
+                }
+            }
+
+            return true;
+        }
 
     }  
 }
-
