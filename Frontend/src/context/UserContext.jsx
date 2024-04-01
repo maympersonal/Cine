@@ -9,17 +9,15 @@ const UserContext = React.createContext([]);
 const useUser = () => useContext(UserContext);
 
 const UserProvider = ({ children }) => {
-  const defaultValue = {
-    ci: '', // Identificador único para Cliente y Usuario
-    nombreS: '',
-    apellidos: '',
-    correo: '',
-    contrasena: '',
-    puntos: 0,
-    codigo: '',
-    rol: ''
-    // Nota: el campo `confiabilidad` y relaciones como `Compras` y `Tarjeta` no se manejan directamente aquí
-  };
+    const defaultValue = {
+      firstName: '',
+      lastName: '',
+      email: '',
+      password: '',
+      rol:'',
+      Ci:''
+        
+    };
 
   const localStorageUser = localStorage.getItem('activeUser') !== 'undefined' ? localStorage.getItem('activeUser') : null;
   const [user, setUser] = useState(JSON.parse(localStorageUser) || defaultValue);
@@ -53,31 +51,21 @@ const UserProvider = ({ children }) => {
       .catch(error => console.log(error));
   }
 
-  const createUser = (newUser, callback) => {
-    findUser(newUser.correo)
-      .then(res => {
-        if (res) {
-          Toast.fire({
-            icon: 'error',
-            title: 'Ese correo ya está registrado.'
-          });
-        } else {
-          axios.post('/usuarios/create', newUser)
+    const createUser = (newUser, callback) => {
+        axios.post('/Usuario/Create', newUser)
             .then(response => {
-              const userWithId = { ...newUser, ci: response.data.ci };
-              setUser(userWithId);
-              updateLocalStorage(userWithId);
-              callback();
-              Toast.fire({
-                icon: 'success',
-                title: `Gracias por registrarte ${newUser.nombreS}!`
-              });
+                const userWithRol = { ...newUser, rol: response.data.rol };
+                setUser(userWithRol);
+                updateLocalStorage(userWithRol);
+                callback();
+                console.log('registrau')
+                Toast.fire({
+                    icon: 'success',
+                    title: `Gracias por registrarte ${newUser.NombreS}!`
+                });
             })
-            .catch(error => console.log(error));
-        }
-      })
-      .catch(err => console.log(err));
-  }
+            .catch(error => console.log(error + " candelaaaaaa"));
+    }
 
   const login = (inUser, callback) => {
     axios.post(`/usuarios/login`, {

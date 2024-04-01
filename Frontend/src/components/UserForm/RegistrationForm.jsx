@@ -4,6 +4,7 @@ import Swal from "sweetalert2";
 const RegistrationForm = ({ onSubmit, close, children }) => {
 
     const [firstName, setFirstName] = useState();
+    const [carnetIdentidad,setCI] = useState();
     const [lastName, setLastName] = useState();
     const [email, setEmail] = useState();
     const [password, setPassword] = useState();
@@ -14,6 +15,9 @@ const RegistrationForm = ({ onSubmit, close, children }) => {
         switch (name) {
             case 'registrarionName':
                 setFirstName(value);
+                break;
+            case 'carnetIdentidad':
+                setCI(value);
                 break;
             case 'registrarionLastName':
                 setLastName(value);
@@ -51,11 +55,11 @@ const RegistrationForm = ({ onSubmit, close, children }) => {
             })
         } else {
             const user = {
-                firstName,
-                lastName,
-                email,
-                password,
-                orders: []
+                Ci: carnetIdentidad,
+                NombreS: firstName,
+                Apellidos:lastName,
+                Correo:email,
+                Contrasena:password,
             }
 
             onSubmit(user, close);
@@ -95,6 +99,13 @@ const RegistrationForm = ({ onSubmit, close, children }) => {
                         </label>
 
                         <input type="email" name="registrarionEmail" className="input input-sm input-bordered w-full max-w-xs" autoComplete="email" required onChange={handleInputChange} />
+                    </div>
+                    <div className="form-control w-full max-w-xs">
+                        <label htmlFor="carnetIdentidad" className="label block text-sm font-medium text-gray-700 undefined">
+                            Carnet Identidad
+                        </label>
+
+                        <input type="CI" name="carnetIdentidad" className="input input-sm input-bordered w-full max-w-xs" autoComplete="CI" required onChange={handleInputChange} />
                     </div>
 
                     <div className="form-control w-full max-w-xs">

@@ -3,12 +3,12 @@ import { useCart } from "../../context/CartContext";
 import { useState, useEffect } from 'react';
 
 const CartWidget = ({ btnStyles }) => {
-    const { cart, getTotal } = useCart();
+    const { cart, getTotalItems } = useCart();
     const [total, setTotal] = useState(0);
     const { cartWidgetRef } = useCart();
 
     useEffect(() => {
-        setTotal(getTotal());
+        setTotal(getTotalItems());
     }, [cart])
 
     const removeFocus = (evt) => {
