@@ -5,26 +5,42 @@ import MovieCarousel from "./MovieCarousel";
 const MovieCarouselContainer = () => {
     const [slides, setSlides] = useState([]);
 
-
-
     useEffect(() => {
-        // Sustituye la URL por la de tu backend .NET
-        axios.get(`/movies/now_playing`)
-            .then(res => {
-                // Asume que tu API devuelve los resultados en una estructura similar,
-                // ajusta esto según sea necesario.
-                setSlides(res.data.slice(0,15));
-            })
-            .catch(err => console.log(err));
+        const fetchMovies = async () => {
+            try {
+                const res = await axios.get('/api/Pelicula/GetTop');
+                const fetchedMovies = res.data;
+
+                const moviesWithAdditionalDetails = await Promise.all(fetchedMovies.map(async movie => {
+                    return {
+                        ...movie,
+                        genres: await Promise.all(movie.idGs.map(async idG => {
+                            const genreResponse = await axios.get(`/api/Genero/GetById/${idG}`);
+                            return genreResponse.data.nombreG;
+                        })),
+                        actors: await Promise.all(movie.idAs.map(async idA => {
+                            const actorResponse = await axios.get(`/api/Actor/GetById/${idA}`);
+                            return actorResponse.data.nombreA;
+                        })),
+                    };
+                }));
+
+                setSlides(moviesWithAdditionalDetails.slice(0, 15));
+            } catch (err) {
+                console.error('Error fetching top movies:', err);
+            }
+        };
+
+        fetchMovies();
     }, []);
 
     return (
         <div>
             {slides && slides.length > 0 &&
-                <MovieCarousel slides={slides} controls indicators/>
+                <MovieCarousel slides={slides} controls indicators />
             }
         </div>
     );
-}
+};
 
 export default MovieCarouselContainer;
