@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Backend.ServiceLayer;
 using Backend.Models;
 using Backend.Data.DTOs;
+using System.Collections;
 
 namespace Backend.Controllers
 {
@@ -27,22 +28,68 @@ namespace Backend.Controllers
         }
 
         [HttpGet("GetAll")]
-        public async Task<ActionResult<IEnumerable<Pelicula>>> GetPeliculas()
+        public async Task<ActionResult<IEnumerable<PeliculaDtoOut>>> GetPeliculas()
         {
-            return Ok(await _servicepelicula.GetPeliculas());
+            IEnumerable<Pelicula> all = await _servicepelicula.GetPeliculas();
+            IEnumerable<PeliculaDtoOut> result= new List<PeliculaDtoOut>();
+            PeliculaDtoOut addpeli;
+
+            foreach(Pelicula peli in all)
+            {
+                addpeli = new PeliculaDtoOut 
+                        {
+                            IdP=peli.IdP,
+                            Sinopsis=peli.Sinopsis,
+                            Anno=peli.Anno,
+                            Nacionalidad=peli.Nacionalidad,
+                            Duración=peli.Duración,
+                            Titulo=peli.Titulo,
+                            Imagen=peli.Imagen,
+                            Trailer=peli.Trailer
+                        };
+                foreach(Actor actor in peli.IdAs)
+                {
+                    addpeli.IdAs.Add(actor.IdA);
+                }
+                foreach(Genero genero in peli.IdGs)
+                {
+                    addpeli.IdGs.Add(genero.IdG);
+                }
+                result.Append(addpeli);
+            }
+            return Ok(result);
         }
 
         [HttpGet("GetById/{id}")]
-        public async Task<ActionResult<Pelicula>> GetPelicula(int id)
+        public async Task<ActionResult<PeliculaDtoOut>> GetPelicula(int id)
         {
             var pelicula = await _servicepelicula.GetPelicula(id);
-
             if (pelicula == null)
             {
                 return NotFound();
             }
 
-            return pelicula;
+            PeliculaDtoOut addpeli= new PeliculaDtoOut
+            {
+                IdP=pelicula.IdP,
+                Sinopsis=pelicula.Sinopsis,
+                Anno=pelicula.Anno,
+                Nacionalidad=pelicula.Nacionalidad,
+                Duración=pelicula.Duración,
+                Titulo=pelicula.Titulo,
+                Imagen=pelicula.Imagen,
+                Trailer=pelicula.Trailer
+            };
+            foreach(Actor actor in pelicula.IdAs)
+            {
+                addpeli.IdAs.Add(actor.IdA);
+            }
+            foreach(Genero genero in pelicula.IdGs)
+            {
+                addpeli.IdGs.Add(genero.IdG);
+            }
+
+            return addpeli;
         }
 
         [HttpPut("Update/{id}")]

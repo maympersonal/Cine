@@ -51,11 +51,7 @@ namespace Backend.Controllers
         {
             var usuario = await _serviceusuario.GetUsuario(UserLog.Ci);
             if(usuario is null) return NotFound();
-<<<<<<< HEAD
-            if(usuario.Contrasena == GenerarHashSHA256(UserLog.Contrasena)) return Ok(usuario);
-=======
             if(usuario.Contrasena.SequenceEqual(GenerarHashSHA256(UserLog.Contrasena))) return Ok(usuario);
->>>>>>> e666e283a4ce8a18d913ef646b3f105510dcc8fd
             return BadRequest();
         }
 
