@@ -46,6 +46,17 @@ namespace Backend.Controllers
             return usuario;
         }
 
+        [HttpGet("LogUser")]
+        public async Task<ActionResult<string>> LogUsuario(LogDtoIn UserLog)
+        {
+            var usuario = await _serviceusuario.GetUsuario(UserLog.Ci);
+            if(usuario is null) return NotFound();
+
+            if(usuario.Contrasena==GenerarHashSHA256(UserLog.Contrasena)) return Ok(usuario.Rol);
+
+            return BadRequest();
+        }
+
         [HttpPut("Update/{id}")]
         public async Task<IActionResult> PutUsuario(string id, UsuarioDtoIn usuario)
         {
