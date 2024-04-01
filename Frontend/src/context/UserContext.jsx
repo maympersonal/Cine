@@ -10,11 +10,12 @@ const useUser = () => useContext(UserContext);
 
 const UserProvider = ({ children }) => {
     const defaultValue = {
-        firstName: '',
-        lastName: '',
-        email: '',
-        password: '',
-        rol:''
+      firstName: '',
+      lastName: '',
+      email: '',
+      password: '',
+      rol:'',
+      Ci:''
         
     };
 
