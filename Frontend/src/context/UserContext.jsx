@@ -52,7 +52,7 @@ const UserProvider = ({ children }) => {
   }
 
     const createUser = (newUser, callback) => {
-        axios.post('/usuario/create', newUser)
+        axios.post('/Usuario/Create', newUser)
             .then(response => {
                 const userWithRol = { ...newUser, rol: response.data.rol };
                 setUser(userWithRol);
