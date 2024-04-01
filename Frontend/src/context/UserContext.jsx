@@ -68,7 +68,8 @@ const UserProvider = ({ children }) => {
     }
 
   const login = (inUser, callback) => {
-    axios.post(`/usuarios/login`, {
+    axios.post("/Usuario/LogUser",{
+      
       Ci: inUser.Ci,
       Contrasena: inUser.Contrasena // Asegúrate de manejar la contraseña de forma segura
     })
