@@ -58,7 +58,7 @@ const UserProvider = ({ children }) => {
                 setUser(userWithRol);
                 updateLocalStorage(userWithRol);
                 callback();
-                console.log('registrau')
+                console.log('registrau'  + response.data.rol)
                 Toast.fire({
                     icon: 'success',
                     title: `Gracias por registrarte ${newUser.NombreS}!`
@@ -68,9 +68,10 @@ const UserProvider = ({ children }) => {
     }
 
   const login = (inUser, callback) => {
-    axios.post(`/usuarios/login`, {
-      correo: inUser.correo,
-      contrasena: inUser.contrasena // Asegúrate de manejar la contraseña de forma segura
+    axios.post("/Usuario/LogUser",{
+      
+      Ci: inUser.Ci,
+      Contrasena: inUser.Contrasena // Asegúrate de manejar la contraseña de forma segura
     })
     .then(response => {
       const loggedInUser = response.data;
@@ -79,7 +80,7 @@ const UserProvider = ({ children }) => {
       callback();
       Toast.fire({
         icon: 'success',
-        title: `Bienvenid@ de vuelta ${loggedInUser.nombreS}!`
+        title: `Bienvenid@ de vuelta ${loggedInUser.NombreS}!`
       });
     })
     .catch(error => {
