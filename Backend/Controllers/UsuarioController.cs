@@ -99,7 +99,7 @@ namespace Backend.Controllers
         }
 
         [HttpPost("Create")]
-        public async Task<ActionResult<Usuario>> PostUsuario(UsuarioDtoIn usuario)
+        public async Task<ActionResult<string>> PostUsuario(UsuarioDtoIn usuario)
         {
             var newcliente= await _servicecliente.GetCliente(usuario.Ci);
             string codigo = Settings.Settings.GenerarCodigo();
@@ -146,7 +146,7 @@ namespace Backend.Controllers
                 }
             }
 
-            return CreatedAtAction("GetUsuario", new { id = usuario.Ci }, usuario);
+            return CreatedAtAction("GetRol", "Cliente");
         }
 
         [HttpDelete("Delete/{id}")]
