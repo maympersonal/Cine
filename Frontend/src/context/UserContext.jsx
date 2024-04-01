@@ -61,7 +61,7 @@ const UserProvider = ({ children }) => {
                 console.log('registrau')
                 Toast.fire({
                     icon: 'success',
-                    title: `Gracias por registrarte ${newUser.firstName}!`
+                    title: `Gracias por registrarte ${newUser.NombreS}!`
                 });
             })
             .catch(error => console.log(error + " candelaaaaaa"));
