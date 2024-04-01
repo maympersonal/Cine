@@ -8,18 +8,18 @@ const MovieCarouselContainer = () => {
     useEffect(() => {
         const fetchMovies = async () => {
             try {
-                const res = await axios.get('/api/Pelicula/GetTop');
+                const res = await axios.get('Pelicula/GetTop');
                 const fetchedMovies = res.data;
 
                 const moviesWithAdditionalDetails = await Promise.all(fetchedMovies.map(async movie => {
                     return {
                         ...movie,
                         genres: await Promise.all(movie.idGs.map(async idG => {
-                            const genreResponse = await axios.get(`/api/Genero/GetById/${idG}`);
+                            const genreResponse = await axios.get(`Genero/GetById/${idG}`);
                             return genreResponse.data.nombreG;
                         })),
                         actors: await Promise.all(movie.idAs.map(async idA => {
-                            const actorResponse = await axios.get(`/api/Actor/GetById/${idA}`);
+                            const actorResponse = await axios.get(`Actor/GetById/${idA}`);
                             return actorResponse.data.nombreA;
                         })),
                     };

@@ -17,17 +17,17 @@ const MovieCardListContainer = () => {
         setLoading(true);
         const fetchMovies = async () => {
             try {
-                const response = await axios.get('/api/Pelicula/GetAll');
+                const response = await axios.get('Pelicula/GetAll');
                 const fetchedMovies = response.data;
                 const moviesWithDetails = await Promise.all(fetchedMovies.map(async movie => {
-                    // Fetch genres
+
                     const genres = await Promise.all(movie.idGs.map(async idG => {
-                        const genreResponse = await axios.get(`/api/Genero/GetById/${idG}`);
+                        const genreResponse = await axios.get(`Genero/GetById/${idG}`);
                         return genreResponse.data.nombreG;
                     }));
-                    // Fetch actors
+
                     const actors = await Promise.all(movie.idAs.map(async idA => {
-                        const actorResponse = await axios.get(`/api/Actor/GetById/${idA}`);
+                        const actorResponse = await axios.get(`Actor/GetById/${idA}`);
                         return actorResponse.data.nombreA;
                     }));
                     return { ...movie, genres, actors };
@@ -43,7 +43,7 @@ const MovieCardListContainer = () => {
 
     useEffect(() => {
         if (!isNaN(parseInt(categoryId))) {
-            axios.get(`/api/Genero/GetById/${categoryId}`)
+            axios.get(`Genero/GetById/${categoryId}`)
                 .then(res => {
                     setGenre(res.data.nombreG);
                     setListTitles([`Cartelera - ${res.data.nombreG}`, `Próximos estrenos - ${res.data.nombreG}`]);
