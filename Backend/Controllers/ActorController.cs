@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Backend.ServiceLayer;
 using Backend.Models;
+using Backend.Data.DTOs;
 
 namespace Backend.Controllers
 {
@@ -44,16 +45,18 @@ namespace Backend.Controllers
 
 
         [HttpPut("Update/{id}")]
-        public async Task<IActionResult> PutActor(int id, Actor actor)
+        public async Task<IActionResult> PutActor(int id, ActorDtoIn actor)
         {
-            if (id != actor.IdA)
+            var NewActor = await _service.GetActor(id);
+            if( NewActor is not null)
             {
-                return BadRequest();
+                NewActor.NombreA=actor.NombreA;
             }
+            else return BadRequest();
 
             try
             {
-                await _service.PutActor(actor);
+                await _service.PutActor(NewActor);
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -72,17 +75,21 @@ namespace Backend.Controllers
 
 
         [HttpPost("Create")]
-        public async Task<ActionResult<Actor>> PostActor(Actor actor)
+        public async Task<ActionResult<Actor>> PostActor(ActorDtoIn actor)
         {
-            await _service.PostActor(actor);
-            return CreatedAtAction("GetActor", new { id = actor.IdA }, actor);
+            var NewActor = new Actor
+            {
+                NombreA = actor.NombreA
+            };
+            await _service.PostActor(NewActor);
+            return CreatedAtAction("GetActor", new { id = NewActor.IdA }, actor);
         }
 
-
+        //falla
         [HttpDelete("Delete/{id}")]
         public async Task<IActionResult> DeleteActor(int id)
         {
-            var actor = GetActor(id);
+            var actor = await _service.GetActor(id);
             if (actor == null)
             {
                 return NotFound();
@@ -93,7 +100,7 @@ namespace Backend.Controllers
 
         private bool ActorExists(int id)
         {
-            return _service.GetActor(id) != null;
+            return  _service.GetActor(id)!=null;
         }
     }
 }

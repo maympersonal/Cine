@@ -3,6 +3,9 @@ using Backend.Models;
 using Backend.Data;
 using Backend.Controllers;
 using Backend.ServiceLayer;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +15,30 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+// Configura tu DbContext
+            var serviceProvider = new ServiceCollection()
+                .AddDbContext<CineContext>(options =>
+                    options.UseSqlServer(builder.Configuration.GetConnectionString("ApplicationDbContext")))
+                .BuildServiceProvider();
+            
+            // Comprueba si la base de datos existe
+            using (var scope = serviceProvider.CreateScope())
+            {
+                var dbContext = scope.ServiceProvider.GetRequiredService<CineContext>();
+                if (dbContext.Database.CanConnect())
+                {
+                    Console.WriteLine("La base de datos ya existe en SQl.");
+                }
+                else
+                {
+                    Console.WriteLine("La base de datos no existe todavía.");
+
+                    // Aplica las migraciones si la base de datos no existe
+                    dbContext.Database.Migrate();
+                    Console.WriteLine("Migraciones aplicadas exitosamente.");
+                }
+            }
 
 builder.Services.AddSqlServer<CineContext>(builder.Configuration.GetConnectionString("ApplicationDbContext"));
 
@@ -32,6 +59,17 @@ builder.Services.AddScoped<ServiceTarjetum>();
 builder.Services.AddScoped<ServiceUsuario>();
 builder.Services.AddScoped<ServiceWeb>();
 
+//UserAutorization
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer
+(options => options.TokenValidationParameters = new TokenValidationParameters 
+                        {ValidateIssuerSigningKey=true,
+                         IssuerSigningKey= new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Key"])),
+                         ValidateIssuer=false,
+                         ValidateAudience= false});
+
+builder.Services.AddAuthorization(option=>{option.AddPolicy("SuperAdmin",policy=>policy.RequireClaim("AdminType","Admin"));
+                                    });
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -42,6 +80,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Backend.ServiceLayer;
 using Backend.Models;
+using Backend.Data.DTOs;
 
 namespace Backend.Controllers
 {
@@ -14,23 +15,27 @@ namespace Backend.Controllers
     [ApiController]
     public class SesionController : ControllerBase
     {
-        private readonly ServiceSesion _service;
+        private readonly ServiceSesion _servicesesion;
+        private readonly ServicePelicula _servicepelicula;
+        private readonly ServiceSala _servicesala;
 
-        public SesionController (ServiceSesion service)
+        public SesionController (ServiceSesion servicesesion,ServicePelicula servicepelicula,ServiceSala servicesala)
         {
-            _service = service;
+            _servicesesion = servicesesion;
+            _servicepelicula=servicepelicula;
+            _servicesala = servicesala;
         }
 
         [HttpGet("GetAll")]
         public async Task<ActionResult<IEnumerable<Sesion>>> GetSesions()
         {
-            return Ok(await _service.GetSesions());
+            return Ok(await _servicesesion.GetSesions());
         }
 
         [HttpGet("GetById/{id}")]
         public async Task<ActionResult<Sesion>> GetSesion(int id)
         {
-            var sesion = await _service.GetSesion(id);
+            var sesion = await _servicesesion.GetSesion(id);
 
             if (sesion == null)
             {
@@ -40,9 +45,10 @@ namespace Backend.Controllers
             return sesion;
         }
 
-        [HttpPut("Update/{id}")]
+        [HttpPut("Update/{id}")] //no funcional hasta agregaer id a sesion o modificar la capa de servicio de sesion para q busque sesiones mediante idp,ids y fecha
         public async Task<IActionResult> PutSesion(int id, Sesion sesion)
         {
+            var Oldsesion = await _servicesesion.GetSesion(id);
             if (id != sesion.IdP)
             {
                 return BadRequest();
@@ -50,7 +56,7 @@ namespace Backend.Controllers
 
             try
             {
-                await _service.PutSesion(sesion);
+                await _servicesesion.PutSesion(sesion);
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -68,11 +74,26 @@ namespace Backend.Controllers
         }
 
         [HttpPost("Create")]
-        public async Task<ActionResult<Sesion>> PostSesion(Sesion sesion)
+        public async Task<ActionResult<Sesion>> PostSesion(SesionDtoIn sesion)
         {
+            var pelicula=await _servicepelicula.GetPelicula(sesion.IdP);
+            if(pelicula is null || pelicula.Duración is null) return BadRequest();
+            if(await _servicesesion.ExistSesion(sesion.Fecha, (int)pelicula.Duración ,sesion.IdS)) return Conflict();
+
+            var sala = await _servicesala.GetSala(sesion.IdS);
+            if(sala is null) return BadRequest();
+
+            var Newsesion = new Sesion
+            {
+                IdP=sesion.IdP,
+                IdS=sesion.IdS,
+                Fecha=sesion.Fecha,
+                IdSNavigation=sala,
+                IdPNavigation=pelicula
+            };
             try
             {
-                await _service.PostSesion(sesion);
+                await _servicesesion.PostSesion(Newsesion);
             }
             catch (DbUpdateException)
             {
@@ -86,25 +107,25 @@ namespace Backend.Controllers
                 }
             }
 
-            return CreatedAtAction("GetSesion", new { id = sesion.IdP }, sesion);
+            return CreatedAtAction("GetSesion", new { id = Newsesion.IdP }, Newsesion);
         }
 
         [HttpDelete("Delete/{id}")]
         public async Task<IActionResult> DeleteSesion(int id)
         {
-            var sesion = await _service.GetSesion(id);
+            var sesion = await _servicesesion.GetSesion(id);
             if (sesion == null)
             {
                 return NotFound();
             }
 
-            await _service.DeleteSesion(id);
+            await _servicesesion.DeleteSesion(id);
             return NoContent();
         }
 
         private bool SesionExists(int id)
         {
-            return _service.GetSesion(id)!=null;
+            return _servicesesion.GetSesion(id)!=null;
         }
     }   
 }
