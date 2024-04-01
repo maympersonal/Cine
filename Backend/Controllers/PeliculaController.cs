@@ -133,18 +133,18 @@ namespace Backend.Controllers
             return CreatedAtAction("GetPelicula", new { id = Newpelicula.IdP }, Newpelicula);
         }
 
-        [HttpDelete("Delete/{id}")]
-        public async Task<IActionResult> DeletePelicula(int id)
-        {
-            var pelicula = await _servicepelicula.GetPelicula(id);
-            if (pelicula == null)
-            {
-                return NotFound();
-            }
+        // [HttpDelete("Delete/{id}")]
+        // public async Task<IActionResult> DeletePelicula(int id)
+        // {
+        //     var pelicula = await _servicepelicula.GetPelicula(id);
+        //     if (pelicula == null)
+        //     {
+        //         return NotFound();
+        //     }
 
-            await _servicepelicula.DeletePelicula(id);
-            return NoContent();
-        }
+        //     await _servicepelicula.DeletePelicula(id);
+        //     return NoContent();
+        // }
 
         private bool PeliculaExists(int id)
         {
