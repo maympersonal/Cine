@@ -31,32 +31,35 @@ namespace Backend.Controllers
         public async Task<ActionResult<IEnumerable<PeliculaDtoOut>>> GetPeliculas()
         {
             IEnumerable<Pelicula> all = await _servicepelicula.GetPeliculas();
-            IEnumerable<PeliculaDtoOut> result= new List<PeliculaDtoOut>();
-            PeliculaDtoOut addpeli;
+            List<PeliculaDtoOut> result = new List<PeliculaDtoOut>(); 
 
             foreach(Pelicula peli in all)
             {
-                addpeli = new PeliculaDtoOut 
-                        {
-                            IdP=peli.IdP,
-                            Sinopsis=peli.Sinopsis,
-                            Anno=peli.Anno,
-                            Nacionalidad=peli.Nacionalidad,
-                            Duración=peli.Duración,
-                            Titulo=peli.Titulo,
-                            Imagen=peli.Imagen,
-                            Trailer=peli.Trailer
-                        };
+                PeliculaDtoOut addpeli = new PeliculaDtoOut 
+                {
+                    IdP = peli.IdP,
+                    Sinopsis = peli.Sinopsis,
+                    Anno = peli.Anno,
+                    Nacionalidad = peli.Nacionalidad,
+                    Duración = peli.Duración,
+                    Titulo = peli.Titulo,
+                    Imagen = peli.Imagen,
+                    Trailer = peli.Trailer
+                };
+
                 foreach(Actor actor in peli.IdAs)
                 {
                     addpeli.IdAs.Add(actor.IdA);
                 }
+
                 foreach(Genero genero in peli.IdGs)
                 {
                     addpeli.IdGs.Add(genero.IdG);
                 }
-                result.Append(addpeli);
+
+                result.Add(addpeli); 
             }
+
             return Ok(result);
         }
 
