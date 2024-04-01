@@ -15,8 +15,8 @@ const UserProvider = ({ children }) => {
         lastName: '',
         email: '',
         password: '',
-        orders: [],
-        id: ''
+        rol:''
+        
     };
 
     const localStorageUser = localStorage.getItem('activeUser') !== 'undefined' ? localStorage.getItem('activeUser') : null;
@@ -52,29 +52,18 @@ const UserProvider = ({ children }) => {
     }
 
     const createUser = (newUser, callback) => {
-        findUser(newUser.email)
-            .then(res => {
-                if (res) {
-                    Toast.fire({
-                        icon: 'error',
-                        title: 'Ese mail ya está registrado.'
-                    });
-                } else {
-                    axios.post('/users/create', newUser)
-                        .then(response => {
-                            const userWithId = { ...newUser, id: response.data.id };
-                            setUser(userWithId);
-                            updateLocalStorage(userWithId);
-                            callback();
-                            Toast.fire({
-                                icon: 'success',
-                                title: `Gracias por registrarte ${newUser.firstName}!`
-                            });
-                        })
-                        .catch(error => console.log(error));
-                }
+        axios.post('/api/usuario/create', newUser)
+            .then(response => {
+                const userWithRol = { ...newUser, rol: response.data.rol };
+                setUser(userWithRol);
+                updateLocalStorage(userWithRol);
+                callback();
+                Toast.fire({
+                    icon: 'success',
+                    title: `Gracias por registrarte ${newUser.firstName}!`
+                });
             })
-            .catch(err => console.log(err));
+            .catch(error => console.log(error));
     }
 
     const login = (inUser, callback) => {
