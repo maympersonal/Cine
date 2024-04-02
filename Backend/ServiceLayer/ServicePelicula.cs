@@ -28,7 +28,7 @@ namespace Backend.ServiceLayer
 
         public async Task<Pelicula?> GetPelicula(int id)
         {
-            return await _context.Peliculas.Include(x=>x.IdGs).Include(x=>x.IdP).FirstOrDefaultAsync(x=>x.IdP==id);
+            return await _context.Peliculas.Include(x=>x.IdGs).Include(x=>x.IdAs).FirstOrDefaultAsync(x=>x.IdP==id);
         }
 
 
