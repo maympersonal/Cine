@@ -20,7 +20,7 @@ public class PeliculaDtoOut
 
     public string? Trailer { get; set; }
 
-    public virtual ICollection<ActorDtoIn> IdAs { get; set; } = new List<ActorDtoIn>();
+    public virtual ICollection<string> IdAs { get; set; } = new List<string>();
 
-    public virtual ICollection<GeneroDtoIn> IdGs { get; set; } = new List<GeneroDtoIn>();
+    public virtual ICollection<string> IdGs { get; set; } = new List<string>();
 }
