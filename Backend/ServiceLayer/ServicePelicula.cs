@@ -22,13 +22,13 @@ namespace Backend.ServiceLayer
 
         public async Task<IEnumerable<Pelicula>> GetPeliculas()
         {
-            return await _context.Peliculas.ToListAsync();
+            return await _context.Peliculas.Include(x=>x.IdAs).Include(x=>x.IdGs).ToListAsync();
         }
 
 
         public async Task<Pelicula?> GetPelicula(int id)
         {
-            return await _context.Peliculas.FindAsync(id);
+            return await _context.Peliculas.Include(x=>x.IdGs).Include(x=>x.IdP).FirstOrDefaultAsync(x=>x.IdP==id);
         }
 
 
