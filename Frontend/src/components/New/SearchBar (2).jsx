@@ -1,7 +1,7 @@
 // SearchBar.jsx
 import React, { useState } from 'react';
 import './SearchBar.css';
-import axios from '../api/axios';
+import axios from '../../api/axios';
 import ClienteCard from './UserComponent (2)';
 
 const SearchBar = ({ onSearch }) => {
