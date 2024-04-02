@@ -22,12 +22,12 @@ namespace Backend.ServiceLayer
 
         public async Task<IEnumerable<Efectivo>> GetEfectivos()
         {
-            return await _context.Efectivos.ToListAsync();
+            return await _context.Efectivos.Include(x=>x.IdPgNavigation).ToListAsync();
         }
 
         public async Task<Efectivo?> GetEfectivo(int id)
         {
-            return await _context.Efectivos.FindAsync(id);
+            return await _context.Efectivos.Include(x=>x.IdPgNavigation).FirstOrDefaultAsync(x=>x.IdPg==id);
         }
 
         public async Task PutEfectivo(Efectivo efectivo)
@@ -46,7 +46,7 @@ namespace Backend.ServiceLayer
 
         public async Task DeleteEfectivo(int id)
         {
-            var efectivo = await _context.Efectivos.FindAsync(id);
+            var efectivo = await _context.Efectivos.Include(x=>x.IdPgNavigation).FirstOrDefaultAsync(x=>x.IdPg==id);
             if (efectivo is not null)
             {
                 _context.Efectivos.Remove(efectivo);

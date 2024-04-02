@@ -21,13 +21,13 @@ namespace Backend.ServiceLayer
 
         public async Task<IEnumerable<Punto>> GetPuntos()
         {
-            return await _context.Puntos.ToListAsync();
+            return await _context.Puntos.Include(x=>x.IdPgNavigation).ToListAsync();
         }
 
 
         public async Task<Punto?> GetPunto(int id)
         {
-            return await _context.Puntos.FindAsync(id);
+            return await _context.Puntos.Include(x=>x.IdPgNavigation).FirstOrDefaultAsync(x=>x.IdPg==id);
         }
 
 
@@ -49,7 +49,7 @@ namespace Backend.ServiceLayer
 
         public async Task DeletePunto(int id)
         {
-            var punto = await _context.Puntos.FindAsync(id);
+            var punto = await _context.Puntos.Include(x=>x.IdPgNavigation).FirstOrDefaultAsync(x=>x.IdPg==id);
             if (punto is not null)
             {
                 _context.Puntos.Remove(punto);

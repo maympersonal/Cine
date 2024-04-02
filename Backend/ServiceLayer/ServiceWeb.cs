@@ -22,13 +22,13 @@ namespace Backend.ServiceLayer
 
         public async Task<IEnumerable<Web>> GetWebs()
         {
-            return await _context.Webs.ToListAsync();
+            return await _context.Webs.Include(x=>x.CodigoTNavigation).Include(x=>x.IdPgNavigation).ToListAsync();
         }
 
 
         public async Task<Web?> GetWeb(int id)
         {
-            return await _context.Webs.FindAsync(id);
+            return await _context.Webs.Include(x=>x.CodigoTNavigation).Include(x=>x.IdPgNavigation).FirstOrDefaultAsync(x=>x.IdPg==id);
         }
 
         public async Task PutWeb( Web web)
@@ -48,7 +48,7 @@ namespace Backend.ServiceLayer
 
         public async Task DeleteWeb(int id)
         {
-            var web = await _context.Webs.FindAsync(id);
+            var web = await _context.Webs.Include(x=>x.CodigoTNavigation).Include(x=>x.IdPgNavigation).FirstOrDefaultAsync(x=>x.IdPg==id);
             if (web is not null)
             {
                 _context.Webs.Remove(web);

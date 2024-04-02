@@ -22,13 +22,13 @@ namespace Backend.ServiceLayer
 
         public async Task<IEnumerable<Butaca>> GetButacas()
         {
-            return await _context.Butacas.ToListAsync();
+            return await _context.Butacas.Include(x=>x.Compras).ToListAsync();
         }
 
 
         public async Task<Butaca?> GetButaca(int id)
         {
-            return await _context.Butacas.FindAsync(id);
+            return await _context.Butacas.Include(x=>x.Compras).FirstOrDefaultAsync(x=>x.IdB==id);
         }
 
 
@@ -49,7 +49,7 @@ namespace Backend.ServiceLayer
 
         public async Task DeleteButaca(int id)
         {
-            var butaca = await _context.Butacas.FindAsync(id);
+            var butaca = await _context.Butacas.Include(x=>x.Compras).FirstOrDefaultAsync(x=>x.IdB==id);
             if (butaca is not null)
             {
                 _context.Butacas.Remove(butaca);
