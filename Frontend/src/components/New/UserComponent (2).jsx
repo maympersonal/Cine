@@ -13,12 +13,13 @@ const ClienteCard = ({ nombre, estadoInicial ,ci,correo}) => {
     setEstadoConfianza(!estadoConfianza);
   };
 
-  const handleEliminar = () => {
+  const handleEliminar = async() => {
     if (!eliminado) {
       setEliminado(true);
-    } else {
-      setEliminado(false);
-    }
+      await axios.delete('/Usuario/Delete/'+ci)
+      .then(res=>console.log(res))
+      .catch(error=>console.log(error+"    ayayayayayayaya"))
+    } 
   };
 
   return (
@@ -28,8 +29,8 @@ const ClienteCard = ({ nombre, estadoInicial ,ci,correo}) => {
       <button onClick={cambiarEstadoConfianza}>
         Cambiar estado
       </button>
-      <button onClick={handleEliminar} className="eliminar-btn">
-        {eliminado ? 'Deshacer' : 'Eliminar'}
+      <button onClick={handleEliminar} className="eliminar-btn" disabled={eliminado}>
+        { 'Eliminar'}
       </button>
     </div>
   );
