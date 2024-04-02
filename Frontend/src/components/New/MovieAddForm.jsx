@@ -106,7 +106,14 @@ const MovieAddForm = ({ onSubmit, close, children }) => {
                             <span className="label-text">Año</span>
                         </label>
 
-                        <input type="text" name="anno" className="input input-sm input-bordered w-full max-w-xs" autoComplete="family-name" required onChange={handleInputChange} />
+                        <input type="number" name="anno" className="input input-sm input-bordered w-full max-w-xs" autoComplete="family-name" required onChange={handleInputChange} />
+                    </div>
+                    <div className="form-control w-full max-w-xs">
+                        <label htmlFor="nacionalidad" className="label block text-sm font-medium text-gray-700 undefined">
+                            <span className="label-text">Año</span>
+                        </label>
+
+                        <input type="text" name="nacionalidad" className="input input-sm input-bordered w-full max-w-xs" autoComplete="family-name" required onChange={handleInputChange} />
                     </div>
 
                     <div className="form-control w-full max-w-xs">
@@ -129,7 +136,7 @@ const MovieAddForm = ({ onSubmit, close, children }) => {
                             Imagen
                         </label>
 
-                        <input type="password" name="imagen" className="input input-sm input-bordered w-full max-w-xs" required onChange={handleInputChange} />
+                        <input type="text" name="imagen" className="input input-sm input-bordered w-full max-w-xs" required onChange={handleInputChange} />
                     </div>
 
                     <div className="form-control w-full max-w-xs">
