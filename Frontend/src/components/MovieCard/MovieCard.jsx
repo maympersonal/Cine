@@ -12,18 +12,18 @@ const MovieCard = ({ id }) => {
 
     const fetchMovieDetails = async () => {
         try {
+            const { data } = await axios.get(`Pelicula/GetAll`);
+            setMovieDetails(data);
 
-            const { data: movieData } = await axios.get(`Pelicula/GetById/${id}`);
-            setMovieDetails(movieData);
 
-
-            const genresData = await Promise.all(movieData.idGs.map(async (genreId) => {
+            const genresData = await Promise.all(data.idGs.map(async (genreId) => {
                 const response = await axios.get(`Genero/GetById/${genreId}`);
                 return response.data;
             }));
             setGenres(genresData);
 
-            const actorsData = await Promise.all(movieData.idAs.map(async (actorId) => {
+
+            const actorsData = await Promise.all(data.idAs.map(async (actorId) => {
                 const response = await axios.get(`Actor/GetById/${actorId}`);
                 return response.data;
             }));
@@ -73,26 +73,26 @@ export default MovieCard;
 //     const [actors, setActors] = useState([]);
 
 //     const fetchMovieDetails = async () => {
-//         try {
-//             const { data } = await axios.get(`Pelicula/GetAll`);
-//             setMovieDetails(data);
+        // try {
+        //     const { data } = await axios.get(`Pelicula/GetAll`);
+        //     setMovieDetails(data);
 
 
-//             const genresData = await Promise.all(data.idGs.map(async (genreId) => {
-//                 const response = await axios.get(`Genero/GetById/${genreId}`);
-//                 return response.data;
-//             }));
-//             setGenres(genresData);
+        //     const genresData = await Promise.all(data.idGs.map(async (genreId) => {
+        //         const response = await axios.get(`Genero/GetById/${genreId}`);
+        //         return response.data;
+        //     }));
+        //     setGenres(genresData);
 
 
-//             const actorsData = await Promise.all(data.idAs.map(async (actorId) => {
-//                 const response = await axios.get(`Actor/GetById/${actorId}`);
-//                 return response.data;
-//             }));
-//             setActors(actorsData);
-//         } catch (error) {
-//             console.error('Error fetching movie details:', error);
-//         }
+        //     const actorsData = await Promise.all(data.idAs.map(async (actorId) => {
+        //         const response = await axios.get(`Actor/GetById/${actorId}`);
+        //         return response.data;
+        //     }));
+        //     setActors(actorsData);
+        // } catch (error) {
+        //     console.error('Error fetching movie details:', error);
+        // }
 //     };
 
 //     useEffect(() => {
