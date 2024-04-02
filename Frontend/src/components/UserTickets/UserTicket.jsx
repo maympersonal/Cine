@@ -1,9 +1,8 @@
 import Barcode from 'react-barcode';
 import QRCode from 'react-qr-code';
 
-const UserTicket = ({ movie, funcion, precio, paymentId, codigoParaRetirar, id, fechaDeEmision }) => {
-    const { title, poster_path, backdrop_path } = movie;
-    const { sala, tipo, lenguaje, horario, seatsNumbers } = funcion;
+const UserTicket = ({ titulo, imagen, backdrop_path = "../../../public/assets/img/a.webp", idS, lenguaje = "Español", fecha, idB, precio, paymentId, codigoT, ci, fechaDeCompra }) => {
+
 
     const formatoTiempo = ( date ) => {
         const hh = ('0' + date.getHours()).slice(-2);
@@ -13,14 +12,14 @@ const UserTicket = ({ movie, funcion, precio, paymentId, codigoParaRetirar, id, 
         return `${hh}:${mm}:${ss}`;
     }
 
-    const horarioDate = horario.toDate();
-    const fechaFuncion = horarioDate.toLocaleDateString();
-    const horaFuncion = horarioDate.getHours() + ':' + horarioDate.getMinutes();
+    const fechaDate = fecha.toDate();
+    const fechaDeCompraFuncion = fechaDate.toLocaleDateString();
+    const horaFuncion = fechaDate.getHours() + ':' + fechaDate.getMinutes();
 
-    const fechaPago = fechaDeEmision.toDate().toLocaleDateString();
-    const horaPago = formatoTiempo(fechaDeEmision.toDate());
+    const fechaDeCompraPago = fechaDeCompra.toDate().toLocaleDateString();
+    const horaPago = formatoTiempo(fechaDeCompra.toDate());
 
-    const backdropPath = `https://image.tmdb.org/t/p/original/${backdrop_path}`;
+    const backdropPath = `${backdrop_path}`;
     const backgroundStyle = {
         backgroundImage: `url(${backdropPath})`
     }
@@ -32,16 +31,16 @@ const UserTicket = ({ movie, funcion, precio, paymentId, codigoParaRetirar, id, 
                     <div style={backgroundStyle}></div>
                 </div>
 
-                <span className='userTicket_left-order'>{`ORDEN N°: #${id}`}</span>
+                <span className='userTicket_left-order'>{`ORDEN N°: #${ci}`}</span>
 
                 <div className='userTicket_left-items'>
-                    <span> {`${sala} - ${tipo} (${lenguaje})`} </span>
+                    <span> {`${idS} (${lenguaje})`} </span>
 
-                    <span>{title}</span>
+                    <span>{titulo}</span>
 
-                    <span>{`${fechaFuncion} - ${horaFuncion}`}</span>
+                    <span>{`${fechaDeCompraFuncion} - ${horaFuncion}`}</span>
 
-                    <span>{`Butacas: ${seatsNumbers.join(', ')}`}</span>
+                    <span>{`Butacas: ${idB.join(', ')}`}</span>
 
                     <span>{`Total: $${precio}`}</span>
                 </div>
@@ -53,17 +52,17 @@ const UserTicket = ({ movie, funcion, precio, paymentId, codigoParaRetirar, id, 
                     <QRCode
                         size={256}
                         style={{ height: "auto", maxWidth: "100%", width: "100%" }}
-                        value={codigoParaRetirar}
+                        value={codigoT}
                         viewBox={`0 0 256 256`}
                     />
                 </div>
-                <span className='font-bowlby text-[#E85D04] mt-2 userTicket_right-text'>{codigoParaRetirar}</span>
+                <span className='font-bowlby text-[#E85D04] mt-2 userTicket_right-text'>{codigoT}</span>
             </div>
 
             {<div className="userTicket_bottom">
                 <div className='userTicket_bottom-text uppercase xs:text-md px-5 flex flex-col'>
                     <span>Código de pago</span>
-                    <span>{`(${fechaPago} - ${horaPago})`}</span>
+                    <span>{`(${fechaDeCompraPago} - ${horaPago})`}</span>
                 </div>
 
                 <div className='userTicket_bottom-barcode hidden sm:flex'>
@@ -100,13 +99,13 @@ export default UserTicket;
 // import Swal from 'sweetalert2';
 // import { useUser } from '../context/UserContext';
 
-// const UserTicket = ({ id, movie, funcion, precio, codigoParaRetirar, fechaDeEmision, onDelete }) => {
+// const UserTicket = ({ id, movie, funcion, precio, codigoT, fechaDeCompra, onDelete }) => {
 //   // Desestructuración de props para fácil acceso
-//   const { title, posterPath } = movie;
-//   const { sala, horario, seatsNumbers } = funcion;
+//   const { titulo, posterPath } = movie;
+//   const { idS, fecha, idB } = funcion;
 //   const { user } = useUser();
 
-//   // Formato de fecha y hora
+//   // Formato de fechaDeCompra y hora
 //   const formatDate = (dateString) => {
 //     const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
 //     return new Date(dateString).toLocaleDateString(undefined, options);
@@ -131,16 +130,16 @@ export default UserTicket;
 //       <div className="userTicket-info">
 //         <img src={posterPath} alt="Poster" />
 //         <div>
-//           <h3>{title}</h3>
-//           <p>Sala: {sala}</p>
-//           <p>Horario: {formatDate(horario)}</p>
-//           <p>Asientos: {seatsNumbers.join(', ')}</p>
+//           <h3>{titulo}</h3>
+//           <p>idS: {idS}</p>
+//           <p>fecha: {formatDate(fecha)}</p>
+//           <p>Asientos: {idB.join(', ')}</p>
 //           <p>Precio: ${precio}</p>
-//           <p>Fecha de emisión: {formatDate(fechaDeEmision)}</p>
+//           <p>fechaDeCompra de emisión: {formatDate(fechaDeCompra)}</p>
 //         </div>
 //       </div>
 //       <div className="userTicket-qr">
-//         <QRCode value={codigoParaRetirar} />
+//         <QRCode value={codigoT} />
 //       </div>
 //       <button onClick={handleDelete}>Eliminar Ticket</button>
 //     </div>
@@ -154,9 +153,9 @@ export default UserTicket;
 // import Barcode from 'react-barcode';
 // import QRCode from 'react-qr-code';
 
-// const UserTicket = ({ movie, funcion, precio, paymentId, codigoParaRetirar, id, fechaDeEmision }) => {
-//     const { title, poster_path, backdrop_path } = movie;
-//     const { sala, tipo, lenguaje, horario, seatsNumbers } = funcion;
+// const UserTicket = ({ movie, funcion, precio, paymentId, codigoT, id, fechaDeCompra }) => {
+//     const { titulo, poster_path, backdrop_path } = movie;
+//     const { idS, , lenguaje, fecha, idB } = funcion;
 
 //     const formatoTiempo = ( date ) => {
 //         const hh = ('0' + date.getHours()).slice(-2);
@@ -166,12 +165,12 @@ export default UserTicket;
 //         return `${hh}:${mm}:${ss}`;
 //     }
 
-//     const horarioDate = horario.toDate();
-//     const fechaFuncion = horarioDate.toLocaleDateString();
-//     const horaFuncion = horarioDate.getHours() + ':' + horarioDate.getMinutes();
+//     const fechaDate = fecha.toDate();
+//     const fechaDeCompraFuncion = fechaDate.toLocaleDateString();
+//     const horaFuncion = fechaDate.getHours() + ':' + fechaDate.getMinutes();
 
-//     const fechaPago = fechaDeEmision.toDate().toLocaleDateString();
-//     const horaPago = formatoTiempo(fechaDeEmision.toDate());
+//     const fechaDeCompraPago = fechaDeCompra.toDate().toLocaleDateString();
+//     const horaPago = formatoTiempo(fechaDeCompra.toDate());
 
 //     const backdropPath = `https://image.tmdb.org/t/p/original/${backdrop_path}`;
 //     const backgroundStyle = {
@@ -188,13 +187,13 @@ export default UserTicket;
 //                 <span className='userTicket_left-order'>{`ORDEN N°: #${id}`}</span>
 
 //                 <div className='userTicket_left-items'>
-//                     <span> {`${sala} - ${tipo} (${lenguaje})`} </span>
+//                     <span> {`${idS} - ${} (${lenguaje})`} </span>
 
-//                     <span>{title}</span>
+//                     <span>{titulo}</span>
 
-//                     <span>{`${fechaFuncion} - ${horaFuncion}`}</span>
+//                     <span>{`${fechaDeCompraFuncion} - ${horaFuncion}`}</span>
 
-//                     <span>{`Butacas: ${seatsNumbers.join(', ')}`}</span>
+//                     <span>{`Butacas: ${idB.join(', ')}`}</span>
 
 //                     <span>{`Total: $${precio}`}</span>
 //                 </div>
@@ -206,11 +205,11 @@ export default UserTicket;
 //                     <QRCode
 //                         size={256}
 //                         style={{ height: "auto", maxWidth: "100%", width: "100%" }}
-//                         value={codigoParaRetirar}
+//                         value={codigoT}
 //                         viewBox={`0 0 256 256`}
 //                     />
 //                 </div>
-//                 <span className='font-bowlby text-[#E85D04] mt-2 userTicket_right-text'>{codigoParaRetirar}</span>
+//                 <span className='font-bowlby text-[#E85D04] mt-2 userTicket_right-text'>{codigoT}</span>
 //                 <button onClick={() => onDelete(id)} className="userTicket_delete-btn">
 //                     Eliminar Ticket
 //                 </button>
@@ -219,7 +218,7 @@ export default UserTicket;
 //             {<div className="userTicket_bottom">
 //                 <div className='userTicket_bottom-text uppercase xs:text-md px-5 flex flex-col'>
 //                     <span>Código de pago</span>
-//                     <span>{`(${fechaPago} - ${horaPago})`}</span>
+//                     <span>{`(${fechaDeCompraPago} - ${horaPago})`}</span>
 //                 </div>
 
 //                 <div className='userTicket_bottom-barcode hidden sm:flex'>

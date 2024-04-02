@@ -13,7 +13,7 @@ const MovieDetail = ({ id, titulo, imagen, backdrop_path = "../../../public/asse
 
     // Imagenes
     const posterPath = imagen ? `https://image.tmdb.org/t/p/original/${imagen}` : movieNotFound;
-    //const backdropPath = `https://image.tmdb.org/t/p/original/${backdrop_path}`;
+    const backdropPath = `${backdrop_path}`;
     const backgroundStyle = {
         backgroundImage: `url(${backdropPath})`
     }
