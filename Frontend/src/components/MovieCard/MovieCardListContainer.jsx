@@ -16,7 +16,7 @@ const MovieCardListContainer = () => {
             setLoading(true);
             try {
 
-                const response = await axios.get(`/api/Pelicula/GetAll`);
+                const response = await axios.get(`Pelicula/GetAll`);
                 const allMovies = response.data;
 
                 const currentYear = new Date().getFullYear();

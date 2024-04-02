@@ -13,18 +13,18 @@ const MovieCard = ({ id }) => {
     const fetchMovieDetails = async () => {
         try {
 
-            const { data: movieData } = await axios.get(`/api/Pelicula/GetById/${id}`);
+            const { data: movieData } = await axios.get(`Pelicula/GetById/${id}`);
             setMovieDetails(movieData);
 
 
             const genresData = await Promise.all(movieData.idGs.map(async (genreId) => {
-                const response = await axios.get(`/api/Genero/GetById/${genreId}`);
+                const response = await axios.get(`Genero/GetById/${genreId}`);
                 return response.data;
             }));
             setGenres(genresData);
 
             const actorsData = await Promise.all(movieData.idAs.map(async (actorId) => {
-                const response = await axios.get(`/api/Actor/GetById/${actorId}`);
+                const response = await axios.get(`Actor/GetById/${actorId}`);
                 return response.data;
             }));
             setActors(actorsData);
