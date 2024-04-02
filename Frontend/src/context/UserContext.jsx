@@ -80,7 +80,7 @@ const UserProvider = ({ children }) => {
       callback();
       Toast.fire({
         icon: 'success',
-        title: `Bienvenid@ de vuelta ${loggedInUser.NombreS}!`
+        title: `Bienvenid@ de vuelta ${loggedInUser.nombreS}!`
       });
     })
     .catch(error => {
