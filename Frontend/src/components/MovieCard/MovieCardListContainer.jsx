@@ -10,7 +10,7 @@ const MovieCardListContainer = () => {
     useEffect(() => {
         const fetchMovies = async () => {
             try {
-                const { data } = await axios.get('/api/Pelicula/GetAll');
+                const { data } = await axios.get('Pelicula/GetAll');
                 setMovies(data);
                 setLoading(false);
             } catch (error) {
