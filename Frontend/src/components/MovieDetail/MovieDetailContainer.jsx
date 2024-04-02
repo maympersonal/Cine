@@ -9,11 +9,12 @@ const MovieDetailContainer = () => {
 
     const { movieId } = useParams();
     const [movie, setMovie] = useState();
-
+     
+    console.log(movieId + "id de peliculaxxx");
     useEffect(() => {
       scrollTo('main');
       setLoading(true);
-
+        
 
       axios.get(`/Pelicula/GetById/${movieId}`)
           .then(res => { console.log(res.data)
