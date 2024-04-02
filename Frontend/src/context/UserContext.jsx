@@ -15,7 +15,7 @@ const UserProvider = ({ children }) => {
       email: '',
       password: '',
       rol:'',
-      Ci:''
+      ci:''
         
     };
 
@@ -54,7 +54,7 @@ const UserProvider = ({ children }) => {
     const createUser = (newUser, callback) => {
         axios.post('/Usuario/Create', newUser)
             .then(response => {
-                const userWithRol = { ...newUser, rol: response.data.rol };
+                const userWithRol = { ...newUser, rol: response.data.rol, codigo: response.data.codigo };
                 setUser(userWithRol);
                 updateLocalStorage(userWithRol);
                 callback();
