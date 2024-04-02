@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Backend.ServiceLayer;
 using Backend.Models;
 using Backend.Data.DTOs;
+using System.Data;
 
 namespace Backend.Controllers
 {
@@ -33,16 +34,16 @@ namespace Backend.Controllers
         }
 
         [HttpGet("GetById/{id}")]
-        public async Task<ActionResult<Sesion>> GetSesion(int id)
+        public async Task<ActionResult<IEnumerable<Sesion>>> GetSesion(int id)
         {
-            var sesion = await _servicesesion.GetSesion(id);
-
-            if (sesion == null)
+            var pelicula = await _servicepelicula.GetPelicula(id);
+            
+            if (pelicula == null)
             {
                 return NotFound();
             }
 
-            return sesion;
+            return pelicula.Sesions.ToList();
         }
 
         [HttpPut("Update/{id}")] //no funcional hasta agregaer id a sesion o modificar la capa de servicio de sesion para q busque sesiones mediante idp,ids y fecha
@@ -74,7 +75,7 @@ namespace Backend.Controllers
         }
 
         [HttpPost("Create")]
-        public async Task<ActionResult<Sesion>> PostSesion(SesionDtoIn sesion)
+        public async Task<ActionResult<SesionDtoIn>> PostSesion(SesionDtoIn sesion)
         {
             var pelicula=await _servicepelicula.GetPelicula(sesion.IdP);
             if(pelicula is null || pelicula.Duración is null) return BadRequest();
