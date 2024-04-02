@@ -16,7 +16,7 @@ public class CompraByUserTarjetaDtoIn
 
     public DateTime FechaDeCompra { get; set; }
 
-    public ICollection<int>? IdB { get; set; }
+    public ICollection<int> IdB { get; set; }=new List<int>();
 
-    public ICollection<int>? IdD { get; set; }
+    public ICollection<int> IdD { get; set; }=new List<int>();
 }
