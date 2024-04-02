@@ -1,77 +1,132 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import axios from '../../api/axios';
 import Loader from "../Loader/Loader";
 import MovieCardList from './MovieCardList';
 import { scrollTo } from '../Utils/functions';
+import axios from '../../api/axios';
 
 const MovieCardListContainer = () => {
-    const { categoryId = 'inicio' } = useParams();
-    const [loading, setLoading] = useState(true);
-    const [movies, setMovies] = useState([]);
+    const categoryId = useParams().categoryId || 'inicio';
+    const [loading, setLoading] = useState(false);
+    const [movieLists, setMovieLists] = useState([]);
     const [listTitles, setListTitles] = useState([]);
-    const [genre, setGenre] = useState('');
 
     useEffect(() => {
-        categoryId !== 'inicio' ? scrollTo('main') : scrollTo('body');
-        setLoading(true);
         const fetchMovies = async () => {
+            setLoading(true);
             try {
-                const response = await axios.get('Pelicula/GetAll');
-                const fetchedMovies = response.data;
-                const moviesWithDetails = await Promise.all(fetchedMovies.map(async movie => {
 
-                    const genres = await Promise.all(movie.idGs.map(async idG => {
-                        const genreResponse = await axios.get(`Genero/GetById/${idG}`);
-                        return genreResponse.data.nombreG;
-                    }));
+                const response = await axios.get(`/api/Pelicula/GetAll`);
+                const allMovies = response.data;
 
-                    const actors = await Promise.all(movie.idAs.map(async idA => {
-                        const actorResponse = await axios.get(`Actor/GetById/${idA}`);
-                        return actorResponse.data.nombreA;
-                    }));
-                    return { ...movie, genres, actors };
-                }));
-                setMovies(moviesWithDetails);
+                const currentYear = new Date().getFullYear();
+
+
+                const proximosEstrenosMovies = allMovies.filter(movie => movie.anno === currentYear);
+                const carteleraMovies = allMovies.filter(movie => movie.anno < currentYear);
+
+                setMovieLists([carteleraMovies, proximosEstrenosMovies]);
+                setListTitles(["Cartelera", "Próximos Estrenos"]);
             } catch (error) {
-                console.error('Error fetching movies:', error);
+                console.error("Error al cargar las películas:", error);
+            } finally {
+                setLoading(false);
             }
-            setLoading(false);
         };
+
+        categoryId !== 'inicio' && scrollTo('main');
         fetchMovies();
     }, [categoryId]);
-
-    useEffect(() => {
-        if (!isNaN(parseInt(categoryId))) {
-            axios.get(`Genero/GetById/${categoryId}`)
-                .then(res => {
-                    setGenre(res.data.nombreG);
-                    setListTitles([`Cartelera - ${res.data.nombreG}`, `Próximos estrenos - ${res.data.nombreG}`]);
-                })
-                .catch(error => console.error('Error fetching genre name:', error));
-        } else {
-            setListTitles(['Cartelera', 'Próximos estrenos']);
-        }
-    }, [genre, categoryId]);
 
     return (
         <div>
             {!loading ? (
-                movies.length > 0 ? (
-                    movies.map((movie, index) => (
-                        <MovieCardList key={index} movies={[movie]} listTitle={listTitles[index % listTitles.length]} />
-                    ))
-                ) : (
-                    <div>No se encontraron películas.</div>
-                )
-            ) : (
-                <Loader />
-            )}
+                movieLists.map((movieList, index) => (
+                    <MovieCardList movies={movieList} listTitle={listTitles[index]} key={categoryId + index} />
+                ))
+            ) : <Loader />}
         </div>
     );
 };
 
 export default MovieCardListContainer;
+
+
+
+// import React, { useEffect, useState } from "react";
+// import { useParams } from "react-router-dom";
+// import axios from '../../api/axios';
+// import Loader from "../Loader/Loader";
+// import MovieCardList from './MovieCardList';
+// import { scrollTo } from '../Utils/functions';
+
+// const MovieCardListContainer = () => {
+//     const { categoryId = 'inicio' } = useParams();
+//     const [loading, setLoading] = useState(true);
+//     const [movies, setMovies] = useState([]);
+//     const [listTitles, setListTitles] = useState([]);
+//     const [genre, setGenre] = useState('');
+
+//     useEffect(() => {
+//         categoryId !== 'inicio' ? scrollTo('main') : scrollTo('body');
+//         setLoading(true);
+//         const fetchMovies = async () => {
+//             try {
+//                 const response = await axios.get('Pelicula/GetAll');
+//                 const fetchedMovies = response.data;
+//                 const moviesWithDetails = await Promise.all(fetchedMovies.map(async movie => {
+
+//                     const genres = await Promise.all(movie.idGs.map(async idG => {
+//                         const genreResponse = await axios.get(`Genero/GetById/${idG}`);
+//                         return genreResponse.data.nombreG;
+//                     }));
+
+//                     const actors = await Promise.all(movie.idAs.map(async idA => {
+//                         const actorResponse = await axios.get(`Actor/GetById/${idA}`);
+//                         return actorResponse.data.nombreA;
+//                     }));
+//                     return { ...movie, genres, actors };
+//                 }));
+//                 setMovies(moviesWithDetails);
+//             } catch (error) {
+//                 console.error('Error fetching movies:', error);
+//             }
+//             setLoading(false);
+//         };
+//         fetchMovies();
+//     }, [categoryId]);
+
+//     useEffect(() => {
+//         if (!isNaN(parseInt(categoryId))) {
+//             axios.get(`Genero/GetById/${categoryId}`)
+//                 .then(res => {
+//                     setGenre(res.data.nombreG);
+//                     setListTitles([`Cartelera - ${res.data.nombreG}`, `Próximos estrenos - ${res.data.nombreG}`]);
+//                 })
+//                 .catch(error => console.error('Error fetching genre name:', error));
+//         } else {
+//             setListTitles(['Cartelera', 'Próximos estrenos']);
+//         }
+//     }, [genre, categoryId]);
+
+//     return (
+//         <div>
+//             {!loading ? (
+//                 movies.length > 0 ? (
+//                     movies.map((movie, index) => (
+//                         <MovieCardList key={index} movies={[movie]} listTitle={listTitles[index % listTitles.length]} />
+//                     ))
+//                 ) : (
+//                     <div>No se encontraron películas.</div>
+//                 )
+//             ) : (
+//                 <Loader />
+//             )}
+//         </div>
+//     );
+// };
+
+// export default MovieCardListContainer;
 
 
 
