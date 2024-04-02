@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import React from "react";
 import { useParams } from "react-router-dom";
 import Loader from '../Loader/Loader';
 import MovieDetail from './MovieDetail';
@@ -11,21 +12,24 @@ const MovieDetailContainer = () => {
     const [movie, setMovie] = useState();
      
     console.log(movieId + "id de peliculaxxx");
-    useEffect(async () => {
-      scrollTo('main');
-      setLoading(true);
-        
+    
+    useEffect(() => {
+        setLoading(true);
 
-      await axios.get(`/Pelicula/GetById/${movieId}`)
-          .then(res => { console.log(res.data)
-              setMovie(res.data);
-              setLoading(false);
-          })
-          .catch((err) => {
-              console.log(err);
-              setLoading(false);
-          });
-  }, []);
+        const fetchMovies = async () => {
+            try {
+                const { data } = await axios.get(`/Pelicula/GetById/${movieId}`);
+                console.log(data)
+                setMovie(data);
+                setLoading(false);
+            } catch (error) {
+                console.error('Error fetching movies:', error);
+                setLoading(false);
+            }
+        };
+        fetchMovies();
+      scrollTo('main');
+        }, []);
 
     return (
        <div>
