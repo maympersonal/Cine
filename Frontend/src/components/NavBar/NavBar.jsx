@@ -116,21 +116,26 @@
 
 import { useEffect, useState } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
+import axios from '../../api/axios'; // Asegúrate de ajustar esta ruta según tu estructura de proyecto
 import CartWidget from './CartWidget';
 import GenresDropdown from './GenresDropdown';
 import SearchWidget from './SearchWidget';
 import UserWidget from './UserWidget';
 
 const NavBar = () => {
-    // Datos estáticos para los géneros
-    const staticGenres = [
-        { id: 1, name: 'Acción' },
-        { id: 2, name: 'Comedia' },
-        { id: 3, name: 'Drama' },
-        // Agrega más géneros según necesites
-    ];
-    const [genres, setGenres] = useState(staticGenres);
+    const [genres, setGenres] = useState([]);
     const [openNav, setOpenNav] = useState(false);
+
+    useEffect(() => {
+        // Usando axios para obtener los géneros disponibles desde tu backend
+        axios.get(`Genero/GetAll`)
+            .then(res => {
+                // Ordeno los géneros antes de asignarlo
+                const sortedGenres = res.data.sort((g1, g2) => g1.nombreG.localeCompare(g2.nombreG));
+                setGenres(sortedGenres);
+            })
+            .catch(error => console.log(error));
+    }, []);
 
     const closeNav = () => {
         document.body.style.overflow = 'auto';
@@ -214,5 +219,6 @@ const NavBar = () => {
         </header>
     );
 };
+
 
 export default NavBar;
