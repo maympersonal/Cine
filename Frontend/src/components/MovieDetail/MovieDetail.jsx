@@ -6,17 +6,18 @@ import MovieDetailActorList from "./MovieDetailActorList";
 import movieNotFound from '/assets/img/movie-not-found.svg';
 import MovieDetailTrailer from "./MovieDetailTrailer";
 
+//backdrop_path = "../../../public/assets/img/a.webp"
+// const backdropPath = `${backdrop_path}`;
+//     const backgroundStyle = {
+//         backgroundImage: `url(${backdropPath})`
+//     }
 
 
 
-const MovieDetail = ({ id, titulo, imagen, backdrop_path = "../../../public/assets/img/a.webp", sinopsis, duración, idGs, anno, nacionalidad, idAs, trailer }) => {
+const MovieDetail = ({ id, titulo, imagen , sinopsis, duración, idGs, anno, nacionalidad, idAs, trailer }) => {
 
     // Imagenes
-    const posterPath = imagen ? `https://image.tmdb.org/t/p/original/${imagen}` : movieNotFound;
-    const backdropPath = `${backdrop_path}`;
-    const backgroundStyle = {
-        backgroundImage: `url(${backdropPath})`
-    }
+    const posterPath = imagen ? `${imagen}` : movieNotFound;
 
     const [trailerPath, setTrailerPath] = useState('');
 
