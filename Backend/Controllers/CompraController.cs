@@ -103,7 +103,6 @@ namespace Backend.Controllers
             }
 
             if(cliente is null || sesion is null) return NotFound();
-
             var ticket = new Compra
             {
                 IdP=compra.IdP,
@@ -139,15 +138,15 @@ namespace Backend.Controllers
             return CreatedAtAction("GetCompra", new { id = ticket.IdP }, ticket);
         }
 
-        [HttpDelete("Delete/{idp}/{ids}/{ci}/{fecha}")]
-        public async Task<IActionResult> DeleteCompra(int IdP, int IdS,string Ci, DateTime Fecha)
+        [HttpDelete("Delete/{idPg}")]
+        public async Task<IActionResult> DeleteCompra(int idPg)
         {
-            var compra = await _servicecompra.GetCompraByAll(IdP, IdS,Ci,  Fecha);
+            var compra = await _servicecompra.GetCompra(idPg);
             if (compra == null)
             {
                 return NotFound();
             }
-            await _servicecompra.DeleteCompra(IdP, IdS,Ci,  Fecha);
+            await _servicecompra.DeleteCompra(idPg);
             return NoContent();
         }
 

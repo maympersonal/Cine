@@ -124,7 +124,34 @@ namespace Backend.Controllers
 
             return NoContent();
         }
+        [HttpPut("ChangeRol/{id}/{rol}")]
+        public async Task<IActionResult> ChangeToSocio ( string id,string rol)
+        {
+            var Usuario = await _serviceusuario.GetUsuario(id);
 
+            if (Usuario is null)
+            {
+                return NotFound();
+            }
+            Usuario.Rol=rol;
+            try
+            {
+                await _serviceusuario.PutUsuario(Usuario);
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!UsuarioExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
+        }
 
         [HttpPost("Create")]
         public async Task<ActionResult<Usuario>> PostUsuario(UsuarioDtoIn usuario)
