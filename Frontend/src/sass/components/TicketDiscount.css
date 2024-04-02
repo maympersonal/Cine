@@ -1,0 +1,15 @@
+.ticket-discount {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    cursor: pointer;
+    }
+    .ticket {
+        margin-right: 10px; /* Ajusta el espacio entre el nombre y el estado de confianza según sea necesario */
+      }
+    
+      .descuento{
+        margin-right: 10px;
+      }
