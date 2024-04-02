@@ -1,42 +1,103 @@
-//
-
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import axios from '../../api/axios';
 import Loader from '../Loader/Loader';
 import MovieDetail from './MovieDetail';
 import { scrollTo } from '../Utils/functions';
 
 const MovieDetailContainer = () => {
     const [loading, setLoading] = useState(false);
+
     const { movieId } = useParams();
     const [movie, setMovie] = useState();
 
-
     useEffect(() => {
-        scrollTo('main');
-        setLoading(true);
+      scrollTo('main');
+      setLoading(true);
 
 
-        axios.get(`/Pelicula/${movieId}`)
-            .then(res => {
-                setMovie(res.data);
-                setLoading(false);
-            })
-            .catch((err) => {
-                console.log(err);
-                setLoading(false);
-            });
-    }, [movieId]);
+      axios.get(`Pelicula/GetById/${movieId}`)
+          .then(res => {
+              setMovie(res.data);
+              setLoading(false);
+          })
+          .catch((err) => {
+              console.log(err);
+              setLoading(false);
+          });
+  }, [movieId]);
 
     return (
        <div>
-            {!loading ? (movie && <MovieDetail {...movie} />) : <Loader />}
+            {!loading ? <MovieDetail
+                                idP={movie.idP}
+                                titulo={movie.titulo}
+                                sinopsis={movie.sinopsis}
+                                imagen={movie.imagen}
+                                duración={movie.duración}
+                                trailer={movie.trailer}
+                                nacionalidad={movie.nacionalidad}
+                                anno = {movie.anno}
+                                idAs={movie.idAs}
+                                idGs={movie.idGs}
+
+                                                            /> : <Loader/>}
        </div>
-    );
+    )
 }
 
 export default MovieDetailContainer;
+
+// import React, { useEffect, useState } from "react";
+// import { useParams } from "react-router-dom";
+// import axios from '../../api/axios';
+// import Loader from '../Loader/Loader';
+// import MovieDetail from './MovieDetail';
+// import { scrollTo } from '../Utils/functions';
+
+// const MovieDetailContainer = () => {
+//     const [loading, setLoading] = useState(false);
+//     const { movieId } = useParams();
+//     const [movie, setMovie] = useState();
+
+
+    // useEffect(() => {
+    //     scrollTo('main');
+    //     setLoading(true);
+
+
+    //     axios.get(`Pelicula/GetById/${movieId}`)
+    //         .then(res => {
+    //             setMovie(res.data);
+    //             setLoading(false);
+    //         })
+    //         .catch((err) => {
+    //             console.log(err);
+    //             setLoading(false);
+    //         });
+    // }, [movieId]);
+
+//     return (
+//        <div>
+//             {!loading ? (movie && <MovieDetail
+//                             idP={movie.idP}
+//                             titulo={movie.titulo}
+//                             sinopsis={movie.sinopsis}
+//                             imagen={movie.imagen}
+//                             duración={movie.duración}
+//                             trailer={movie.trailer}
+//                             nacionalidad={movie.nacionalidad}
+//                             año = {movie.anno}
+//                             idAs={movie.idAs}
+//                             idGs={movie.idGs}
+//                             start={start}
+//                             end={end}
+//                             listTitle={listTitle}
+//                         />) : <Loader />}
+//        </div>
+//     );
+// }
+
+// export default MovieDetailContainer;
 
 
 // export default MovieDetailContainer;
