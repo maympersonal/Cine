@@ -11,12 +11,12 @@ const MovieDetailContainer = () => {
     const [movie, setMovie] = useState();
      
     console.log(movieId + "id de peliculaxxx");
-    useEffect(() => {
+    useEffect(async () => {
       scrollTo('main');
       setLoading(true);
         
 
-      axios.get(`/Pelicula/GetById/${movieId}`)
+      await axios.get(`/Pelicula/GetById/${movieId}`)
           .then(res => { console.log(res.data)
               setMovie(res.data);
               setLoading(false);
