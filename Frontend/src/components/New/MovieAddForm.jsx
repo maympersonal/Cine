@@ -113,7 +113,7 @@ const MovieAddForm = ({ onSubmit, close, children }) => {
                             <span className="label-text">Nacionalidad</span>
                         </label>
 
-                        <input type="text" name="nacionalidad" className="input input-sm input-bordered w-full max-w-xs" autoComplete="family-name" required onChange={handleInputChange} />
+                        <input type="number" name="nacionalidad" className="input input-sm input-bordered w-full max-w-xs" autoComplete="family-name" required onChange={handleInputChange} />
                     </div>
 
                     <div className="form-control w-full max-w-xs">
