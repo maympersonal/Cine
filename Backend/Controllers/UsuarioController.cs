@@ -97,7 +97,7 @@ namespace Backend.Controllers
         }
 
         [HttpPost("Create")]
-        public async Task<ActionResult<string>> PostUsuario(UsuarioDtoIn usuario)
+        public async Task<ActionResult<Usuario>> PostUsuario(UsuarioDtoIn usuario)
         {
             var newcliente= await _servicecliente.GetCliente(usuario.Ci);
             string codigo = Settings.Settings.GenerarCodigo();
@@ -116,20 +116,19 @@ namespace Backend.Controllers
                     Confiabilidad=true
                 };
             }
+            Usuario usuario1=new Usuario
+            {
+                Ci=usuario.Ci,
+                Apellidos=usuario.Apellidos,
+                NombreS=usuario.NombreS,
+                Puntos=0,
+                Rol="Cliente",
+                CiNavigation=newcliente,
+                Codigo=codigo,
+                Contrasena= GenerarHashSHA256(usuario.Contrasena)
+            };
             try
             {
-
-                Usuario usuario1=new Usuario
-                {
-                    Ci=usuario.Ci,
-                    Apellidos=usuario.Apellidos,
-                    NombreS=usuario.NombreS,
-                    Puntos=0,
-                    Rol="Cliente",
-                    CiNavigation=newcliente,
-                    Codigo=codigo,
-                    Contrasena= GenerarHashSHA256(usuario.Contrasena)
-                };
                 await _serviceusuario.PostUsuario(usuario1);
             }
             catch (DbUpdateException)
@@ -144,7 +143,7 @@ namespace Backend.Controllers
                 }
             }
 
-            return "Cliente";
+            return CreatedAtAction("GetUsuario", new { id = usuario1.Ci }, usuario1);
         }
 
         [HttpDelete("Delete/{id}")]
