@@ -9,7 +9,7 @@ const MovieDetailActorList = ({ idAs }) => {
     return (
         <ul className='movieDetailCard-body_right_cast_actors' ref={ref}>
             {castList && castList.map(actor => (
-                <li key={actor}><MovieDetailActor name={actor} /></li>
+                <li key={actor}><MovieDetailActor name={actor}/></li>
             ))}
 
 
