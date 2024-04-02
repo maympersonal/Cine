@@ -1,6 +1,6 @@
 namespace Backend.Data.DTOs;
 
-public class CompraDtoIn
+public class CompraByUserTarjetaDtoIn
 {
     public int IdP { get; set; }
 
@@ -10,9 +10,13 @@ public class CompraDtoIn
 
     public string Ci { get; set; } = null!;
 
-    public int IdPg { get; set; }
+    public decimal? Cantidad { get; set; }
 
-    public string? Tipo { get; set; }
+    public string CodigoT { get; set; } = null!;
 
     public DateTime FechaDeCompra { get; set; }
+
+    public ICollection<int>? IdB { get; set; }
+
+    public ICollection<int>? IdD { get; set; }
 }
