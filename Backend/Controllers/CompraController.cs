@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Backend.ServiceLayer;
 using Backend.Models;
+using Backend.Data.DTOs;
 
 namespace Backend.Controllers
 {
@@ -14,23 +15,31 @@ namespace Backend.Controllers
     [ApiController]
     public class CompraController : ControllerBase
     {
-        private readonly ServiceCompra _service;
+        private readonly ServiceCompra _servicecompra;
+        private readonly ServiceCliente _servicecliente;
+        private readonly ServiceSesion _servicesesion;
+        private readonly ServiceButaca _servicebutaca;
+        private readonly ServiceDescuento _servicedescuento;
 
-        public CompraController(ServiceCompra service)
+        public CompraController(ServiceCompra servicecompra,ServiceCliente servicecliente,ServiceSesion servicesesion,ServiceButaca servicebutaca,ServiceDescuento servicedescuento)
         {
-            _service = service;
+            _servicecompra = servicecompra;
+            _servicecliente=servicecliente;
+            _servicesesion=servicesesion;  
+            _servicebutaca=servicebutaca;
+            _servicedescuento=servicedescuento;
         }
 
         [HttpGet("GetAll")]
         public async Task<ActionResult<IEnumerable<Compra>>> GetCompras()
         {
-            return Ok(await _service.GetCompras());
+            return Ok(await _servicecompra.GetCompras());
         }
 
         [HttpGet("GetById/{id}")]
         public async Task<ActionResult<Compra>> GetCompra(int id)
         {
-            var compra = await _service.GetCompra(id);
+            var compra = await _servicecompra.GetCompra(id);
 
             if (compra == null)
             {
@@ -51,7 +60,7 @@ namespace Backend.Controllers
 
             try
             {
-                await _service.PutCompra(compra);
+                await _servicecompra.PutCompra(compra);
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -69,11 +78,51 @@ namespace Backend.Controllers
         }
 
         [HttpPost("Create")]
-        public async Task<ActionResult<Compra>> PostCompra(Compra compra)
+        public async Task<ActionResult<Compra>> CompraByUserTarjeta(CompraByUserTarjetaDtoIn compra)
         {
+            var tarjeta = new Tarjetum
+            {
+                CodigoT=compra.CodigoT,
+                Ci=compra.Ci
+            };
+            var pago = new Pago();
+            pago.Web=new Web{ IdPg = pago.IdPg, CodigoT=compra.CodigoT,Cantidad=compra.Cantidad, CodigoTNavigation=tarjeta};
+            var cliente = await _servicecliente.GetCliente(compra.Ci);
+            var sesion = await _servicesesion.GetSesionIdPIdSF(compra.IdP,compra.IdS,compra.Fecha);
+            List<Butaca> butaca=new List<Butaca>();
+
+            foreach(int a in compra.IdB)
+            {
+                butaca.Add(await _servicebutaca.GetButaca(a));
+            }
+            List<Descuento> descuentos=new List<Descuento>();
+
+            foreach(int a in compra.IdD)
+            {
+                descuentos.Add(await _servicedescuento.GetDescuento(a));
+            }
+
+            if(cliente is null || sesion is null) return NotFound();
+
+            var ticket = new Compra
+            {
+                IdP=compra.IdP,
+                IdS=compra.IdS,
+                Fecha=compra.Fecha,
+                Ci=compra.Ci,
+                IdPg=pago.IdPg,
+                Tipo="",
+                FechaDeCompra=compra.FechaDeCompra,
+                MedioAd="Web",
+                IdPgNavigation=pago,
+                CiNavigation = cliente,
+                Sesion=sesion,
+                IdBs=butaca,
+                IdDs=descuentos
+            };
             try
             {
-                await _service.PostCompra(compra);
+                await _servicecompra.PostCompra(ticket);
             }
             catch (DbUpdateException)
             {
@@ -87,24 +136,24 @@ namespace Backend.Controllers
                 }
             }
 
-            return CreatedAtAction("GetCompra", new { id = compra.IdP }, compra);
+            return CreatedAtAction("GetCompra", new { id = ticket.IdP }, ticket);
         }
 
         [HttpDelete("Delete/{id}")]
         public async Task<IActionResult> DeleteCompra(int id)
         {
-            var compra = await _service.GetCompra(id);
+            var compra = await _servicecompra.GetCompra(id);
             if (compra == null)
             {
                 return NotFound();
             }
-            await _service.DeleteCompra(id);
+            await _servicecompra.DeleteCompra(id);
             return NoContent();
         }
 
         private bool CompraExists(int id)
         {
-            return _service.GetCompra(id)!=null;
+            return _servicecompra.GetCompra(id)!=null;
         }
     } 
 }
