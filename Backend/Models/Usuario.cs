@@ -22,7 +22,6 @@ public partial class Usuario
     [Column("Puntos")]
     public int? Puntos { get; set; }
 
-    [JsonIgnore]
     [Column("Codigo", TypeName = "varchar(11)")]
     public string? Codigo { get; set; }
 

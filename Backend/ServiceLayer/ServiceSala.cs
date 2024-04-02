@@ -22,12 +22,12 @@ namespace Backend.ServiceLayer
 
         public async Task<IEnumerable<Sala>> GetSalas()
         {
-            return await _context.Salas.ToListAsync();
+            return await _context.Salas.Include(x=>x.Sesions).ToListAsync();
         }
 
         public async Task<Sala?> GetSala(int id)
         {
-            return await _context.Salas.FindAsync(id);
+            return await _context.Salas.Include(x=>x.Sesions).FirstOrDefaultAsync(x=>x.IdS==id);
         }
 
 
@@ -49,7 +49,7 @@ namespace Backend.ServiceLayer
 
         public async Task DeleteSala(int id)
         {
-            var sala = await _context.Salas.FindAsync(id);
+            var sala = await _context.Salas.Include(x=>x.Sesions).FirstOrDefaultAsync(x=>x.IdS==id);
             if (sala is not null)
             {
                 _context.Salas.Remove(sala);

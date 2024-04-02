@@ -22,17 +22,17 @@ namespace Backend.ServiceLayer
 
         public async Task<IEnumerable<Usuario>> GetUsuarios()
         {
-            return await _context.Usuarios.ToListAsync();
+            return await _context.Usuarios.Include(x=>x.CiNavigation).ToListAsync();
         }
 
         public async Task<Usuario?> GetUsuario(string id)
         {
-            return await _context.Usuarios.FindAsync(id);
+            return await _context.Usuarios.Include(x=>x.CiNavigation).FirstOrDefaultAsync(x=>x.Ci==id);
         }
 
         public async Task<bool> ExistUserCode(string code)
         {
-            var user = await _context.Usuarios.FirstOrDefaultAsync(a => a.Codigo == code);
+            var user = await _context.Usuarios.Include(x=>x.CiNavigation).FirstOrDefaultAsync(a => a.Codigo == code);
             return user != null;
         }
 
@@ -53,7 +53,7 @@ namespace Backend.ServiceLayer
 
         public async Task DeleteUsuario(string id)
         {
-            var usuario = await _context.Usuarios.FindAsync(id);
+            var usuario = await _context.Usuarios.Include(x=>x.CiNavigation).FirstOrDefaultAsync(x=>x.Ci==id);
             if (usuario is not null)
             {
                 _context.Usuarios.Remove(usuario);

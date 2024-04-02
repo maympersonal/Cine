@@ -21,12 +21,12 @@ namespace Backend.ServiceLayer
 
         public async Task<IEnumerable<Cliente>> GetClientes()
         {
-            return await _context.Clientes.ToListAsync();
+            return await _context.Clientes.Include(x=>x.Tarjeta).Include(x=>x.Compras).Include(x=>x.Usuario).ToListAsync();
         }
 
         public async Task<Cliente?> GetCliente(string id)
         {
-            return await _context.Clientes.FindAsync(id);
+            return await _context.Clientes.Include(x=>x.Tarjeta).Include(x=>x.Compras).Include(x=>x.Usuario).FirstOrDefaultAsync(x=>x.Ci==id);
         }
 
         public async Task PutCliente(Cliente cliente)
@@ -44,7 +44,7 @@ namespace Backend.ServiceLayer
 
         public async Task DeleteCliente(string id)
         {
-            var cliente = await _context.Clientes.FindAsync(id);
+            var cliente = await _context.Clientes.Include(x=>x.Tarjeta).Include(x=>x.Compras).Include(x=>x.Usuario).FirstOrDefaultAsync(x=>x.Ci==id);
             if (cliente is not null)
             {
                 _context.Clientes.Remove(cliente);
