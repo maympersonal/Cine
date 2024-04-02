@@ -9,7 +9,7 @@ import MovieDetailContainer from './components/MovieDetail/MovieDetailContainer'
 import Cart from './components/Cart/Cart';
 import MovieCredits from './components/MovieCredits/MovieCredits';
 import UserTickets from './components/UserTickets/UserTickets';
-
+import SearchBar from './components/New/SearchBar (2)';
 import { CartProvider } from './context/CartContext'
 import { UserProvider } from './context/UserContext'
 
@@ -36,6 +36,7 @@ function App() {
 
                         <Route path='/user/tickets' element={<main className={mainLayout}><UserTickets /></main>}></Route>
 
+                        <Route path='/taquillero/confiabilidad' element={<main className={mainLayout}><SearchBar/></main>}/>
                     </Routes>
 
                     <Footer />

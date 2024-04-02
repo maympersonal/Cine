@@ -61,7 +61,8 @@ const UserWidget = ({ btnStyles }) => {
 
                 {isLogged ?
                     <ul tabIndex={0} className="mt-3 p-2 shadow menu menu-compact dropdown-content bg-base-100 rounded-box w-52 text-black font-albert font-semibold">
-                        <li className="text-lg text-center btn btn-primary pointer-events-none">{user.firstName}</li>
+                        <li className="text-lg text-center btn btn-primary pointer-events-none">{user.nombreS}</li>
+                        <li onClick={closeDropDown}> <Link to={'/taquillero/confiabilidad'} className='text-lg'> Confiabilidad </Link> </li>
                         <li onClick={closeDropDown}> <Link to={'/user/tickets'} className='text-lg'> Mis tickets </Link> </li>
                         <li onClick={closeDropDown}> <button onClick={logout} className='text-lg'> Salir </button> </li>
                     </ul>

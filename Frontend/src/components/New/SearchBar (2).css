@@ -1,6 +1,6 @@
 /* SearchBar.css */
 .search-bar {
-    display: flex;
+    display: block;
     justify-content: center;
     align-items: center;
     height: 100vh; /* Altura de la pantalla completa */

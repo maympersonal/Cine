@@ -32,7 +32,7 @@ public partial class Usuario
     [Column("Rol", TypeName = "varchar(10)")]
     public string? Rol { get; set; }
 
-    [JsonIgnore]
+    
     [ForeignKey(nameof(Ci))]
     public virtual Cliente CiNavigation { get; set; } = null!;
 }

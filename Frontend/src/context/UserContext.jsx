@@ -15,7 +15,7 @@ const UserProvider = ({ children }) => {
       email: '',
       password: '',
       rol:'',
-      Ci:''
+      ci:''
         
     };
 
@@ -54,14 +54,14 @@ const UserProvider = ({ children }) => {
     const createUser = (newUser, callback) => {
         axios.post('/Usuario/Create', newUser)
             .then(response => {
-                const userWithRol = { ...newUser, rol: response.data.rol };
+                const userWithRol = { ...newUser, rol: response.data.rol, codigo: response.data.codigo };
                 setUser(userWithRol);
                 updateLocalStorage(userWithRol);
                 callback();
-                console.log('registrau'  + response.data.rol)
+                console.log('registrau    '+ response.data.rol)
                 Toast.fire({
                     icon: 'success',
-                    title: `Gracias por registrarte ${newUser.NombreS}!`
+                    title: `Gracias por registrarte ${newUser.nombreS}!`
                 });
             })
             .catch(error => console.log(error + " candelaaaaaa"));

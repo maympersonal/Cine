@@ -5,10 +5,13 @@ import CartWidget from './CartWidget'
 import GenresDropdown from './GenresDropdown';
 import SearchWidget from './SearchWidget';
 import UserWidget from './UserWidget';
+import { useUser } from '../../context/UserContext';
 
 const NavBar = () => {
     const [genres, setGenres] = useState([]);
     const [openNav, setOpenNav] = useState(false);
+    const {user,isLogged}=useUser();
+    
 
 
     useEffect(() => {
@@ -58,6 +61,7 @@ const NavBar = () => {
                     <i className="fa-solid fa-film "></i>
                     <span>CINE++</span>
                 </Link>
+                {isLogged?<span>Ptos: {user.puntos}</span>:null}
             </div>
 
             {/* Nav versión desktop  */}
