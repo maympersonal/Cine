@@ -79,8 +79,8 @@ const MovieAddForm = ({ onSubmit, close, children }) => {
             }
 
             onSubmit(pelicula, close);
-        }
     }
+    
 
     return (
         <div>
@@ -161,5 +161,5 @@ const MovieAddForm = ({ onSubmit, close, children }) => {
         </div>
     );
 
-
+}
 export default MovieAddForm;
