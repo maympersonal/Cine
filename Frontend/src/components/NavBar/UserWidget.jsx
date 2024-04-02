@@ -65,8 +65,8 @@ const UserWidget = ({ btnStyles }) => {
                     <ul tabIndex={0} className="mt-3 p-2 shadow menu menu-compact dropdown-content bg-base-100 rounded-box w-52 text-black font-albert font-semibold">
                         
                         <li className="text-lg text-center btn btn-primary pointer-events-none">{user.nombreS}</li>
-                        <li onClick={closeDropDown}> <button onClick={seeForm} className='text-lg'> Añadir Pelicula </button> </li>
-                        <li onClick={closeDropDown}> <Link to={'/taquillero/confiabilidad'} className='text-lg'> Confiabilidad </Link> </li>
+                        {user.rol==="Admin"?<li onClick={closeDropDown}> <button onClick={seeForm} className='text-lg'> Añadir Pelicula </button> </li>:null}
+                        {(user.rol==="Taquillero"||user.rol==="Admin")?<li onClick={closeDropDown}> <Link to={'/taquillero/confiabilidad'} className='text-lg'> Usuarios </Link> </li>:null}
                         <li onClick={closeDropDown}> <Link to={'/user/tickets'} className='text-lg'> Mis tickets </Link> </li>
                         <li onClick={closeDropDown}> <button onClick={logout} className='text-lg'> Salir </button> </li>
                     </ul>

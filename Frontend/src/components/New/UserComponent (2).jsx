@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import './UserComponent (2).css'; // Asegúrate de tener el archivo CSS para el estilo
 import axios from '../../api/axios';
 
-const ClienteCard = ({ nombre, estadoInicial ,ci,correo}) => {
+const ClienteCard = ({ nombre, estadoInicial ,ci,correo,rol}) => {
   const [estadoConfianza, setEstadoConfianza] = useState(estadoInicial);
   const [eliminado, setEliminado] = useState(false);
   
@@ -29,9 +29,9 @@ const ClienteCard = ({ nombre, estadoInicial ,ci,correo}) => {
       <button onClick={cambiarEstadoConfianza}>
         Cambiar estado
       </button>
-      <button onClick={handleEliminar} className="eliminar-btn" disabled={eliminado}>
+      {rol==="Admin"?<button onClick={handleEliminar} className="eliminar-btn" disabled={eliminado}>
         { 'Eliminar'}
-      </button>
+      </button>:null}
     </div>
   );
 };
