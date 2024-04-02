@@ -25,7 +25,7 @@ const MovieDetailContainer = () => {
               console.log(err);
               setLoading(false);
           });
-  }, [movieId]);
+  }, []);
 
     return (
        <div>
