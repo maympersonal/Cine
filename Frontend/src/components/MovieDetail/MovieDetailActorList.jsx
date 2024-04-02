@@ -2,14 +2,14 @@ import { useRef } from "react";
 import { Link } from "react-router-dom";
 import MovieDetailActor from "./MovieDetailActor";
 
-const MovieDetailActorList = ({ cast, length = 13 }) => {
-    const castList = cast.slice(0, length);
+const MovieDetailActorList = ({ idAs, length = 13 }) => {
+    const castList = idAs.slice(0, length);
     const ref = useRef();
 
     return (
         <ul className='movieDetailCard-body_right_cast_actors' ref={ref}>
             {castList && castList.slice(0, 5).map(actor => (
-                <li key={actor.id}><MovieDetailActor {...actor} /></li>
+                <li key={actor}><MovieDetailActor name={actor} /></li>
             ))}
 
 
