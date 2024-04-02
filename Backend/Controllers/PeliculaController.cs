@@ -45,14 +45,8 @@ namespace Backend.Controllers
                     Titulo = peli.Titulo,
                     Imagen = peli.Imagen,
                     Trailer = peli.Trailer,
-                    IdAs = peli.IdAs.Select(x=> new ActorDtoOut
-                    {
-                        IdA=x.IdA
-                    }).ToList(),
-                    IdGs = peli.IdGs.Select(x=>new GeneroDtoOut
-                    {
-                        IdG=x.IdG
-                    }).ToList()
+                    IdAs = peli.IdAs.Select(x=> x.IdA).ToList(),
+                    IdGs = peli.IdGs.Select(x=>x.IdG).ToList()
                 };
 
                 result.Add(addpeli); 
@@ -80,14 +74,8 @@ namespace Backend.Controllers
                 Titulo=pelicula.Titulo,
                 Imagen=pelicula.Imagen,
                 Trailer=pelicula.Trailer,
-                IdAs = pelicula.IdAs.Select(x=> new ActorDtoOut
-                    {
-                        IdA=x.IdA
-                    }).ToList(),
-                IdGs = pelicula.IdGs.Select(x=>new GeneroDtoOut
-                    {
-                        IdG=x.IdG
-                    }).ToList()
+                IdAs = pelicula.IdAs.Select(x=> x.IdA).ToList(),
+                IdGs = pelicula.IdGs.Select(x=>x.IdG).ToList()
             };
             
             return addpeli;
