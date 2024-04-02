@@ -36,6 +36,9 @@ const MovieDetailContainer = () => {
     );
 }
 
+export default MovieDetailContainer;
+
+
 // export default MovieDetailContainer;
 
 // import React, { useEffect, useState } from "react";

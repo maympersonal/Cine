@@ -25,7 +25,7 @@ const MovieCardList = ({ movies, listTitle }) => {
             }
         }, 1000);
 
-    };    
+    };
 
     return (
         <div className='flex flex-col items-center font-bowlby mb-7 pb-10'>
