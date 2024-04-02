@@ -6,15 +6,15 @@ import MovieDetail from './MovieDetail';
 import { scrollTo } from '../Utils/functions';
 
 const MovieDetailContainer = () => {
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
 
     const { movieId } = useParams();
-    const [movie, setMovie] = useState();
+    const [movie, setMovie] = useState({});
      
     console.log(movieId + "id de peliculaxxx");
     
     useEffect(() => {
-        setLoading(true);
+        
 
         const fetchMovies = async () => {
             try {
@@ -28,9 +28,9 @@ const MovieDetailContainer = () => {
             }
         };
         fetchMovies();
-      scrollTo('main');
-        }, []);
-
+        scrollTo('main');
+        
+    }, [movieId]);
     return (
        <div>
             {!loading ? <MovieDetail
