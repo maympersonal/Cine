@@ -3,12 +3,14 @@ import React, { useState } from 'react';
 import './SearchBar (2).css';
 import axios from '../../api/axios';
 import ClienteCard from './UserComponent (2)';
+import { useUser } from '../../context/UserContext';
 
 const SearchBar = ({ onSearch }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [searched, setSearched] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [user,setUser]=useState(null)
+  const [searchedUser,setUser]=useState(null)
+  const {user}=useUser();
 
   const handleChange = (e) => {
     setSearchTerm(e.target.value);
@@ -36,7 +38,7 @@ const SearchBar = ({ onSearch }) => {
         />
         <button type="submit">Buscar</button>
       </form>
-      {(!loading&&searched)?<ClienteCard nombre={user.nombreS} estadoInicial={user.ciNavigation.confiabilidad} correo={user.ciNavigation.correo} ci={user.ci} rol={user.rol}/>:null}
+      {(!loading&&searched)?<ClienteCard nombre={searchedUser.nombreS} estadoInicial={searchedUser.ciNavigation.confiabilidad} correo={searchedUser.ciNavigation.correo} ci={searchedUser.ci} rol={user.rol}/>:null}
       {loading && <div className="loading-message">Cargando...</div>}
     </div>
   );
