@@ -58,60 +58,27 @@
 
 // export default SearchDropdown;
 
+import React from "react";
+import { Link } from "react-router-dom";
 
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-
-// Datos simulados para las películas
-const mockMovies = [
-  { id: 1, title: 'El Rey León', },
-  { id: 2, title: 'Buscando a Nemo', },
-  { id: 3, title: 'Toy Story', },
-  { id: 4, title: 'Los Increíbles', },
-  // Agrega más películas según sea necesario
-];
-
-const SearchDropdown = ({ searchTerm, close }) => {
-  const [loading, setLoading] = useState(false);
-  const [filteredMovies, setFilteredMovies] = useState([]);
-
-  useEffect(() => {
-    if (!searchTerm) {
-      setFilteredMovies([]);
-      return;
-    }
-
-    // Simula una carga de datos
-    setLoading(true);
-
-    // Filtra los datos simulados basados en el término de búsqueda
-    const results = mockMovies.filter(movie =>
-      movie.title.toLowerCase().includes(searchTerm.toLowerCase())
+const SearchDropdown = ({ searchResults }) => {
+    return (
+        <div className="absolute top-full left-0 right-0 z-10 bg-white shadow-lg max-h-60 overflow-auto">
+            {searchResults.length > 0 ? (
+                searchResults.map((movie) => (
+                    <Link
+                        to={`/movie/${movie.id}`}
+                        className="block px-4 py-2 hover:bg-gray-100"
+                        key={movie.id}
+                    >
+                        {movie.titulo}
+                    </Link>
+                ))
+            ) : (
+                <div className="px-4 py-2">No se encontraron películas.</div>
+            )}
+        </div>
     );
-
-    setFilteredMovies(results);
-    setLoading(false);
-  }, [searchTerm]);
-
-  return (
-    <div className="search-dropdown">
-      <ul className="dropdown-content menu w-full mt-2">
-        {!loading ? (
-          filteredMovies.length > 0 ? (
-            filteredMovies.map(movie => (
-              <li key={movie.id}>
-                <Link to={`/movie/${movie.id}`} onClick={close}>{movie.title}</Link>
-              </li>
-            ))
-          ) : (
-            <li>Sin resultados</li>
-          )
-        ) : (
-          <li>Cargando...</li>
-        )}
-      </ul>
-    </div>
-  );
 };
 
 export default SearchDropdown;
