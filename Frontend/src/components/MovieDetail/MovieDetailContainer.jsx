@@ -16,7 +16,7 @@ const MovieDetailContainer = () => {
 
 
       axios.get(`Pelicula/GetById/${movieId}`)
-          .then(res => {
+          .then(res => { console.log(res.data)
               setMovie(res.data);
               setLoading(false);
           })
