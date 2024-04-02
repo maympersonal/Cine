@@ -30,6 +30,9 @@ const MovieCardList = ({ movies, listTitle }) => {
                             sinopsis={movie.sinopsis}
                             imagen={movie.imagen}
                             duración={movie.duración}
+                            trailer={movie.trailer}
+                            nacionalidad={movie.nacionalidad}
+                            año = {movie.anno}
                             idAs={movie.idAs}
                             idGs={movie.idGs}
                             start={start}
