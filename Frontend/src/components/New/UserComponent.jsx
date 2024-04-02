@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './UserComponent.css'; // Asegúrate de tener el archivo CSS para el estilo
 
-const ClienteCard = ({ nombre, estadoInicial }) => {
+const ClienteCardd = ({ nombre, estadoInicial }) => {
   const [estadoConfianza, setEstadoConfianza] = useState(estadoInicial);
 
   const cambiarEstadoConfianza = () => {
@@ -21,4 +21,4 @@ const ClienteCard = ({ nombre, estadoInicial }) => {
   );
 };
 
-export default ClienteCard;
+export default ClienteCardd;
