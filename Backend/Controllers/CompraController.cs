@@ -139,15 +139,15 @@ namespace Backend.Controllers
             return CreatedAtAction("GetCompra", new { id = ticket.IdP }, ticket);
         }
 
-        [HttpDelete("Delete/{id}")]
-        public async Task<IActionResult> DeleteCompra(int id)
+        [HttpDelete("Delete/{idp}/{ids}/{ci}/{fecha}")]
+        public async Task<IActionResult> DeleteCompra(int IdP, int IdS,string Ci, DateTime Fecha)
         {
-            var compra = await _servicecompra.GetCompra(id);
+            var compra = await _servicecompra.GetCompraByAll(IdP, IdS,Ci,  Fecha);
             if (compra == null)
             {
                 return NotFound();
             }
-            await _servicecompra.DeleteCompra(id);
+            await _servicecompra.DeleteCompra(IdP, IdS,Ci,  Fecha);
             return NoContent();
         }
 
