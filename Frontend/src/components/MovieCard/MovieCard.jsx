@@ -11,7 +11,7 @@ const MovieCard = ({ id }) => {
 
     const fetchMovieDetails = async () => {
         try {
-            const { data } = await axios.get(`/api/Pelicula/GetById/${id}`);
+            const { data } = await axios.get(`Pelicula/GetById/${id}`);
             setMovieDetails(data);
             setGenres(data.idGs); // Directamente asigna los géneros ya que vienen como strings
             setActors(data.idAs); // Directamente asigna los actores ya que vienen como strings
