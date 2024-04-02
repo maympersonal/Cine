@@ -4,6 +4,7 @@ import axios from '../api/axios';
 import Swal from "sweetalert2";
 import PropTypes from 'prop-types';
 
+
 const UserContext = React.createContext([]);
 
 const useUser = () => useContext(UserContext);
@@ -16,7 +17,7 @@ const UserProvider = ({ children }) => {
       password: '',
       rol:'',
       ci:''
-        
+
     };
 
   const localStorageUser = localStorage.getItem('activeUser') !== 'undefined' ? localStorage.getItem('activeUser') : null;
@@ -83,7 +84,7 @@ const UserProvider = ({ children }) => {
 
   const login = (inUser, callback) => {
     axios.post("/Usuario/LogUser",{
-      
+
       Ci: inUser.Ci,
       Contrasena: inUser.Contrasena // Asegúrate de manejar la contraseña de forma segura
     })

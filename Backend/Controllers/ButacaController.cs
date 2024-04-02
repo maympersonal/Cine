@@ -46,7 +46,7 @@ namespace Backend.Controllers
         public async Task<IActionResult> PutButaca(int id, ButacaDtoIn butaca)
         {
             var Oldbutaca= await _service.GetButaca(id);
-            if (id != butaca.IdB || Oldbutaca is null)
+            if ( Oldbutaca is null)
             {
                 return BadRequest();
             }
@@ -76,11 +76,10 @@ namespace Backend.Controllers
         {
             var Newbutaca=new Butaca
             {
-                IdB=butaca.IdB,
                 IdS=butaca.IdS
             };
             await _service.PostButaca(Newbutaca);
-            return CreatedAtAction("GetButaca", new { id = butaca.IdB }, butaca);
+            return CreatedAtAction("GetButaca", new { id = Newbutaca.IdB }, Newbutaca);
         }
 
 

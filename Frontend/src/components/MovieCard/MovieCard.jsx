@@ -8,6 +8,9 @@ const MovieCard = ({
     sinopsis,
     imagen,
     duración,
+    trailer,
+    nacionalidad,
+    anno,
     idAs,
     idGs
 }) => {
@@ -27,6 +30,9 @@ const MovieCard = ({
                 <h2 className="movieCard_info__title uppercase">{titulo}</h2>
                 <p>{sinopsis || 'No hay información sobre la sinopsis de esta película.'}</p>
                 <div>Duración: {duración} minutos</div>
+                <div>trailer: {trailer}</div>
+                <div>nacionalidad: {nacionalidad}</div>
+                <div>anno: {anno}</div>
                 <div>Género(s): {genres}</div>
                 <div>Elenco: {actors}</div>
                 <Link to={`/movie/${idP}`}>

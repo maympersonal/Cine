@@ -25,6 +25,10 @@ namespace Backend.ServiceLayer
             return await _context.Compras.Include(x=>x.CiNavigation).Include(x=>x.IdPgNavigation).Include(x=>x.Sesion).Include(x=>x.IdBs).Include(x=>x.IdDs).ToListAsync();
         }
 
+        public async Task<Compra?> GetCompraByAll(int IdP, int IdS,string Ci, DateTime Fecha)
+        {
+            return await _context.Compras.Include(x=>x.CiNavigation).Include(x=>x.IdPgNavigation).Include(x=>x.Sesion).Include(x=>x.IdBs).Include(x=>x.IdDs).FirstOrDefaultAsync(x=>x.IdP==IdP && x.IdS==IdS && x.Ci==Ci && x.Fecha == Fecha);
+        }
 
         public async Task<Compra?> GetCompra(int id)
         {
@@ -48,10 +52,9 @@ namespace Backend.ServiceLayer
         }
 
 
-        public async Task DeleteCompra(int id)
+        public async Task DeleteCompra(int IdP, int IdS,string Ci, DateTime Fecha)
         {
-            var compra = await _context.Compras.Include(x=>x.CiNavigation).Include(x=>x.IdPgNavigation).Include(x=>x.Sesion).Include(x=>x.IdBs).Include(x=>x.IdDs).FirstOrDefaultAsync(x=>x.IdP==id);
-            if (compra is not null)
+            var compra = await _context.Compras.Include(x=>x.CiNavigation).Include(x=>x.IdPgNavigation).Include(x=>x.Sesion).Include(x=>x.IdBs).Include(x=>x.IdDs).FirstOrDefaultAsync(x=>x.IdP==IdP && x.IdS==IdS && x.Ci==Ci && x.Fecha == Fecha);
             {
                 _context.Compras.Remove(compra);
                 await _context.SaveChangesAsync();
