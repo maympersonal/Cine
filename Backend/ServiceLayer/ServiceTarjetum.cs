@@ -22,13 +22,13 @@ namespace Backend.ServiceLayer
 
         public async Task<IEnumerable<Tarjetum>> GetTarjeta()
         {
-            return await _context.Tarjeta.ToListAsync();
+            return await _context.Tarjeta.Include(x=>x.CiNavigation).Include(x=>x.Webs).ToListAsync();
         }
 
 
         public async Task<Tarjetum?> GetTarjetum(string id)
         {
-            return await _context.Tarjeta.FindAsync(id);
+            return await _context.Tarjeta.Include(x=>x.CiNavigation).Include(x=>x.Webs).FirstOrDefaultAsync(x=>x.CodigoT==id);
         }
 
         public async Task PutTarjetum( Tarjetum tarjetum)
@@ -48,7 +48,7 @@ namespace Backend.ServiceLayer
 
         public async Task DeleteTarjetum(string id)
         {
-            var tarjetum = await _context.Tarjeta.FindAsync(id);
+            var tarjetum = await _context.Tarjeta.Include(x=>x.CiNavigation).Include(x=>x.Webs).FirstOrDefaultAsync(x=>x.CodigoT==id);
             if (tarjetum is not null)
             {
                 _context.Tarjeta.Remove(tarjetum);

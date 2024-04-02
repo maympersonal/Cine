@@ -55,11 +55,11 @@ const RegistrationForm = ({ onSubmit, close, children }) => {
             })
         } else {
             const user = {
-                Ci: carnetIdentidad,
-                NombreS: firstName,
-                Apellidos:lastName,
-                Correo:email,
-                Contrasena:password,
+                ci: carnetIdentidad,
+                nombreS: firstName,
+                apellidos:lastName,
+                correo:email,
+                contrasena:password,
             }
 
             onSubmit(user, close);

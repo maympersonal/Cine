@@ -22,13 +22,13 @@ namespace Backend.ServiceLayer
 
         public async Task<IEnumerable<Sesion>> GetSesions()
         {
-            return await _context.Sesions.ToListAsync();
+            return await _context.Sesions.Include(x=>x.Compras).Include(x=>x.IdSNavigation).Include(x=>x.IdPNavigation).ToListAsync();
         }
 
 
         public async Task<Sesion?> GetSesion(int id)
         {
-            return await _context.Sesions.FindAsync(id);
+            return await _context.Sesions.Include(x=>x.Compras).Include(x=>x.IdSNavigation).Include(x=>x.IdPNavigation).FirstOrDefaultAsync(x=>x.IdP==id);
         }
 
         public async Task PutSesion(Sesion sesion)
@@ -49,7 +49,7 @@ namespace Backend.ServiceLayer
 
         public async Task DeleteSesion(int id)
         {
-            var sesion = await _context.Sesions.FindAsync(id);
+            var sesion = await _context.Sesions.Include(x=>x.Compras).Include(x=>x.IdSNavigation).Include(x=>x.IdPNavigation).FirstOrDefaultAsync(x=>x.IdP==id);
             if (sesion is not null)
             {
                 _context.Sesions.Remove(sesion);
@@ -57,6 +57,7 @@ namespace Backend.ServiceLayer
             }
         }
 
+        //arreglar esto
         public async Task<bool> ExistSesion(DateTime time,int duration,int IdS)
         {
                         // Calcular la hora final sumando la duración a la hora de inicio
@@ -64,7 +65,7 @@ namespace Backend.ServiceLayer
 
             // Consultar la base de datos para ver si hay alguna sesión que coincida con los criterios
             return await _context.Sesions
-                .FirstOrDefaultAsync(s => s.Fecha >= time && s.Fecha <= horaFinal && s.IdS == IdS) != null;
+                .FirstOrDefaultAsync(s =>( (s.Fecha >= time && s.Fecha <= horaFinal)||(s.Fecha.AddMinutes((int)s.IdPNavigation.Duración) >= time && s.Fecha.AddMinutes((int)s.IdPNavigation.Duración)<= horaFinal) || (s.Fecha<=time && s.Fecha.AddMinutes((int)s.IdPNavigation.Duración)>=horaFinal))&& s.IdS == IdS) != null;
         }
     }
 }

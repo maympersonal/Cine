@@ -21,13 +21,13 @@ namespace Backend.ServiceLayer
 
         public async Task<IEnumerable<Genero>> GetGeneros()
         {
-            return await _context.Generos.ToListAsync();
+            return await _context.Generos.Include(x=>x.IdPs).ToListAsync();
         }
 
 
         public async Task<Genero?> GetGenero(int id)
         {
-            return await _context.Generos.FindAsync(id);
+            return await _context.Generos.Include(x=>x.IdPs).FirstOrDefaultAsync(x=>x.IdG==id);
         }
 
         public async Task PutGenero(Genero genero)
@@ -46,7 +46,7 @@ namespace Backend.ServiceLayer
 
         public async Task DeleteGenero(int id)
         {
-            var genero = await _context.Generos.FindAsync(id);
+            var genero = await _context.Generos.Include(x=>x.IdPs).FirstOrDefaultAsync(x=>x.IdG==id);
             if (genero is not null)
             {
                 _context.Generos.Remove(genero);

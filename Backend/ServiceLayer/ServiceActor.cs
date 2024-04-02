@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Backend.Data;
 using Backend.Models;
+using NuGet.Versioning;
 
 namespace Backend.ServiceLayer
 {
@@ -23,13 +24,13 @@ namespace Backend.ServiceLayer
 
         public async Task<IEnumerable<Actor>> GetActors()
         {
-            return await _context.Actors.ToListAsync();
+            return await _context.Actors.Include(x=>x.IdPs).ToListAsync();
         }
 
 
         public async Task<Actor?> GetActor(int id)
         {
-            return await _context.Actors.FindAsync(id);
+            return await _context.Actors.Include(x=>x.IdPs).FirstOrDefaultAsync(x=>x.IdA==id);
         }
 
 
@@ -50,7 +51,7 @@ namespace Backend.ServiceLayer
 
         public async Task DeleteActor(int id)
         {
-            var actor = await _context.Actors.FindAsync(id);
+            var actor = await _context.Actors.Include(x=>x.IdPs).FirstOrDefaultAsync(x=>x.IdA==id);
             if (actor is not null)
             {
                 _context.Actors.Remove(actor);

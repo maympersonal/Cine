@@ -21,12 +21,12 @@ namespace Backend.ServiceLayer
 
         public async Task<IEnumerable<Descuento>> GetDescuentos()
         {
-            return await _context.Descuentos.ToListAsync();
+            return await _context.Descuentos.Include(x=>x.Compras).ToListAsync();
         }
 
         public async Task<Descuento?> GetDescuento(int id)
         {
-            return await _context.Descuentos.FindAsync(id);
+            return await _context.Descuentos.Include(x=>x.Compras).FirstOrDefaultAsync(x=>x.IdD==id);
         }
 
         public async Task PutDescuento(Descuento descuento)
@@ -46,7 +46,7 @@ namespace Backend.ServiceLayer
 
         public async Task DeleteDescuento(int id)
         {
-            var descuento = await _context.Descuentos.FindAsync(id);
+            var descuento = await _context.Descuentos.Include(x=>x.Compras).FirstOrDefaultAsync(x=>x.IdD==id);
             if (descuento is not null)
             {
                 _context.Descuentos.Remove(descuento);

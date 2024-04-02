@@ -22,13 +22,13 @@ namespace Backend.ServiceLayer
 
         public async Task<IEnumerable<Pelicula>> GetPeliculas()
         {
-            return await _context.Peliculas.Include(x=>x.IdAs).Include(x=>x.IdGs).ToListAsync();
+            return await _context.Peliculas.Include(x=>x.IdAs).Include(x=>x.IdGs).Include(x=>x.Sesions).ToListAsync();
         }
 
 
         public async Task<Pelicula?> GetPelicula(int id)
         {
-            return await _context.Peliculas.Include(x=>x.IdGs).Include(x=>x.IdAs).FirstOrDefaultAsync(x=>x.IdP==id);
+            return await _context.Peliculas.Include(x=>x.IdGs).Include(x=>x.IdAs).Include(x=>x.Sesions).FirstOrDefaultAsync(x=>x.IdP==id);
         }
 
 
@@ -70,7 +70,7 @@ namespace Backend.ServiceLayer
 
         public async Task DeletePelicula(int id)
         {
-            var pelicula = await _context.Peliculas.FindAsync(id);
+            var pelicula = await _context.Peliculas.Include(x=>x.IdGs).Include(x=>x.IdAs).Include(x=>x.Sesions).FirstOrDefaultAsync(x=>x.IdP==id);
             if (pelicula is not null)
             {
                 _context.Peliculas.Remove(pelicula);

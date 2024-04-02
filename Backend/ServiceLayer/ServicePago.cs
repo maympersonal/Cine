@@ -21,12 +21,12 @@ namespace Backend.ServiceLayer
 
         public async Task<IEnumerable<Pago>> GetPagos()
         {
-            return await _context.Pagos.ToListAsync();
+            return await _context.Pagos.Include(x=>x.Compras).Include(x=>x.Efectivo).Include(x=>x.Punto).Include(x=>x.Web).ToListAsync();
         }
 
         public async Task<Pago?> GetPago(int id)
         {
-            return await _context.Pagos.FindAsync(id);
+            return await _context.Pagos.Include(x=>x.Compras).Include(x=>x.Efectivo).Include(x=>x.Punto).Include(x=>x.Web).FirstOrDefaultAsync(x=>x.IdPg==id);
         }
 
 
@@ -47,7 +47,7 @@ namespace Backend.ServiceLayer
 
         public async Task DeletePago(int id)
         {
-            var pago = await _context.Pagos.FindAsync(id);
+            var pago = await _context.Pagos.Include(x=>x.Compras).Include(x=>x.Efectivo).Include(x=>x.Punto).Include(x=>x.Web).FirstOrDefaultAsync(x=>x.IdPg==id);
             if (pago is not null)
             {
                 _context.Pagos.Remove(pago);

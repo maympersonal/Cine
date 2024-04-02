@@ -22,14 +22,14 @@ namespace Backend.ServiceLayer
 
         public async Task<IEnumerable<Compra>> GetCompras()
         {
-            return await _context.Compras.ToListAsync();
+            return await _context.Compras.Include(x=>x.CiNavigation).Include(x=>x.IdPgNavigation).Include(x=>x.Sesion).Include(x=>x.IdBs).Include(x=>x.IdDs).ToListAsync();
         }
 
 
         public async Task<Compra?> GetCompra(int id)
         {
 
-            return await _context.Compras.FindAsync(id);
+            return await _context.Compras.Include(x=>x.CiNavigation).Include(x=>x.IdPgNavigation).Include(x=>x.Sesion).Include(x=>x.IdBs).Include(x=>x.IdDs).FirstOrDefaultAsync(x=>x.IdP==id);
         }
 
 
@@ -50,7 +50,7 @@ namespace Backend.ServiceLayer
 
         public async Task DeleteCompra(int id)
         {
-            var compra = await _context.Compras.FindAsync(id);
+            var compra = await _context.Compras.Include(x=>x.CiNavigation).Include(x=>x.IdPgNavigation).Include(x=>x.Sesion).Include(x=>x.IdBs).Include(x=>x.IdDs).FirstOrDefaultAsync(x=>x.IdP==id);
             if (compra is not null)
             {
                 _context.Compras.Remove(compra);
