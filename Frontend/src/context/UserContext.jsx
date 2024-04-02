@@ -67,6 +67,20 @@ const UserProvider = ({ children }) => {
             .catch(error => console.log(error + " candelaaaaaa"));
     }
 
+    const createMovie = (newMovie, callback) => {
+      axios.post('/Pelicula/Create', newMovie)
+          .then(response => {
+              
+            console.log('nueva peliculita ')
+              callback();
+              Toast.fire({
+                  icon: 'success',
+                  title: `Nueva Pelicula añadida!`
+                });
+          })
+          .catch(error => console.log(error + " candelaaaaaa"));
+  }
+
   const login = (inUser, callback) => {
     axios.post("/Usuario/LogUser",{
       
@@ -148,7 +162,8 @@ const UserProvider = ({ children }) => {
     logout,
     addOrder,
     modifyUserCart,
-    userWidgetRef
+    userWidgetRef,
+    createMovie
   };
 
   return (
