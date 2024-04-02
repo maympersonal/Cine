@@ -111,9 +111,10 @@ const CartProvider = ({ defaultValue = [], children }) => {
         return cart.length == 0;
     }
 
-    const howMuch = (ticketId) => {
+    const howMuch = () => {
+        // Devuelve el precio acorde a esa función
 
-
+        return 500;
     }
 
     const cartWidgetRef = useRef();
