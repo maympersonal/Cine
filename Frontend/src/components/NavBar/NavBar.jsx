@@ -61,7 +61,7 @@ const NavBar = () => {
                     <i className="fa-solid fa-film "></i>
                     <span>CINE++</span>
                 </Link>
-                {isLogged?<span>Ptos:{user.puntos}</span>:null}
+                {isLogged?<span>Ptos: {user.puntos}</span>:null}
             </div>
 
             {/* Nav versión desktop  */}
