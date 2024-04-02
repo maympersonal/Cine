@@ -52,9 +52,9 @@ namespace Backend.ServiceLayer
         }
 
 
-        public async Task DeleteCompra(int IdP, int IdS,string Ci, DateTime Fecha)
+        public async Task DeleteCompra(int idPg)
         {
-            var compra = await _context.Compras.Include(x=>x.CiNavigation).Include(x=>x.IdPgNavigation).Include(x=>x.Sesion).Include(x=>x.IdBs).Include(x=>x.IdDs).FirstOrDefaultAsync(x=>x.IdP==IdP && x.IdS==IdS && x.Ci==Ci && x.Fecha == Fecha);
+            var compra = await _context.Compras.Include(x=>x.CiNavigation).Include(x=>x.IdPgNavigation).Include(x=>x.Sesion).Include(x=>x.IdBs).Include(x=>x.IdDs).FirstOrDefaultAsync(x=>x.IdPg == idPg);
             {
                 _context.Compras.Remove(compra);
                 await _context.SaveChangesAsync();
