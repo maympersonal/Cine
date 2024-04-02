@@ -1,3 +1,5 @@
+using Backend.Models;
+
 namespace Backend.Data.DTOs;
 
 
@@ -18,7 +20,7 @@ public class PeliculaDtoOut
 
     public string? Trailer { get; set; }
 
-    public virtual List<int> IdAs { get; set; } = new List<int>();
+    public virtual ICollection<int> IdAs { get; set; } = new List<int>();
 
-    public virtual List<int> IdGs { get; set; } = new List<int>();
+    public virtual ICollection<int> IdGs { get; set; } = new List<int>();
 }

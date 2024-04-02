@@ -44,18 +44,10 @@ namespace Backend.Controllers
                     Duración = peli.Duración,
                     Titulo = peli.Titulo,
                     Imagen = peli.Imagen,
-                    Trailer = peli.Trailer
+                    Trailer = peli.Trailer,
+                    IdAs = peli.IdAs.Select(x=> x.IdA).ToList(),
+                    IdGs = peli.IdGs.Select(x=>x.IdG).ToList()
                 };
-
-                foreach(Actor actor in peli.IdAs)
-                {
-                    addpeli.IdAs.Add(actor.IdA);
-                }
-
-                foreach(Genero genero in peli.IdGs)
-                {
-                    addpeli.IdGs.Add(genero.IdG);
-                }
 
                 result.Add(addpeli); 
             }
@@ -81,17 +73,11 @@ namespace Backend.Controllers
                 Duración=pelicula.Duración,
                 Titulo=pelicula.Titulo,
                 Imagen=pelicula.Imagen,
-                Trailer=pelicula.Trailer
+                Trailer=pelicula.Trailer,
+                IdAs = pelicula.IdAs.Select(x=> x.IdA).ToList(),
+                IdGs = pelicula.IdGs.Select(x=>x.IdG).ToList()
             };
-            foreach(Actor actor in pelicula.IdAs)
-            {
-                addpeli.IdAs.Add(actor.IdA);
-            }
-            foreach(Genero genero in pelicula.IdGs)
-            {
-                addpeli.IdGs.Add(genero.IdG);
-            }
-
+            
             return addpeli;
         }
 
@@ -151,21 +137,6 @@ namespace Backend.Controllers
         [HttpPost("Create")]
         public async Task<ActionResult<Pelicula>> PostPelicula(PeliculaDtoIn pelicula)
         {
-            ICollection<Actor> actors= new List<Actor>();
-            ICollection<Genero> generos=new List<Genero>();
-
-            foreach ( int idA in pelicula.IdAs )
-            {
-                var actor = await _serviceactor.GetActor(idA);
-                if(actor is null) return BadRequest();
-                actors.Add(actor);
-            }
-            foreach ( int idG in pelicula.IdGs )
-            {
-                var genero = await _servicegenero.GetGenero(idG);
-                if(genero is null) return BadRequest();
-                generos.Add(genero);
-            }
             var Newpelicula= new Pelicula
             {
                 Sinopsis=pelicula.Sinopsis,
@@ -174,10 +145,21 @@ namespace Backend.Controllers
                 Duración=pelicula.Duración,
                 Titulo=pelicula.Titulo,
                 Imagen=pelicula.Imagen,
-                Trailer=pelicula.Trailer,
-                IdAs=actors,
-                IdGs=generos
+                Trailer=pelicula.Trailer
             };
+            foreach ( int idA in pelicula.IdAs )
+            {
+                var actor = await _serviceactor.GetActor(idA);
+                if(actor is null) return BadRequest();
+                Newpelicula.IdAs.Add(actor);
+            }
+            foreach ( int idG in pelicula.IdGs )
+            {
+                var genero = await _servicegenero.GetGenero(idG);
+                if(genero is null) return BadRequest();
+                Newpelicula.IdGs.Add(genero);
+            }
+
             await _servicepelicula.PostPelicula(Newpelicula);
 
             return CreatedAtAction("GetPelicula", new { id = Newpelicula.IdP }, Newpelicula);

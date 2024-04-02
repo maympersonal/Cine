@@ -1,0 +1,27 @@
+.cliente-card {
+    display: flex;
+    align-items: center;
+  }
+  .cliente-card button {
+    background-color: #007bff; /* Color de fondo del botón */
+    color: #fff; /* Color del texto */
+    border: none; /* Sin borde */
+    border-radius: 4px; /* Bordes redondeados */
+    padding: 8px 12px; /* Espaciado interno */
+    cursor: pointer; /* Cambia el cursor al pasar por encima */
+    transition: background-color 0.3s ease; /* Transición suave */
+  }
+  
+  .cliente-card button:hover {
+    background-color: #0056b3; /* Color de fondo al hacer hover */
+  }
+  
+  
+  .nombre {
+    margin-right: 10px; /* Ajusta el espacio entre el nombre y el estado de confianza según sea necesario */
+  }
+
+  .estado-confianza{
+    margin-right: 10px;
+  }
+  
