@@ -84,7 +84,7 @@ const MovieDetail = ({ id, titulo, imagen , sinopsis, duración, idGs, anno, nac
         <div>
             <article className="movieDetailCard" ref={movieCardRef} >
                 <div className='movieDetailCard-header'>
-                    <div className='movieDetailCard-header_background' style={backgroundStyle}></div>
+                    <div className='movieDetailCard-header_background' ></div>
                 </div>
 
                 <div className='movieDetailCard-body'>

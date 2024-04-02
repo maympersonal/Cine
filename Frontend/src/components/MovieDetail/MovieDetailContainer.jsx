@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import Loader from '../Loader/Loader';
 import MovieDetail from './MovieDetail';
 import { scrollTo } from '../Utils/functions';
+import axios from '../../api/axios';
 
 const MovieDetailContainer = () => {
     const [loading, setLoading] = useState(true);
