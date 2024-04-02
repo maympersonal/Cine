@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './UserComponent.css'; // Asegúrate de tener el archivo CSS para el estilo
+import './UserComponent (2).css'; // Asegúrate de tener el archivo CSS para el estilo
 
 const ClienteCard = ({ nombre, estadoInicial }) => {
   const [estadoConfianza, setEstadoConfianza] = useState(estadoInicial);
