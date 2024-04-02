@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Backend.Data;
 using Backend.Models;
+using System.Data;
 
 namespace Backend.ServiceLayer
 {
@@ -29,6 +30,11 @@ namespace Backend.ServiceLayer
         public async Task<Sesion?> GetSesion(int id)
         {
             return await _context.Sesions.Include(x=>x.Compras).Include(x=>x.IdSNavigation).Include(x=>x.IdPNavigation).FirstOrDefaultAsync(x=>x.IdP==id);
+        }
+
+        public async Task<Sesion?> GetSesionIdPIdSF(int idp,int ids,DateTime fecha)
+        {
+            return await _context.Sesions.Include(x=>x.Compras).Include(x=>x.IdSNavigation).Include(x=>x.IdPNavigation).FirstOrDefaultAsync(x=>x.IdP==idp && x.IdS==ids&&x.Fecha==fecha);
         }
 
         public async Task PutSesion(Sesion sesion)
