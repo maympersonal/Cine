@@ -36,7 +36,7 @@ const SearchBar = ({ onSearch }) => {
         />
         <button type="submit">Buscar</button>
       </form>
-      {(!loading&&searched)?<ClienteCard nombre={user.nombreS} estadoInicial={user.ciNavigation.confiabilidad}/>:null}
+      {(!loading&&searched)?<ClienteCard nombre={user.nombreS} estadoInicial={user.ciNavigation.confiabilidad} correo={user.ciNavigation.correo} ci={user.ci} />:null}
       {loading && <div className="loading-message">Cargando...</div>}
     </div>
   );

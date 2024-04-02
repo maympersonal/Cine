@@ -34,7 +34,8 @@
   }
   
   .search-bar.searched {
-    height: auto; /* Establecemos la altura automática después de la búsqueda */
+    height: auto;
+    display: block; /* Establecemos la altura automática después de la búsqueda */
   }
   
   .loading-message {
