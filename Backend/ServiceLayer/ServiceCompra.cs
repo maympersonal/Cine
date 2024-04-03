@@ -25,7 +25,7 @@ namespace Backend.ServiceLayer
             return await _context.Compras.Include(x=>x.CiNavigation).Include(x=>x.IdPgNavigation).Include(x=>x.Sesion).Include(x=>x.IdBs).Include(x=>x.IdDs).ToListAsync();
         }
 
-        public async Task<Compra?> GetCompraByAll(int IdP,int IdS,DateTime Fecha,int Ci,int IdPg)
+        public async Task<Compra?> GetCompraByAll(int IdP,int IdS,DateTime Fecha,string Ci,int IdPg)
         {
             return await _context.Compras.Include(x=>x.CiNavigation).Include(x=>x.IdPgNavigation).Include(x=>x.Sesion).Include(x=>x.IdBs).Include(x=>x.IdDs).FirstOrDefaultAsync(x=>x.IdP==IdP && x.IdS==IdS && x.Ci==Ci && x.Fecha == Fecha && x.IdPg==IdPg);
         }
