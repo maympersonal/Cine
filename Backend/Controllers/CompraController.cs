@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Backend.ServiceLayer;
 using Backend.Models;
 using Backend.Data.DTOs;
+using System.Runtime.CompilerServices;
 
 namespace Backend.Controllers
 {
@@ -21,8 +22,9 @@ namespace Backend.Controllers
         private readonly ServiceButaca _servicebutaca;
         private readonly ServiceDescuento _servicedescuento;
         private readonly ServiceTarjetum _servicetarjetum;
+        private readonly ServiceUsuario _serviceusuario;
 
-        public CompraController(ServiceCompra servicecompra,ServiceCliente servicecliente,ServiceSesion servicesesion,ServiceButaca servicebutaca,ServiceDescuento servicedescuento,ServiceTarjetum servicetarjetum)
+        public CompraController(ServiceCompra servicecompra,ServiceCliente servicecliente,ServiceSesion servicesesion,ServiceButaca servicebutaca,ServiceDescuento servicedescuento,ServiceTarjetum servicetarjetum,ServiceUsuario serviceusuario)
         {
             _servicecompra = servicecompra;
             _servicecliente=servicecliente;
@@ -30,6 +32,7 @@ namespace Backend.Controllers
             _servicebutaca=servicebutaca;
             _servicedescuento=servicedescuento;
             _servicetarjetum= servicetarjetum;
+            _serviceusuario = serviceusuario;
         }
 
         [HttpGet("GetAll")]
@@ -79,9 +82,39 @@ namespace Backend.Controllers
             return NoContent();
         }
 
-        [HttpPost("Create")]
+        [HttpPost("CompraByUserTarjeta")]
         public async Task<ActionResult<Compra>> CompraByUserTarjeta(CompraByUserTarjetaDtoIn compra)
         {   
+            var usuario = await _serviceusuario.GetUsuario(compra.Ci);
+
+            if(usuario is null) return NotFound("El usuario no existe.");
+
+            if(usuario.CiNavigation.Confiabilidad is false && compra.IdD.Count>0) return BadRequest("El usuario no puede asignarse descuentos.");
+
+            List<Butaca> butaca=new List<Butaca>();
+
+            if(compra.IdB.Count == 0) return BadRequest("No estas seleccionando ninguna butaca.");
+
+            foreach(int a in compra.IdB)
+            {
+                var but = await _servicebutaca.GetButaca(a);
+                if(but is null) return BadRequest("La butaca con Id "+a+" no existe.");
+                butaca.Add(but);
+            }
+
+            var sesion = await _servicesesion.GetSesionIdPIdSF(compra.IdP,compra.IdS,compra.Fecha);
+
+            List<Descuento> descuentos=new List<Descuento>();
+
+            foreach(int a in compra.IdD)
+            {
+                var des = await _servicedescuento.GetDescuento(a);
+                if(des is null) return BadRequest("El descuento con Id "+a+" no existe.");
+                descuentos.Add(des);
+            }
+
+            if(sesion is null) return NotFound("La sesion no existe.");
+
             var tarjetaExis = await _servicetarjetum.GetTarjetum(compra.CodigoT);
             if(tarjetaExis==null)
             {
@@ -95,22 +128,6 @@ namespace Backend.Controllers
             
             var pago = new Pago();
             pago.Web=new Web{ IdPg = pago.IdPg, CodigoT=compra.CodigoT,Cantidad=compra.Cantidad};
-            var cliente = await _servicecliente.GetCliente(compra.Ci);
-            var sesion = await _servicesesion.GetSesionIdPIdSF(compra.IdP,compra.IdS,compra.Fecha);
-            List<Butaca> butaca=new List<Butaca>();
-
-            foreach(int a in compra.IdB)
-            {
-                butaca.Add(await _servicebutaca.GetButaca(a));
-            }
-            List<Descuento> descuentos=new List<Descuento>();
-
-            foreach(int a in compra.IdD)
-            {
-                descuentos.Add(await _servicedescuento.GetDescuento(a));
-            }
-
-            if(cliente is null || sesion is null) return NotFound();
 
             var ticket = new Compra
             {
@@ -119,9 +136,107 @@ namespace Backend.Controllers
                 Fecha=compra.Fecha,
                 Ci=compra.Ci,
                 IdPg=pago.IdPg,
-                Tipo="",
+                Tipo="Tarjeta",
                 FechaDeCompra=compra.FechaDeCompra,
                 MedioAd="Web",
+                IdPgNavigation=pago,
+                CiNavigation = usuario.CiNavigation,
+                Sesion=sesion,
+                IdBs=butaca,
+                IdDs=descuentos
+            };
+            try
+            {
+                await _servicecompra.PostCompra(ticket);
+            }
+            catch (DbUpdateException)
+            {
+                if (CompraExists(compra.IdP))
+                {
+                    return Conflict();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+
+            
+            if(usuario.Rol != "Cliente")
+            {
+                usuario.Puntos= usuario.Puntos + 5* compra.IdB.Count;
+                await _serviceusuario.PutUsuario(usuario);
+            }
+            else
+            {
+                if(usuario.CiNavigation.Compras.Count >= 10)
+                {
+                    usuario.Rol="Socio";
+                    usuario.Puntos= usuario.Puntos + 5* compra.IdB.Count;
+                    await _serviceusuario.PutUsuario(usuario);
+                }
+            }
+        
+
+            return CreatedAtAction("GetCompra", new { id = ticket.IdP }, ticket);
+        }
+
+        [HttpPost("CompraByTaquillaEfectivo")]
+        public async Task<ActionResult<Compra>> CompraByTaquillaEfectivo(CompraByUserTaquillaDtoIn compra)
+        {   
+            var taquillero = await _serviceusuario.GetUsuario(compra.CiTaquillero);
+            if(taquillero is null || taquillero.Rol =="Cliente" || taquillero.Rol == "Socio") return BadRequest("El usuario que efectua la venta no existe o no es taquillero.");
+
+            if(compra.IdB.Count == 0) return BadRequest("No estas seleccionando ninguna butaca.");
+
+            List<Butaca> butaca=new List<Butaca>();
+
+            foreach(int a in compra.IdB)
+            {
+                var but = await _servicebutaca.GetButaca(a);
+                if(but is null) return BadRequest("La butaca con Id "+a+" no existe.");
+                butaca.Add(but);
+            }
+
+            List<Descuento> descuentos=new List<Descuento>();
+
+            foreach(int a in compra.IdD)
+            {
+                var des = await _servicedescuento.GetDescuento(a);
+                if(des is null) return BadRequest("El descuento con Id "+a+" no existe.");
+                descuentos.Add(des);
+            }
+
+            var sesion = await _servicesesion.GetSesionIdPIdSF(compra.IdP,compra.IdS,compra.Fecha);            
+
+            if(sesion is null) return NotFound("La sesion no existe.");
+
+            var cliente = await _servicecliente.GetCliente(compra.Ci);
+            if(cliente is null) 
+            {
+                cliente = new Cliente
+                {
+                    Ci=compra.Ci,
+                    Correo=compra.Correo,
+                    Confiabilidad=true
+                };
+                await _servicecliente.PostCliente(cliente);
+            }
+            if(cliente.Confiabilidad is false && compra.IdD.Count>0) return BadRequest("El cliente no puede asignarse desceuntos.");
+            var pago = new Pago();
+            pago.Efectivo=new Efectivo{IdPg=pago.IdPg,CantidadE=compra.Cantidad};
+
+            var ticket = new Compra
+            {
+                IdP=compra.IdP,
+                IdS=compra.IdS,
+                Fecha=compra.Fecha,
+                Ci=compra.Ci,
+                IdPg=pago.IdPg,
+                Tipo="Efectivo",
+                FechaDeCompra=compra.FechaDeCompra,
+                MedioAd=compra.CiTaquillero,
                 IdPgNavigation=pago,
                 CiNavigation = cliente,
                 Sesion=sesion,
@@ -143,6 +258,85 @@ namespace Backend.Controllers
                     throw;
                 }
             }
+            var usuario = await _serviceusuario.GetUsuario(compra.Ci);
+            if(usuario is not null)
+            {
+                if(usuario.Rol != "Cliente")
+                {
+                    usuario.Puntos= usuario.Puntos + 5* compra.IdB.Count;
+                    await _serviceusuario.PutUsuario(usuario);
+                }
+                else
+                {
+                    if(usuario.CiNavigation.Compras.Count >= 10)
+                    {
+                        usuario.Rol="Socio";
+                        usuario.Puntos= usuario.Puntos + 5* compra.IdB.Count;
+                        await _serviceusuario.PutUsuario(usuario);
+                    }
+                }
+            }
+           
+            return CreatedAtAction("GetCompra", new { id = ticket.IdP }, ticket);
+        }
+
+        [HttpPost("CompraByUserPuntos")]
+        public async Task<ActionResult<Compra>> CompraByUserPuntos(CompraByUserPuntoDtoIn compra)
+        {   
+            var usuario = await _serviceusuario.GetUsuario(compra.Ci);
+            if(usuario is null) return NotFound("El usuario no existe.");
+
+            if(usuario.Puntos < compra.Cantidad) return BadRequest("El usuario no tiene suficientes puntos.");
+
+            var pago = new Pago();
+            pago.Punto=new Punto{ IdPg = pago.IdPg,Gastados=compra.Cantidad};
+            var sesion = await _servicesesion.GetSesionIdPIdSF(compra.IdP,compra.IdS,compra.Fecha);
+            List<Butaca> butaca=new List<Butaca>();
+
+            if(compra.IdB.Count == 0) return BadRequest("No estas seleccionando ninguna butaca.");
+
+            foreach(int a in compra.IdB)
+            {
+                var but = await _servicebutaca.GetButaca(a);
+                if(but is null) return NotFound("La butaca con Id "+a+" no existe.");
+                butaca.Add(but);
+            }
+
+            if(sesion is null) return NotFound("La sesion no existe.");
+
+            var ticket = new Compra
+            {
+                IdP=compra.IdP,
+                IdS=compra.IdS,
+                Fecha=compra.Fecha,
+                Ci=compra.Ci,
+                IdPg=pago.IdPg,
+                Tipo="Puntos",
+                FechaDeCompra=compra.FechaDeCompra,
+                MedioAd="Web",
+                IdPgNavigation=pago,
+                CiNavigation = usuario.CiNavigation,
+                Sesion=sesion,
+                IdBs=butaca
+            };
+            try
+            {
+                await _servicecompra.PostCompra(ticket);
+            }
+            catch (DbUpdateException)
+            {
+                if (CompraExists(compra.IdP))
+                {
+                    return Conflict();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            usuario.Puntos = usuario.Puntos-compra.Cantidad;
+            await _serviceusuario.PutUsuario(usuario);
 
             return CreatedAtAction("GetCompra", new { id = ticket.IdP }, ticket);
         }
@@ -153,8 +347,23 @@ namespace Backend.Controllers
             var compra = await _servicecompra.GetCompraByAll(IdP,IdS,Fecha,Ci,IdPg);
             if (compra == null)
             {
-                return NotFound();
+                return NotFound("No se encuentra este ticket.");
             }
+
+            var usuario = await _serviceusuario.GetUsuario(compra.Ci);
+            if(compra.Tipo=="Puntos")
+            {
+                if(usuario is not null && compra.IdPgNavigation.Punto is not null) usuario.Puntos = usuario.Puntos + compra.IdPgNavigation.Punto.Gastados;
+                else return BadRequest("El usuario no tiene registrada la compra por punto.");
+                await _serviceusuario.PutUsuario(usuario);
+            }
+            else if(usuario is not null && usuario.Rol !="Cliente")
+            {
+                if(usuario.Puntos - compra.IdBs.Count*5 < 0) return BadRequest("El usuario ha gastado todos los puntos asignados por esta compra.");
+                usuario.Puntos = usuario.Puntos - compra.IdBs.Count*5;
+                await _serviceusuario.PutUsuario(usuario);
+            }
+
             await _servicecompra.DeleteCompra(IdP,IdS,Fecha,Ci,IdPg);
             return NoContent();
         }
