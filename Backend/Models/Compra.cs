@@ -34,6 +34,10 @@ public partial class Compra
     [Column("Tipo", TypeName = "varchar(50)")]
     public string? Tipo { get; set; }
 
+    [JsonIgnore]
+    [Column("Eliminado")]
+    public bool? Eliminado { get; set; }
+
     [Column("FechaDeCompra")]
     public DateTime FechaDeCompra { get; set; }
 
