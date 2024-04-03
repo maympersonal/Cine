@@ -150,7 +150,7 @@ namespace Backend.Controllers
         [HttpDelete("Delete/{IdP}/{IdS}/{Fecha}/{Ci}/{IdPg}")]
         public async Task<IActionResult> DeleteCompra(int IdP,int IdS,DateTime Fecha,int Ci,int IdPg)
         {
-            var compra = await _servicecompra.GetCompra(IdP,IdS,Fecha,Ci,IdPg);
+            var compra = await _servicecompra.GetCompraByAll(IdP,IdS,Fecha,Ci,IdPg);
             if (compra == null)
             {
                 return NotFound();
