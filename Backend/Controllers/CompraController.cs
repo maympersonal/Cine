@@ -20,14 +20,16 @@ namespace Backend.Controllers
         private readonly ServiceSesion _servicesesion;
         private readonly ServiceButaca _servicebutaca;
         private readonly ServiceDescuento _servicedescuento;
+        private readonly ServiceTarjetum _servicetarjetum;
 
-        public CompraController(ServiceCompra servicecompra,ServiceCliente servicecliente,ServiceSesion servicesesion,ServiceButaca servicebutaca,ServiceDescuento servicedescuento)
+        public CompraController(ServiceCompra servicecompra,ServiceCliente servicecliente,ServiceSesion servicesesion,ServiceButaca servicebutaca,ServiceDescuento servicedescuento,ServiceTarjetum _servicetarjetum)
         {
             _servicecompra = servicecompra;
             _servicecliente=servicecliente;
             _servicesesion=servicesesion;  
             _servicebutaca=servicebutaca;
             _servicedescuento=servicedescuento;
+            _servicetarjetum= servicetarjetum;
         }
 
         [HttpGet("GetAll")]
@@ -79,14 +81,20 @@ namespace Backend.Controllers
 
         [HttpPost("Create")]
         public async Task<ActionResult<Compra>> CompraByUserTarjeta(CompraByUserTarjetaDtoIn compra)
-        {
-            var tarjeta = new Tarjetum
+        {   
+            var tarjetaExis = await _servicetarjetum.GetTarjetum(compra.CodigoT);
+            if(tarjetaExis==null)
             {
-                CodigoT=compra.CodigoT,
-                Ci=compra.Ci
-            };
+                var tarjeta = new Tarjetum
+                {
+                    CodigoT=compra.CodigoT,
+                    Ci=compra.Ci
+                };
+                await _servicetarjetum.PostTarjetum(tarjeta);
+            }
+            
             var pago = new Pago();
-            pago.Web=new Web{ IdPg = pago.IdPg, CodigoT=compra.CodigoT,Cantidad=compra.Cantidad, CodigoTNavigation=tarjeta};
+            pago.Web=new Web{ IdPg = pago.IdPg, CodigoT=compra.CodigoT,Cantidad=compra.Cantidad};
             var cliente = await _servicecliente.GetCliente(compra.Ci);
             var sesion = await _servicesesion.GetSesionIdPIdSF(compra.IdP,compra.IdS,compra.Fecha);
             List<Butaca> butaca=new List<Butaca>();
@@ -103,6 +111,7 @@ namespace Backend.Controllers
             }
 
             if(cliente is null || sesion is null) return NotFound();
+
             var ticket = new Compra
             {
                 IdP=compra.IdP,
@@ -138,15 +147,15 @@ namespace Backend.Controllers
             return CreatedAtAction("GetCompra", new { id = ticket.IdP }, ticket);
         }
 
-        [HttpDelete("Delete/{idPg}")]
-        public async Task<IActionResult> DeleteCompra(int idPg)
+        [HttpDelete("Delete/{IdP}/{IdS}/{Fecha}/{Ci}/{IdPg}")]
+        public async Task<IActionResult> DeleteCompra(int IdP,int IdS,DateTime Fecha,int Ci,int IdPg)
         {
-            var compra = await _servicecompra.GetCompra(idPg);
+            var compra = await _servicecompra.GetCompra(IdP,IdS,Fecha,Ci,IdPg);
             if (compra == null)
             {
                 return NotFound();
             }
-            await _servicecompra.DeleteCompra(idPg);
+            await _servicecompra.DeleteCompra(compra);
             return NoContent();
         }
 

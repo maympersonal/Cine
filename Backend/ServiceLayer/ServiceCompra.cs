@@ -25,9 +25,9 @@ namespace Backend.ServiceLayer
             return await _context.Compras.Include(x=>x.CiNavigation).Include(x=>x.IdPgNavigation).Include(x=>x.Sesion).Include(x=>x.IdBs).Include(x=>x.IdDs).ToListAsync();
         }
 
-        public async Task<Compra?> GetCompraByAll(int IdP, int IdS,string Ci, DateTime Fecha)
+        public async Task<Compra?> GetCompraByAll(int IdP,int IdS,DateTime Fecha,int Ci,int IdPg)
         {
-            return await _context.Compras.Include(x=>x.CiNavigation).Include(x=>x.IdPgNavigation).Include(x=>x.Sesion).Include(x=>x.IdBs).Include(x=>x.IdDs).FirstOrDefaultAsync(x=>x.IdP==IdP && x.IdS==IdS && x.Ci==Ci && x.Fecha == Fecha);
+            return await _context.Compras.Include(x=>x.CiNavigation).Include(x=>x.IdPgNavigation).Include(x=>x.Sesion).Include(x=>x.IdBs).Include(x=>x.IdDs).FirstOrDefaultAsync(x=>x.IdP==IdP && x.IdS==IdS && x.Ci==Ci && x.Fecha == Fecha && x.IdPg==IdPg);
         }
 
         public async Task<Compra?> GetCompra(int id)
@@ -52,9 +52,9 @@ namespace Backend.ServiceLayer
         }
 
 
-        public async Task DeleteCompra(int idPg)
+        public async Task DeleteCompra(int IdP,int IdS,DateTime Fecha,int Ci,int IdPg)
         {
-            var compra = await _context.Compras.Include(x=>x.CiNavigation).Include(x=>x.IdPgNavigation).Include(x=>x.Sesion).Include(x=>x.IdBs).Include(x=>x.IdDs).FirstOrDefaultAsync(x=>x.IdPg == idPg);
+            var compra = await _context.Compras.Include(x=>x.CiNavigation).Include(x=>x.IdPgNavigation).Include(x=>x.Sesion).Include(x=>x.IdBs).Include(x=>x.IdDs).FirstOrDefaultAsync(x=>x.IdPg == IdPg && x.IdP==IdP && x.IdS == IdS && x.Fecha == Fecha && x.Ci==Ci);
             {
                 _context.Compras.Remove(compra);
                 await _context.SaveChangesAsync();
