@@ -22,7 +22,7 @@ namespace Backend.Controllers
         private readonly ServiceDescuento _servicedescuento;
         private readonly ServiceTarjetum _servicetarjetum;
 
-        public CompraController(ServiceCompra servicecompra,ServiceCliente servicecliente,ServiceSesion servicesesion,ServiceButaca servicebutaca,ServiceDescuento servicedescuento,ServiceTarjetum _servicetarjetum)
+        public CompraController(ServiceCompra servicecompra,ServiceCliente servicecliente,ServiceSesion servicesesion,ServiceButaca servicebutaca,ServiceDescuento servicedescuento,ServiceTarjetum servicetarjetum)
         {
             _servicecompra = servicecompra;
             _servicecliente=servicecliente;
@@ -155,7 +155,7 @@ namespace Backend.Controllers
             {
                 return NotFound();
             }
-            await _servicecompra.DeleteCompra(compra);
+            await _servicecompra.DeleteCompra(IdP,IdS,Fecha,Ci,IdPg);
             return NoContent();
         }
 
