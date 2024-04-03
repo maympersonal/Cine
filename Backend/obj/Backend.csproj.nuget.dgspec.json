@@ -1,23 +1,24 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Mauro\\Carrera\\3ro\\IS\\proyectoooooo\\Cine\\Backend\\Backend.csproj": {}
+    "C:\\Users\\Miguel Alejandro\\Documents\\3er Año\\IS\\Cine\\Backend\\Backend.csproj": {}
   },
   "projects": {
-    "C:\\Mauro\\Carrera\\3ro\\IS\\proyectoooooo\\Cine\\Backend\\Backend.csproj": {
+    "C:\\Users\\Miguel Alejandro\\Documents\\3er Año\\IS\\Cine\\Backend\\Backend.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Mauro\\Carrera\\3ro\\IS\\proyectoooooo\\Cine\\Backend\\Backend.csproj",
+        "projectUniqueName": "C:\\Users\\Miguel Alejandro\\Documents\\3er Año\\IS\\Cine\\Backend\\Backend.csproj",
         "projectName": "Backend",
-        "projectPath": "C:\\Mauro\\Carrera\\3ro\\IS\\proyectoooooo\\Cine\\Backend\\Backend.csproj",
-        "packagesPath": "C:\\Users\\mauro\\.nuget\\packages\\",
-        "outputPath": "C:\\Mauro\\Carrera\\3ro\\IS\\proyectoooooo\\Cine\\Backend\\obj\\",
+        "projectPath": "C:\\Users\\Miguel Alejandro\\Documents\\3er Año\\IS\\Cine\\Backend\\Backend.csproj",
+        "packagesPath": "C:\\Users\\Miguel Alejandro\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Miguel Alejandro\\Documents\\3er Año\\IS\\Cine\\Backend\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
         ],
         "configFilePaths": [
-          "C:\\Users\\mauro\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Miguel Alejandro\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -26,7 +27,6 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -39,6 +39,11 @@
           "warnAsError": [
             "NU1605"
           ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
         }
       },
       "frameworks": {
@@ -97,7 +102,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.102/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.202/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
