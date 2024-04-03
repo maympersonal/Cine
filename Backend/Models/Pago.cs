@@ -15,6 +15,7 @@ public partial class Pago
     [Column("IdPg")]
     public int IdPg { get; set; }
 
+    [JsonIgnore]
     //[InverseProperty("IdPgNavigation")]
     public virtual ICollection<Compra> Compras { get; set; } = new List<Compra>();
 
