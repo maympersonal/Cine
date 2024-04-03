@@ -46,6 +46,10 @@ public partial class CineContext : DbContext
 
     public virtual DbSet<Web> Webs { get; set; }
 
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
+        => optionsBuilder.UseSqlServer("Server=DESKTOP-5F6O745\\SQLEXPRESS;Database=Cine;Trusted_Connection=True;TrustServerCertificate=True;");
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Actor>(entity =>
@@ -100,6 +104,7 @@ public partial class CineContext : DbContext
                 .HasMaxLength(11)
                 .IsUnicode(false)
                 .IsFixedLength();
+            entity.Property(e => e.Eliminado).HasDefaultValue(false);
             entity.Property(e => e.FechaDeCompra).HasColumnType("datetime");
             entity.Property(e => e.IdPg).HasColumnName("idPg");
             entity.Property(e => e.MedioAd)
@@ -111,18 +116,11 @@ public partial class CineContext : DbContext
 
             entity.HasOne(d => d.CiNavigation).WithMany(p => p.Compras)
                 .HasForeignKey(d => d.Ci)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Compra__Ci__0C85DE4D");
-
-            entity.HasOne(d => d.IdPgNavigation).WithMany(p => p.Compras)
-                .HasForeignKey(d => d.IdPg)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Compra__idPg__0D7A0286");
+                .HasConstraintName("FK_Compra_Cliente");
 
             entity.HasOne(d => d.Sesion).WithMany(p => p.Compras)
                 .HasForeignKey(d => new { d.IdP, d.IdS, d.Fecha })
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Compra__0E6E26BF");
+                .HasConstraintName("FK_Compra_Secsión");
 
             entity.HasMany(d => d.IdBs).WithMany(p => p.Compras)
                 .UsingEntity<Dictionary<string, object>>(
@@ -133,7 +131,6 @@ public partial class CineContext : DbContext
                         .HasConstraintName("FK__ButacasRese__idB__18EBB532"),
                     l => l.HasOne<Compra>().WithMany()
                         .HasForeignKey("IdP", "IdS", "Fecha", "Ci")
-                        .OnDelete(DeleteBehavior.ClientSetNull)
                         .HasConstraintName("FK__ButacasReservada__19DFD96B"),
                     j =>
                     {
@@ -160,7 +157,6 @@ public partial class CineContext : DbContext
                         .HasConstraintName("FK__Descontado__idD__151B244E"),
                     l => l.HasOne<Compra>().WithMany()
                         .HasForeignKey("IdP", "IdS", "Fecha", "Ci")
-                        .OnDelete(DeleteBehavior.ClientSetNull)
                         .HasConstraintName("FK__Descontado__160F4887"),
                     j =>
                     {
@@ -204,7 +200,6 @@ public partial class CineContext : DbContext
 
             entity.HasOne(d => d.IdPgNavigation).WithOne(p => p.Efectivo)
                 .HasForeignKey<Efectivo>(d => d.IdPg)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__Efectivo__idPg__7F2BE32F");
         });
 
@@ -248,11 +243,9 @@ public partial class CineContext : DbContext
                     "Elenco",
                     r => r.HasOne<Actor>().WithMany()
                         .HasForeignKey("IdA")
-                        .OnDelete(DeleteBehavior.ClientSetNull)
                         .HasConstraintName("FK__Elenco__idA__1DB06A4F"),
                     l => l.HasOne<Pelicula>().WithMany()
                         .HasForeignKey("IdP")
-                        .OnDelete(DeleteBehavior.ClientSetNull)
                         .HasConstraintName("FK__Elenco__idP__1CBC4616"),
                     j =>
                     {
@@ -267,11 +260,9 @@ public partial class CineContext : DbContext
                     "Genero1",
                     r => r.HasOne<Genero>().WithMany()
                         .HasForeignKey("IdG")
-                        .OnDelete(DeleteBehavior.ClientSetNull)
                         .HasConstraintName("FK__Generos__idG__2180FB33"),
                     l => l.HasOne<Pelicula>().WithMany()
                         .HasForeignKey("IdP")
-                        .OnDelete(DeleteBehavior.ClientSetNull)
                         .HasConstraintName("FK__Generos__idP__208CD6FA"),
                     j =>
                     {
@@ -292,7 +283,6 @@ public partial class CineContext : DbContext
 
             entity.HasOne(d => d.IdPgNavigation).WithOne(p => p.Punto)
                 .HasForeignKey<Punto>(d => d.IdPg)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__Puntos__idPg__7C4F7684");
         });
 
@@ -319,12 +309,10 @@ public partial class CineContext : DbContext
 
             entity.HasOne(d => d.IdPNavigation).WithMany(p => p.Sesions)
                 .HasForeignKey(d => d.IdP)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__Sesion__idP__08B54D69");
 
             entity.HasOne(d => d.IdSNavigation).WithMany(p => p.Sesions)
                 .HasForeignKey(d => d.IdS)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__Sesion__idS__09A971A2");
         });
 
@@ -344,6 +332,7 @@ public partial class CineContext : DbContext
 
             entity.HasOne(d => d.CiNavigation).WithMany(p => p.Tarjeta)
                 .HasForeignKey(d => d.Ci)
+                .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("FK__Tarjeta__Ci__6B24EA82");
         });
 
@@ -364,9 +353,7 @@ public partial class CineContext : DbContext
                 .HasMaxLength(11)
                 .IsUnicode(false)
                 .IsFixedLength();
-            entity.Property(e => e.Contrasena)
-                .HasMaxLength(256)
-                .IsFixedLength();
+            entity.Property(e => e.Contrasena).HasMaxLength(256);
             entity.Property(e => e.NombreS)
                 .HasMaxLength(50)
                 .IsUnicode(false);
@@ -376,7 +363,6 @@ public partial class CineContext : DbContext
 
             entity.HasOne(d => d.CiNavigation).WithOne(p => p.Usuario)
                 .HasForeignKey<Usuario>(d => d.Ci)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__Socio__Ci__656C112C");
         });
 
@@ -398,11 +384,11 @@ public partial class CineContext : DbContext
 
             entity.HasOne(d => d.CodigoTNavigation).WithMany(p => p.Webs)
                 .HasForeignKey(d => d.CodigoT)
+                .OnDelete(DeleteBehavior.SetNull)
                 .HasConstraintName("FK__Web__codigoT__02084FDA");
 
             entity.HasOne(d => d.IdPgNavigation).WithOne(p => p.Web)
                 .HasForeignKey<Web>(d => d.IdPg)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__Web__idPg__02FC7413");
         });
 
