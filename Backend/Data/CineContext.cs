@@ -104,7 +104,6 @@ public partial class CineContext : DbContext
                 .HasMaxLength(11)
                 .IsUnicode(false)
                 .IsFixedLength();
-            entity.Property(e => e.Eliminado).HasDefaultValue(false);
             entity.Property(e => e.FechaDeCompra).HasColumnType("datetime");
             entity.Property(e => e.IdPg).HasColumnName("idPg");
             entity.Property(e => e.MedioAd)
@@ -113,14 +112,6 @@ public partial class CineContext : DbContext
             entity.Property(e => e.Tipo)
                 .HasMaxLength(50)
                 .IsUnicode(false);
-
-            entity.HasOne(d => d.CiNavigation).WithMany(p => p.Compras)
-                .HasForeignKey(d => d.Ci)
-                .HasConstraintName("FK_Compra_Cliente");
-
-            entity.HasOne(d => d.Sesion).WithMany(p => p.Compras)
-                .HasForeignKey(d => new { d.IdP, d.IdS, d.Fecha })
-                .HasConstraintName("FK_Compra_Secsión");
 
             entity.HasMany(d => d.IdBs).WithMany(p => p.Compras)
                 .UsingEntity<Dictionary<string, object>>(
