@@ -44,19 +44,19 @@ public partial class Compra
     [ForeignKey("Ci")]
     public virtual Cliente CiNavigation { get; set; } = null!;
 
-    [JsonIgnore]
+
     [ForeignKey("IdPg")]
     public virtual Pago IdPgNavigation { get; set; } = null!;
 
-    [JsonIgnore]
+
     [ForeignKey("IdP,IdS,Fecha")]
     public virtual Sesion Sesion { get; set; } = null!;
 
-    [JsonIgnore]
+
     [ForeignKey("IdB")]
     public virtual ICollection<Butaca> IdBs { get; set; } = new List<Butaca>();
 
-    [JsonIgnore]
+
     [ForeignKey("IdD")]
     public virtual ICollection<Descuento> IdDs { get; set; } = new List<Descuento>();
 }

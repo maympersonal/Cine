@@ -23,8 +23,9 @@ namespace Backend.Controllers
         private readonly ServiceDescuento _servicedescuento;
         private readonly ServiceTarjetum _servicetarjetum;
         private readonly ServiceUsuario _serviceusuario;
+        private readonly ServicePago _servicepago;
 
-        public CompraController(ServiceCompra servicecompra,ServiceCliente servicecliente,ServiceSesion servicesesion,ServiceButaca servicebutaca,ServiceDescuento servicedescuento,ServiceTarjetum servicetarjetum,ServiceUsuario serviceusuario)
+        public CompraController(ServiceCompra servicecompra,ServiceCliente servicecliente,ServiceSesion servicesesion,ServiceButaca servicebutaca,ServiceDescuento servicedescuento,ServiceTarjetum servicetarjetum,ServiceUsuario serviceusuario,ServicePago servicepago)
         {
             _servicecompra = servicecompra;
             _servicecliente=servicecliente;
@@ -33,6 +34,7 @@ namespace Backend.Controllers
             _servicedescuento=servicedescuento;
             _servicetarjetum= servicetarjetum;
             _serviceusuario = serviceusuario;
+            _servicepago = servicepago;
         }
 
         [HttpGet("GetAll")]
@@ -288,12 +290,14 @@ namespace Backend.Controllers
 
             if(usuario.Puntos < compra.Cantidad) return BadRequest("El usuario no tiene suficientes puntos.");
 
-            var pago = new Pago();
-            pago.Punto=new Punto{ IdPg = pago.IdPg,Gastados=compra.Cantidad};
             var sesion = await _servicesesion.GetSesionIdPIdSF(compra.IdP,compra.IdS,compra.Fecha);
             List<Butaca> butaca=new List<Butaca>();
 
             if(compra.IdB.Count == 0) return BadRequest("No estas seleccionando ninguna butaca.");
+
+            var pago = new Pago();
+
+            pago.Punto=new Punto{ IdPg = pago.IdPg,Gastados=compra.Cantidad};
 
             foreach(int a in compra.IdB)
             {
@@ -313,8 +317,8 @@ namespace Backend.Controllers
                 IdPg=pago.IdPg,
                 Tipo="Puntos",
                 FechaDeCompra=compra.FechaDeCompra,
-                MedioAd="Web",
                 IdPgNavigation=pago,
+                MedioAd="Web",
                 CiNavigation = usuario.CiNavigation,
                 Sesion=sesion,
                 IdBs=butaca
@@ -344,6 +348,10 @@ namespace Backend.Controllers
         [HttpDelete("Delete/{IdP}/{IdS}/{Fecha}/{Ci}/{IdPg}")]
         public async Task<IActionResult> DeleteCompra(int IdP,int IdS,DateTime Fecha,string Ci,int IdPg)
         {
+            if ((Fecha - DateTime.Now ).TotalHours < 2)
+            {
+                return BadRequest("Solo puede cancelar la entrada al menos 2 horas antes de que empiece la pelicula.");
+            }
             var compra = await _servicecompra.GetCompraByAll(IdP,IdS,Fecha,Ci,IdPg);
             if (compra == null)
             {
@@ -353,8 +361,9 @@ namespace Backend.Controllers
             var usuario = await _serviceusuario.GetUsuario(compra.Ci);
             if(compra.Tipo=="Puntos")
             {
-                if(usuario is not null && compra.IdPgNavigation.Punto is not null) usuario.Puntos = usuario.Puntos + compra.IdPgNavigation.Punto.Gastados;
-                else return BadRequest("El usuario no tiene registrada la compra por punto.");
+                var pago = await _servicepago.GetPago(compra.IdPg);
+                if(usuario is not null && pago is not null && pago.Punto is not null) usuario.Puntos = usuario.Puntos + pago.Punto.Gastados;
+                else return BadRequest("El pago no fue hecho.");
                 await _serviceusuario.PutUsuario(usuario);
             }
             else if(usuario is not null && usuario.Rol !="Cliente")
