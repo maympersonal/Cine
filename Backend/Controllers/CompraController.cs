@@ -348,6 +348,10 @@ namespace Backend.Controllers
         [HttpDelete("Delete/{IdP}/{IdS}/{Fecha}/{Ci}/{IdPg}")]
         public async Task<IActionResult> DeleteCompra(int IdP,int IdS,DateTime Fecha,string Ci,int IdPg)
         {
+            if ((Fecha - DateTime.Now ).TotalHours < 2)
+            {
+                return BadRequest("Solo puede cancelar la entrada al menos 2 horas antes de que empiece la pelicula.");
+            }
             var compra = await _servicecompra.GetCompraByAll(IdP,IdS,Fecha,Ci,IdPg);
             if (compra == null)
             {

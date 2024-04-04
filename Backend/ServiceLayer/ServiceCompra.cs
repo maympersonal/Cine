@@ -19,6 +19,23 @@ namespace Backend.ServiceLayer
             _context = context;
         }
 
+        public async Task<IEnumerable<Compra>> GetComprasByCliente(string Ci)
+        {
+            return await _context.Compras.Include(x=>x.CiNavigation).Include(x=>x.IdPgNavigation).Include(x=>x.Sesion).Include(x=>x.IdBs).Include(x=>x.IdDs).Where(x=>x.Ci==Ci).ToListAsync();
+        }
+        public async Task<IEnumerable<Compra>> GetComprasByPelicula(int IdP)
+        {
+            return await _context.Compras.Include(x=>x.CiNavigation).Include(x=>x.IdPgNavigation).Include(x=>x.Sesion).Include(x=>x.IdBs).Include(x=>x.IdDs).Where(x=>x.IdP==IdP).ToListAsync();
+        }
+        public async Task<IEnumerable<Compra>> GetComprasByTipo(string tipo)
+        {
+            return await _context.Compras.Include(x=>x.CiNavigation).Include(x=>x.IdPgNavigation).Include(x=>x.Sesion).Include(x=>x.IdBs).Include(x=>x.IdDs).Where(x=>x.Tipo==tipo).ToListAsync();
+        }
+
+        public async Task<IEnumerable<Compra>> GetComprasByFecha(DateTime inicio, DateTime final)
+        {
+            return await _context.Compras.Include(x=>x.CiNavigation).Include(x=>x.IdPgNavigation).Include(x=>x.Sesion).Include(x=>x.IdBs).Include(x=>x.IdDs).Where(x=>x.FechaDeCompra>=inicio&&x.FechaDeCompra<=final).ToListAsync();
+        }
 
         public async Task<IEnumerable<Compra>> GetCompras()
         {
